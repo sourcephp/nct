@@ -44,12 +44,11 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 		return true;
 	}
 
-	@Override
+	
 	public void onClick(View v) {
 		
 	}
 
-	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
 	}
