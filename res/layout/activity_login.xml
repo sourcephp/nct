@@ -6,23 +6,27 @@
 
     <EditText
         android:id="@+id/edtxt_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
+        android:background="@drawable/edittext_normal"
         android:ems="10"
+        android:paddingLeft="8dp"
         android:hint="Tên tài khoản"
         android:lines="1" />
 
     <EditText
         android:id="@+id/edtxt_pass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/edtxt_username"
-        android:layout_marginTop="15dp"
+        android:background="@drawable/edittext_normal"
         android:ems="10"
         android:hint="Password"
+        android:paddingLeft="8dp"
         android:inputType="textPassword"
         android:lines="1" />
 
@@ -41,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/chbox_save"
         android:layout_below="@+id/chbox_save"
-        android:layout_marginTop="15dp"
         android:text="Đăng nhập ẩn" />
     <Button 
         android:id="@+id/btn_googleLogin"
