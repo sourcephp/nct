@@ -22,7 +22,6 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 	private CheckBox chBoxSave;
 	private CheckBox chBoxHide;
 	private Button btnLogin;
-	private Button btnRegis;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,18 +32,10 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 		edtxtPass = (EditText) findViewById(R.id.edtxt_pass);
 		chBoxSave = (CheckBox) findViewById(R.id.chbox_save);
 		chBoxHide = (CheckBox) findViewById(R.id.chbox_hide);
-		btnLogin = (Button) findViewById(R.id.btn_login);
-		btnRegis = (Button) findViewById(R.id.btn_regis);
+		btnLogin = (Button) findViewById(R.id.btn_googleLogin);
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-
-	
 	public void onClick(View v) {
 		
 	}
