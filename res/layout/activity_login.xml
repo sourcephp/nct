@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background" >
+    android:layout_height="match_parent" >
 
     <EditText
         android:id="@+id/edtxt_username"
@@ -10,25 +9,25 @@
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:background="@drawable/edittext_normal"
+        android:background="@drawable/bg_edittext"
         android:ems="10"
-        android:paddingLeft="8dp"
         android:hint="Tên tài khoản"
-        android:lines="1" />
+        android:lines="1"
+        android:paddingLeft="8dp" />
 
     <EditText
         android:id="@+id/edtxt_pass"
         android:layout_width="220dp"
         android:layout_height="40dp"
+        android:layout_below="@id/edtxt_username"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/edtxt_username"
-        android:background="@drawable/edittext_normal"
+        android:background="@drawable/bg_edittext"
         android:ems="10"
         android:hint="Password"
-        android:paddingLeft="8dp"
         android:inputType="textPassword"
-        android:lines="1" />
+        android:lines="1"
+        android:paddingLeft="8dp" />
 
     <CheckBox
         android:id="@+id/chbox_save"
@@ -46,13 +45,14 @@
         android:layout_alignLeft="@+id/chbox_save"
         android:layout_below="@+id/chbox_save"
         android:text="Đăng nhập ẩn" />
-    <Button 
+
+    <Button
         android:id="@+id/btn_googleLogin"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/chbox_hide"
-        android:background="@drawable/custom_button_google_login"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_button_google_login" />
 
 </RelativeLayout>

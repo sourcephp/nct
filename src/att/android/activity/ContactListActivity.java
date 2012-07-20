@@ -5,11 +5,11 @@ import com.example.multiapp.R;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class ChatActivity extends Activity {
+public class ContactListActivity extends Activity {
 @Override
 protected void onCreate(Bundle savedInstanceState) {
 	// TODO Auto-generated method stub
 	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_chat);
+	setContentView(R.layout.activity_contact_list);
 }
 }

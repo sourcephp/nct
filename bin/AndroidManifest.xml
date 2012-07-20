@@ -6,6 +6,7 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -22,6 +23,10 @@
         </activity>
         <activity android:name="att.android.activity.LoginActivity" >
         </activity>
+        <activity android:name="att.android.activity.ContactListActivity" >
+        </activity>
+        <activity android:name="att.android.activity.RssActivity"></activity>
+        <activity android:name="att.android.activity.WebViewActivity"></activity>
     </application>
 
 </manifest>
