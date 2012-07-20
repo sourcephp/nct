@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/background_login" >
 
     <EditText
         android:id="@+id/edtxt_username"
@@ -9,11 +10,13 @@
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:background="@drawable/bg_edittext"
+        android:background="@drawable/custom_editext"
         android:ems="10"
         android:hint="Tên tài khoản"
         android:lines="1"
-        android:paddingLeft="8dp" />
+        android:paddingLeft="10dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff" />
 
     <EditText
         android:id="@+id/edtxt_pass"
@@ -22,12 +25,14 @@
         android:layout_below="@id/edtxt_username"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:background="@drawable/bg_edittext"
+        android:background="@drawable/custom_editext"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:lines="1"
-        android:paddingLeft="8dp" />
+        android:paddingLeft="10dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff" />
 
     <CheckBox
         android:id="@+id/chbox_save"
@@ -36,7 +41,9 @@
         android:layout_alignLeft="@+id/edtxt_pass"
         android:layout_below="@+id/edtxt_pass"
         android:layout_marginTop="20dp"
-        android:text="Lưu tên và passwork" />
+        android:button="@drawable/custom_checkbox"
+        android:text="Lưu tên và passwork"
+        android:textColor="#ffffff" />
 
     <CheckBox
         android:id="@+id/chbox_hide"
@@ -44,15 +51,17 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/chbox_save"
         android:layout_below="@+id/chbox_save"
-        android:text="Đăng nhập ẩn" />
+        android:button="@drawable/custom_checkbox"
+        android:text="Đăng nhập ẩn"
+        android:textColor="#ffffff" />
 
     <Button
         android:id="@+id/btn_googleLogin"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_below="@id/chbox_hide"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_alignRight="@+id/edtxt_pass"
+        android:layout_below="@+id/chbox_hide"
+        android:layout_marginTop="50dp"
         android:background="@drawable/custom_button_google_login" />
 
 </RelativeLayout>
