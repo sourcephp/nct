@@ -28,7 +28,7 @@ public class RssAdapter extends ArrayAdapter<News> {
 		News news = this.getItem(position);
 
 		if (null == convertView) {
-			convertView = mInflater.inflate(R.layout.rowlayout, null);
+			convertView = mInflater.inflate(R.layout.rss_layout_listview, null);
 			mHolder = new ViewHolder();
 
 			mHolder.imgNews = (SmartImageView) convertView
