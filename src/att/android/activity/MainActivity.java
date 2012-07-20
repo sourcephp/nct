@@ -20,9 +20,21 @@ public class MainActivity extends TabActivity {
 		
 		TabSpec tabLogin = mTabHost.newTabSpec("tabLogin");
 		tabLogin.setIndicator("Login");
-		Intent intLogin = new Intent(this, LoginActivity.class);
-		tabLogin.setContent(intLogin);
+		Intent itLogin = new Intent(this, LoginActivity.class);
+		tabLogin.setContent(itLogin);
+		
+		TabSpec tabContactList = mTabHost.newTabSpec("tabContact");
+		tabContactList.setIndicator("Contact List");
+		Intent itContact = new Intent(this, ContactListActivity.class);
+		tabContactList.setContent(itContact);
+		
+		TabSpec tabReadRss = mTabHost.newTabSpec("tabReadRss");
+		tabReadRss.setIndicator("News");
+		Intent itReadRss = new Intent(this, RssActivity.class);
+		tabReadRss.setContent(itReadRss);
 		
 		mTabHost.addTab(tabLogin);
+		mTabHost.addTab(tabContactList);
+		mTabHost.addTab(tabReadRss);
 	}
 }
