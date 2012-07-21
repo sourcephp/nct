@@ -3,32 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-<ImageView 
-    android:id="@+id/imgView_avata"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:background="#876959"/>
-<TextView android:id="@+id/txtView_username"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_toRightOf="@id/imgView_avata"
-    android:paddingLeft="5dp"
-    android:paddingTop="5dp"
-    android:text="Username"/>
-<TextView android:id="@+id/txtView_status"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_toRightOf="@id/imgView_avata"
-    android:layout_below="@id/txtView_username"
-    android:paddingLeft="5dp"
-    android:paddingBottom="5dp"
-    android:text="Status"/>
 
-<ListView
-    android:id="@+id/listView_contactList"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/imgView_avata" >
-</ListView>
+   
+
+    <ImageView
+        android:id="@+id/imgView_avata"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#876959" />
+ <ImageView
+        android:id="@+id/imgView_account"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/imgView_avata"
+        android:background="@drawable/backgound_account" />
+    <TextView
+        android:id="@+id/txtView_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgView_avata"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:text="Username"
+        android:textColor="#ffffff" />
+
+    <TextView
+        android:id="@+id/txtView_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtView_username"
+        android:layout_toRightOf="@id/imgView_avata"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:text="Status"
+        android:textColor="#ffffff" />
+
+    <ListView
+        android:id="@+id/listView_contactList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgView_account" >
+    </ListView>
 
 </RelativeLayout>
