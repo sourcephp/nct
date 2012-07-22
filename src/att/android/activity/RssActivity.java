@@ -22,13 +22,14 @@ import att.android.adapter.RssAdapter;
 import att.android.bean.News;
 import att.android.network.ReadRssNetwork;
 
-public class RssActivity extends Activity implements OnItemClickListener, OnClickListener {
+public class RssActivity extends Activity implements OnItemClickListener,
+		OnClickListener {
 	private ListView mListView;
 	private RssAdapter mNewsAdapter;
 	private ArrayList<News> mNews;
 	private TextView txtViewRssWeb;
 	private String strUrl;
-	private final CharSequence[] items = {"Tinhte.vn", "VNExpress.net"};
+	private final CharSequence[] items = { "Tinhte.vn", "VNExpress.net" };
 	private Button btnChangRss;
 	private Handler mHandler = new Handler() {
 		@Override
@@ -83,11 +84,11 @@ public class RssActivity extends Activity implements OnItemClickListener, OnClic
 	public void onClick(View v) {
 		AlertDialog.Builder builder = new Builder(this);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
-			
+
 			public void onClick(DialogInterface dialog, int which) {
-				if(items[which].equals("Tinhte.vn")){
+				if (items[which].equals("Tinhte.vn")) {
 					RssActivity.this.strUrl = "http://www.tinhte.vn/rss/";
-				}else if(items[which].equals("VNExpress.net")){
+				} else if (items[which].equals("VNExpress.net")) {
 					RssActivity.this.strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
 				}
 				txtViewRssWeb.setText(items[which]);
@@ -95,16 +96,7 @@ public class RssActivity extends Activity implements OnItemClickListener, OnClic
 				onResume();
 			}
 		});
-//		builder.setMessage("đã chuyển sang VNExpress");
-//		builder.setNegativeButton("Đồng ý", new DialogInterface.OnClickListener() {
-//			
-//			public void onClick(DialogInterface dialog, int which) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
 		builder.show();
-//		strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
-		
+
 	}
 }
