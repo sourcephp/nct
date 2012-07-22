@@ -35,11 +35,13 @@ public class ChatJointActivity extends TabActivity implements OnClickListener {
 		chatJointTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
 		arlTabspace = new ArrayList<TabHost.TabSpec>();
 	}
-@Override
-protected void onResume() {
-	super.onResume();
-	newChatTab("test");
-}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		newChatTab("test");
+	}
+
 	// method on click bat su kien khi click chuot vào 3 button o tren
 	// sau do goi den activity MainActivity roi truyen cho nó gia tri kem theo
 	// tuong ung voi cac nut là 1, 2, 3

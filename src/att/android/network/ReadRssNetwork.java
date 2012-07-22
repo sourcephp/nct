@@ -17,9 +17,9 @@ public class ReadRssNetwork implements Runnable {
 	private String mUrl;
 	private Handler mHandler;
 	private InputStream mIs;
-	public ReadRssNetwork(Handler mHandler) {
+	public ReadRssNetwork(Handler mHandler, String url) {
 		this.mHandler = mHandler;
-		this.mUrl = "http://www.tinhte.vn/rss/";
+		this.mUrl = url;
 //		this.mUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
 //		this.mUrl = "http://news.google.com.vn/news?pz=1&cf=all&ned=vi_vn&hl=vi&output=rss";
 	}
