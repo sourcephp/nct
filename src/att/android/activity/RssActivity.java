@@ -20,7 +20,6 @@ public class RssActivity extends Activity implements OnItemClickListener {
 	private ListView mListView;
 	private RssAdapter mNewsAdapter;
 	private ArrayList<News> mNews;
-	public static Bitmap bitmapSample;
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
