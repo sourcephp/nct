@@ -28,6 +28,7 @@ public class RssActivity extends Activity implements OnItemClickListener, OnClic
 	private ArrayList<News> mNews;
 	private TextView txtViewRssWeb;
 	private String strUrl;
+	private final CharSequence[] items = {"Tinhte.vn", "VNExpress.net"};
 	private Button btnChangRss;
 	private Handler mHandler = new Handler() {
 		@Override
@@ -81,18 +82,29 @@ public class RssActivity extends Activity implements OnItemClickListener, OnClic
 
 	public void onClick(View v) {
 		AlertDialog.Builder builder = new Builder(this);
-		builder.setMessage("đã chuyển sang VNExpress");
-		builder.setNegativeButton("Đồng ý", new DialogInterface.OnClickListener() {
+		builder.setItems(items, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
+				if(items[which].equals("Tinhte.vn")){
+					RssActivity.this.strUrl = "http://www.tinhte.vn/rss/";
+				}else if(items[which].equals("VNExpress.net")){
+					RssActivity.this.strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
+				}
+				txtViewRssWeb.setText(items[which]);
+				mNewsAdapter.clear();
+				onResume();
 			}
 		});
+//		builder.setMessage("đã chuyển sang VNExpress");
+//		builder.setNegativeButton("Đồng ý", new DialogInterface.OnClickListener() {
+//			
+//			public void onClick(DialogInterface dialog, int which) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 		builder.show();
-		strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
-		txtViewRssWeb.setText(strUrl);
-		mNewsAdapter.clear();
-		onResume();
+//		strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
+		
 	}
 }
