@@ -4,46 +4,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-   
-
-    <ImageView
-        android:id="@+id/imgView_avata"
+    <Button
+        android:id="@+id/btn_search"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="#876959" />
- <ImageView
-        android:id="@+id/imgView_account"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/imgView_avata"
-        android:background="@drawable/backgound_account" />
-    <TextView
-        android:id="@+id/txtView_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imgView_avata"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:text="Username"
-        android:textColor="#ffffff" />
+        android:text="S" />
 
-    <TextView
-        android:id="@+id/txtView_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtView_username"
-        android:layout_toRightOf="@id/imgView_avata"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:text="Status"
-        android:textColor="#ffffff" />
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="+" />
 
     <ListView
         android:id="@+id/listView_contactList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imgView_account" >
+        android:layout_above="@id/btn_search" >
     </ListView>
+
+    <EditText
+        android:id="@+id/edtxt_stt_search"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/btn_add"
+        android:layout_toRightOf="@id/btn_search"
+        android:background="@drawable/custom_editext"
+        android:hint="Status"
+        android:lines="1"
+        android:paddingLeft="11sp"
+        android:textColorHint="#ffffff" />
 
 </RelativeLayout>
