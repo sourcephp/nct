@@ -60,7 +60,7 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		btnChangRss = (Button) this.findViewById(R.id.btn_change_rss);
 		btnChangRss.setOnClickListener(this);
 		txtViewRssWeb = (TextView) this.findViewById(R.id.txtview_rss_web);
-		txtViewRssWeb.setText(strUrl);
+		txtViewRssWeb.setText(items[0]);
 	}
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
@@ -72,7 +72,6 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		mIntent.putExtra("ITEM", strUrl);
 		startActivity(mIntent);
 	}
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -97,6 +96,5 @@ public class RssActivity extends Activity implements OnItemClickListener,
 			}
 		});
 		builder.show();
-
 	}
 }

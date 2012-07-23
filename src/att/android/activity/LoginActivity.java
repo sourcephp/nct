@@ -5,6 +5,7 @@ import com.example.multiapp.R;
 import android.R.bool;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +37,7 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 		chBoxSave = (CheckBox) findViewById(R.id.chbox_save);
 		chBoxHide = (CheckBox) findViewById(R.id.chbox_hide);
 		btnLogin = (Button) findViewById(R.id.btn_googleLogin);
-		
+
 		btnLogin.setOnClickListener(this);
 
 	}
@@ -46,11 +47,13 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 		String strPass = edtxtPass.getText().toString();
 		boolean bSave = chBoxSave.hasSelection();
 		boolean bHide = chBoxHide.hasSelection();
-		
-		if("".equals(strUserName)||"".equals(strPass)){
-			Toast.makeText(this, "You haven't entered UserName or Password", Toast.LENGTH_SHORT).show();
-		}else{
-			new LoginNetwork(strUserName,strPass,bSave,bHide).start(); 
+
+		if ("".equals(strUserName) || "".equals(strPass)) {
+			Toast.makeText(this, "You haven't entered UserName or Password",
+					Toast.LENGTH_SHORT).show();
+		} else {
+			new LoginNetwork(strUserName, strPass, bSave, bHide).start();
+			switchTabInActivity(1);
 		}
 	}
 
@@ -58,4 +61,9 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 
 	}
 
+	private void switchTabInActivity(int indexTabToSwitchTo) {
+		MainActivity ParentActivity;
+		ParentActivity =  (MainActivity) this.getParent();
+		ParentActivity.switchTabSpecial(indexTabToSwitchTo);
+	}
 }
