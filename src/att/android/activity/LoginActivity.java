@@ -52,7 +52,7 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 			Toast.makeText(this, "You haven't entered UserName or Password",
 					Toast.LENGTH_SHORT).show();
 		} else {
-			new LoginNetwork(strUserName, strPass, bSave, bHide).start();
+//			new LoginNetwork(strUserName, strPass, bSave, bHide).start();
 			switchTabInActivity(1);
 		}
 	}

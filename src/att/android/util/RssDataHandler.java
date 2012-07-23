@@ -2,6 +2,7 @@ package att.android.util;
 
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -131,7 +132,7 @@ public class RssDataHandler extends DefaultHandler {
 			}
 			arlStrInfo.clear();
 			
-			news.setmDes("\t" + strTemp.replace("&quot;", "\""));
+			news.setmDes(""+StringEscapeUtils.unescapeHtml4(strTemp));
 		} else if (localName.equals("link") && parsingItem) {
 			news.setmUrl(builder.toString());
 		}
@@ -153,4 +154,5 @@ public class RssDataHandler extends DefaultHandler {
 		super.characters(ch, start, length);
 		builder.append(ch, start, length);
 	}
+	
 }
