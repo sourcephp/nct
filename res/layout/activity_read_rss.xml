@@ -30,9 +30,10 @@
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/btn_change_rss"
         android:gravity="center_horizontal"
-        android:paddingBottom="10dp"
+        android:paddingBottom="8dp"
         android:text="ten trang web"
-        android:textColor="#000000"
+        android:textColor="#ffffff"
+        android:background="@drawable/text_background"
         android:textSize="20px"
         android:textStyle="bold" />
 

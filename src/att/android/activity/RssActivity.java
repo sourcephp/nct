@@ -29,7 +29,7 @@ public class RssActivity extends Activity implements OnItemClickListener,
 	private ArrayList<News> mNews;
 	private TextView txtViewRssWeb;
 	private String strUrl;
-	private final CharSequence[] items = { "Tinhte.vn", "VNExpress.net" };
+	private final CharSequence[] items = { "Tinhte.vn", "VNExpress.net", "Gamethu.vnexpress.net" };
 	private Button btnChangRss;
 	private Handler mHandler = new Handler() {
 		@Override
@@ -82,14 +82,18 @@ public class RssActivity extends Activity implements OnItemClickListener,
 
 	public void onClick(View v) {
 		AlertDialog.Builder builder = new Builder(this);
+		builder.setTitle("Chọn nguông tin");
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
-				if (items[which].equals("Tinhte.vn")) {
+				if (items[which].equals("Tinhte.vn")) { 
 					RssActivity.this.strUrl = "http://www.tinhte.vn/rss/";
 				} else if (items[which].equals("VNExpress.net")) {
 					RssActivity.this.strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
+				}else if(items[which].equals("Gamethu.vnexpress.net")){
+					RssActivity.this.strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
 				}
+				
 				txtViewRssWeb.setText(items[which]);
 				mNewsAdapter.clear();
 				onResume();
