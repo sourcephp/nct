@@ -54,4 +54,7 @@ public class MainActivity extends TabActivity {
 		
 		mTabHost.getTabWidget().getChildAt(mTabHost.getCurrentTab()).setBackgroundDrawable(getResources().getDrawable(R.drawable.tab_focus));
 	}
+	public void switchTabSpecial(int tab){
+        mTabHost.setCurrentTab(tab);
+}
 }

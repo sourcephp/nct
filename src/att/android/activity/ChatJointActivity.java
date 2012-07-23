@@ -42,17 +42,17 @@ public class ChatJointActivity extends TabActivity implements OnClickListener {
 		newChatTab("test");
 	}
 
-	// method on click bat su kien khi click chuot vào 3 button o tren
-	// sau do goi den activity MainActivity roi truyen cho nó gia tri kem theo
-	// tuong ung voi cac nut là 1, 2, 3
+	// method on click bat su kien khi click chuot vï¿½o 3 button o tren
+	// sau do goi den activity MainActivity roi truyen cho nï¿½ gia tri kem theo
+	// tuong ung voi cac nut lï¿½ 1, 2, 3
 	public void onClick(View v) {
 		Intent i = new Intent(ChatJointActivity.this, MainActivity.class);
 		if (v == btnMoveLogin) {
-			i.putExtra("TabNum", 1);
+			switchTabInActivity(0);
 		} else if (v == btnMoveContact) {
-			i.putExtra("TabNum", 2);
+			switchTabInActivity(1);
 		} else if (v == btnMoveRss) {
-			i.putExtra("TabNum", 3);
+			switchTabInActivity(2);
 		}
 		startActivity(i);
 	}
@@ -66,5 +66,8 @@ public class ChatJointActivity extends TabActivity implements OnClickListener {
 		chatJointTabHost.addTab(tabspec);
 
 		arlTabspace.add(tabspec);
+	}
+	private void switchTabInActivity(int indexTabToSwitchTo) {
+		
 	}
 }
