@@ -47,7 +47,7 @@ public class MainActivity extends TabActivity {
 		mTabHost.addTab(tabLogin);
 		mTabHost.addTab(tabContactList);
 		mTabHost.addTab(tabReadRss);
-		mTabHost.addTab(tabWebView);
+//		mTabHost.addTab(tabWebView);
 		
 //		tab = getTabHost().getTabWidget().getChildTabViewAt(3);
 		setBackgroundTab(mTabHost);
