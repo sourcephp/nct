@@ -1,20 +1,16 @@
 package att.android.activity;
 
-import com.example.multiapp.R;
-
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 
+import com.example.multiapp.R;
+
 public class MainActivity extends TabActivity {
 	private TabHost mTabHost;
-	private TabSpec tabReadRss;
-	private View tab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +29,19 @@ public class MainActivity extends TabActivity {
 		Intent itContact = new Intent(this, ContactListActivity.class);
 		tabContactList.setContent(itContact);
 
-		tabReadRss = mTabHost.newTabSpec("tabReadRss");
+		TabSpec tabReadRss = mTabHost.newTabSpec("tabReadRss");
 		tabReadRss.setIndicator("News");
 		Intent itReadRss = new Intent(this, RssActivity.class);
 		tabReadRss.setContent(itReadRss);
-		
+
+		TabSpec tabChatJoint = mTabHost.newTabSpec("chat");
+		tabChatJoint.setIndicator("Chat");
+		Intent itChatJoint = new Intent(this, ChatJointActivity.class);
+		tabChatJoint.setContent(itChatJoint);
+
 		mTabHost.addTab(tabLogin);
 		mTabHost.addTab(tabContactList);
+		mTabHost.addTab(tabChatJoint);
 		mTabHost.addTab(tabReadRss);
 
 		setBackgroundTab(mTabHost);
@@ -57,8 +59,7 @@ public class MainActivity extends TabActivity {
 					.getChildAt(i)
 					.setBackgroundDrawable(
 							getResources()
-									.getDrawable(R.drawable.tab_not_focus)); // unselected
-																				// tab
+									.getDrawable(R.drawable.tab_not_focus));
 		}
 
 		mTabHost.getTabWidget()
