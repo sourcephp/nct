@@ -20,22 +20,22 @@ public class MainActivity extends TabActivity {
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 
 		TabSpec tabLogin = mTabHost.newTabSpec("tabLogin");
-		tabLogin.setIndicator("Login");
+		tabLogin.setIndicator("", getResources().getDrawable(R.drawable.custom_login_tab));
 		Intent itLogin = new Intent(this, LoginActivity.class);
 		tabLogin.setContent(itLogin);
 
 		TabSpec tabContactList = mTabHost.newTabSpec("tabContact");
-		tabContactList.setIndicator("Contact List");
+		tabContactList.setIndicator("", getResources().getDrawable(R.drawable.custom_contact_tab));
 		Intent itContact = new Intent(this, ContactListActivity.class);
 		tabContactList.setContent(itContact);
 
 		TabSpec tabReadRss = mTabHost.newTabSpec("tabReadRss");
-		tabReadRss.setIndicator("News");
+		tabReadRss.setIndicator("", getResources().getDrawable(R.drawable.custom_rss_tab));
 		Intent itReadRss = new Intent(this, RssActivity.class);
 		tabReadRss.setContent(itReadRss);
 
 		TabSpec tabChatJoint = mTabHost.newTabSpec("chat");
-		tabChatJoint.setIndicator("Chat");
+		tabChatJoint.setIndicator("", getResources().getDrawable(R.drawable.custom_chat_tab));
 		Intent itChatJoint = new Intent(this, ChatJointActivity.class);
 		tabChatJoint.setContent(itChatJoint);
 
@@ -54,18 +54,18 @@ public class MainActivity extends TabActivity {
 	}
 
 	private void setBackgroundTab(TabHost mTabHost) {
-		for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
-			mTabHost.getTabWidget()
-					.getChildAt(i)
-					.setBackgroundDrawable(
-							getResources()
-									.getDrawable(R.drawable.tab_not_focus));
-		}
-
-		mTabHost.getTabWidget()
-				.getChildAt(mTabHost.getCurrentTab())
-				.setBackgroundDrawable(
-						getResources().getDrawable(R.drawable.tab_focus));
+//		for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
+//			mTabHost.getTabWidget()
+//					.getChildAt(i)
+//					.setBackgroundDrawable(
+//							getResources()
+//									.getDrawable(R.drawable.tab_not_focus));
+//		}
+//
+//		mTabHost.getTabWidget()
+//				.getChildAt(mTabHost.getCurrentTab())
+//				.setBackgroundDrawable(
+//						getResources().getDrawable(R.drawable.tab_focus));
 	}
 
 	public void switchTabSpecial(int tab) {
