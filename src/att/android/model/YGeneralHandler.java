@@ -19,5 +19,5 @@ import android.os.Vibrator;
 import att.android.model.Logger;
 
 public class YGeneralHandler extends SessionAdapter {
-
+	//TODO: Slim will write some method later
 }
