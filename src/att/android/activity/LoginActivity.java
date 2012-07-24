@@ -80,7 +80,7 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 				Log.d(TAG, "IO error");
 				e.printStackTrace();
 			}
-			Log.i("Login", "finish");
+			Log.i("TAG", "Login finish");
 			Toast.makeText(this, "Login Successful",
 					Toast.LENGTH_SHORT).show();
 			switchTabInActivity(1);
