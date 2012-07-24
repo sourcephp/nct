@@ -2,15 +2,10 @@ package att.android.activity;
 
 import java.util.ArrayList;
 
-import javax.security.auth.PrivateCredentialPermission;
-
-import com.example.multiapp.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +21,8 @@ import android.widget.TextView;
 import att.android.adapter.RssAdapter;
 import att.android.bean.News;
 import att.android.network.ReadRssNetwork;
+
+import com.example.multiapp.R;
 
 public class RssActivity extends Activity implements OnItemClickListener,
 		OnClickListener {
