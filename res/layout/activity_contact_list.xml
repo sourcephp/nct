@@ -38,6 +38,7 @@
         android:hint="Status"
         android:lines="1"
         android:paddingLeft="11sp"
+        android:textColor="#ffffff"
         android:textColorHint="#ffffff" />
 
 </RelativeLayout>
