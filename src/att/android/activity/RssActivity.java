@@ -1,6 +1,9 @@
 package att.android.activity;
 
 import java.util.ArrayList;
+
+import javax.security.auth.PrivateCredentialPermission;
+
 import com.example.multiapp.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +16,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -29,7 +34,10 @@ public class RssActivity extends Activity implements OnItemClickListener,
 	private ArrayList<News> mNews;
 	private TextView txtViewRssWeb;
 	private String strUrl;
-	private final CharSequence[] items = { "Tinhte.vn", "VNExpress.net", "Gamethu.vnexpress.net", "24h.com.vn" };
+	private WebView mWebView;
+	private Button btnBack;
+	private final CharSequence[] items = { "Tinhte.vn", "VNExpress.net",
+			"Gamethu.vnexpress.net", "24h.com.vn" };
 	private Button btnChangRss;
 	private Handler mHandler = new Handler() {
 		@Override
@@ -56,11 +64,17 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		mListView = (ListView) findViewById(R.id.listNews);
 		mListView.setOnItemClickListener(this);
 		mListView.setAdapter(mNewsAdapter);
+		mWebView = (WebView) this.findViewById(R.id.webView);
+		mWebView.setVisibility(View.GONE);
 		strUrl = "http://www.tinhte.vn/rss/";
+		btnBack = (Button) this.findViewById(R.id.btn_webBack);
+		btnBack.setOnClickListener(this);
+		btnBack.setVisibility(View.INVISIBLE);
 		btnChangRss = (Button) this.findViewById(R.id.btn_change_rss);
 		btnChangRss.setOnClickListener(this);
 		txtViewRssWeb = (TextView) this.findViewById(R.id.txtview_rss_web);
 		txtViewRssWeb.setText(items[0]);
+
 	}
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
@@ -68,10 +82,19 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		mNewsAdapter.getItem(position);
 		News item = mNewsAdapter.getItem(position);
 		String strUrl = item.getmUrl();
-		Intent mIntent = new Intent(this, WebViewActivity.class);
-		mIntent.putExtra("ITEM", strUrl);
-		startActivity(mIntent);
+		mWebView.setVisibility(View.VISIBLE);
+		btnBack.setVisibility(View.VISIBLE);
+		mWebView.getSettings().setJavaScriptEnabled(true);
+		mWebView.setWebViewClient(new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				view.loadUrl(url);
+				return true;
+			}
+		});
+		mWebView.loadUrl(strUrl);
 	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -81,26 +104,31 @@ public class RssActivity extends Activity implements OnItemClickListener,
 	}
 
 	public void onClick(View v) {
-		AlertDialog.Builder builder = new Builder(this);
-		builder.setTitle("Chọn nguông tin");
-		builder.setItems(items, new DialogInterface.OnClickListener() {
+		if (v == btnChangRss) {
+			AlertDialog.Builder builder = new Builder(this);
+			builder.setTitle("Chọn nguồn tin");
+			builder.setItems(items, new DialogInterface.OnClickListener() {
 
-			public void onClick(DialogInterface dialog, int which) {
-				if (items[which].equals("Tinhte.vn")) { 
-					RssActivity.this.strUrl = "http://www.tinhte.vn/rss/";
-				} else if (items[which].equals("VNExpress.net")) {
-					RssActivity.this.strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
-				}else if(items[which].equals("Gamethu.vnexpress.net")){
-					RssActivity.this.strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
-				}else if(items[which].equals("24h.com.vn")){
-					RssActivity.this.strUrl = "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
+				public void onClick(DialogInterface dialog, int which) {
+					if (items[which].equals("Tinhte.vn")) {
+						RssActivity.this.strUrl = "http://www.tinhte.vn/rss/";
+					} else if (items[which].equals("VNExpress.net")) {
+						RssActivity.this.strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
+					} else if (items[which].equals("Gamethu.vnexpress.net")) {
+						RssActivity.this.strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
+					} else if (items[which].equals("24h.com.vn")) {
+						RssActivity.this.strUrl = "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
+					}
+
+					txtViewRssWeb.setText(items[which]);
+					mNewsAdapter.clear();
+					onResume();
 				}
-				
-				txtViewRssWeb.setText(items[which]);
-				mNewsAdapter.clear();
-				onResume();
-			}
-		});
-		builder.show();
+			});
+			builder.show();
+		} else if (v == btnBack) {
+			mWebView.setVisibility(View.INVISIBLE);
+			btnBack.setVisibility(View.INVISIBLE);
+		}
 	}
 }

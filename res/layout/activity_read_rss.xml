@@ -29,12 +29,28 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/btn_change_rss"
+        android:background="@drawable/text_background"
         android:gravity="center_horizontal"
         android:paddingBottom="8dp"
         android:text="ten trang web"
         android:textColor="#ffffff"
-        android:background="@drawable/text_background"
         android:textSize="20px"
         android:textStyle="bold" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </WebView>
+
+    <Button
+        android:id="@+id/btn_webBack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:adjustViewBounds="true"
+        android:background="@drawable/back_icon"
+        android:scaleType="centerInside" />
 
 </RelativeLayout>
