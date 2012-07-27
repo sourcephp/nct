@@ -42,20 +42,20 @@ public class ChatJointFragment extends Fragment{
 		arlTabspace = new ArrayList<TabHost.TabSpec>();
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		newChatTab("test");
-	}
-
-	private void newChatTab(String nameFriend) {
-		TabSpec tabspec = chatJointTabHost.newTabSpec(nameFriend);
-		tabspec.setIndicator(nameFriend);
-		Intent i = new Intent(this.getActivity(), ChatTabFragment.class);
-		tabspec.setContent(i);
-
-		chatJointTabHost.addTab(tabspec);
-
-		arlTabspace.add(tabspec);
-	}
+//	@Override
+//	public void onResume() {
+//		super.onResume();
+//		newChatTab("test");
+//	}
+//
+//	private void newChatTab(String nameFriend) {
+//		TabSpec tabspec = chatJointTabHost.newTabSpec(nameFriend);
+//		tabspec.setIndicator(nameFriend);
+//		Intent i = new Intent(this.getActivity(), ChatTabFragment.class);
+//		tabspec.setContent(i);
+//
+//		chatJointTabHost.addTab(tabspec);
+//
+//		arlTabspace.add(tabspec);
+//	}
 }
