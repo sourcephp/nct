@@ -4,14 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/listNews"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="#f8f8f8" />
-
     <Button
         android:id="@+id/btn_change_rss"
         android:layout_width="50dp"
@@ -19,7 +11,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:adjustViewBounds="true"
-        android:background="@drawable/btn_options"
+        android:background="@drawable/custom_btn_options"
         android:scaleType="centerInside" />
 
     <TextView
@@ -29,13 +21,21 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/btn_change_rss"
-        android:background="@drawable/text_background"
         android:gravity="center_horizontal"
         android:paddingBottom="8dp"
         android:text="ten trang web"
-        android:textColor="#ffffff"
+        android:textColor="#F7D358"
         android:textSize="20px"
         android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/listNews"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/txtview_rss_web"
+        android:background="@drawable/custome_listview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 
     <WebView
         android:id="@+id/webView"

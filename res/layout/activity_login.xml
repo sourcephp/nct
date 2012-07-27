@@ -72,6 +72,7 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/btn_googleLogin"
         android:background="@drawable/logo_team" />
 
 </RelativeLayout>

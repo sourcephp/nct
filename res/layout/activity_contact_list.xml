@@ -10,7 +10,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="S" />
+        android:background="@drawable/custom_btn_search" />
 
     <Button
         android:id="@+id/btn_add"
@@ -18,7 +18,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="+" />
+        android:background="@drawable/custom_btn_options" />
 
     <ListView
         android:id="@+id/listView_contactList"
