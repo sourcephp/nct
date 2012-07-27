@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="15" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -21,14 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="att.android.activity.LoginActivity" >
+        <activity android:name="att.android.activity.LoginFragment" >
         </activity>
-        <activity android:name="att.android.activity.ContactListActivity" >
+        <activity android:name="att.android.activity.ContactListFragment" >
         </activity>
-        <activity android:name="att.android.activity.RssActivity"></activity>
+        <activity android:name="att.android.activity.RssFragment"></activity>
         <activity android:name="att.android.activity.WebViewActivity"></activity>
-        <activity android:name="att.android.activity.ChatJointActivity"></activity>
-        <activity android:name="att.android.activity.ChatTabActivity"></activity>
+        <activity android:name="att.android.activity.ChatJointFragment"></activity>
+        <activity android:name="att.android.activity.ChatTabFragment"></activity>
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@ import com.example.multiapp.R;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class ChatTabActivity extends Activity {
+public class ChatTabFragment extends Activity {
 @Override
 protected void onCreate(Bundle savedInstanceState) {
 	// TODO Auto-generated method stub

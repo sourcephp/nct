@@ -1,34 +1,18 @@
- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="@drawable/background" >
+<com.astuetz.viewpager.extensions.FixedTabsView
+        android:id="@+id/fixed_tabs"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/background_tab" />
 
-    <TabHost
-        android:id="@android:id/tabhost"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:adjustViewBounds="true"
-        android:background="@drawable/background"
-        android:scaleType="centerInside" >
+        android:layout_below="@+id/fixed_tabs" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical" >
-
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/background_tab" />
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
-
-</LinearLayout>
+</RelativeLayout>
