@@ -52,6 +52,8 @@ public class RssFragment extends Fragment implements OnItemClickListener,
 			mListView.setOnItemClickListener(RssFragment.this);
 		}
 	};
+	private ReadRssNetwork dataThread;
+	private Thread thread;
 
 	/** Called when the activity is first created. */
 	public static Fragment newInstance(Context context) {
@@ -112,8 +114,8 @@ public class RssFragment extends Fragment implements OnItemClickListener,
 	@Override
 	public void onResume() {
 		super.onResume();
-		ReadRssNetwork dataThread = new ReadRssNetwork(mHandler, strUrl);
-		Thread thread = new Thread(dataThread);
+		dataThread = new ReadRssNetwork(mHandler, strUrl);
+		thread = new Thread(dataThread);
 		thread.start();
 	}
 
