@@ -32,7 +32,7 @@
         android:id="@+id/listNews"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@id/txtview_rss_web"
+        android:layout_above="@id/btn_change_rss"
         android:background="@drawable/custome_listview"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
