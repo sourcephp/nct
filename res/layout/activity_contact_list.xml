@@ -22,7 +22,7 @@
             android:id="@+id/btn_login"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/custom_login_tab" />
+            android:background="@drawable/custom_btn_login" />
 
         <EditText
             android:id="@+id/edtxt_stt_search"
