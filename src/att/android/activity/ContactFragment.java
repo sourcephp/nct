@@ -64,12 +64,12 @@ public class ContactFragment extends Fragment implements OnItemClickListener {
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-		mContactAdapter.getItem(position);
-		Account item = mContactAdapter.getItem(position);
-		String strUserName = item.getStrName();
-		Intent i = new Intent(this.getActivity(), ChatJointFragment.class);
-		i.putExtra("USERNAM", strUserName);
-		startActivity(i);
+//		mContactAdapter.getItem(position);
+//		Account item = mContactAdapter.getItem(position);
+//		String strUserName = item.getStrName();
+//		Intent i = new Intent(this.getActivity(), ChatJointFragment.class);
+//		i.putExtra("USERNAM", strUserName);
+//		startActivity(i);
 	}
 
 	@Override
