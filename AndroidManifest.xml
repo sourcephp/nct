@@ -22,14 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="att.android.activity.LoginFragment" >
-        </activity>
-        <activity android:name="att.android.activity.ContactListFragment" >
-        </activity>
-        <activity android:name="att.android.activity.RssFragment"></activity>
-        <activity android:name="att.android.activity.WebViewActivity"></activity>
-        <activity android:name="att.android.activity.ChatJointFragment"></activity>
-        <activity android:name="att.android.activity.ChatTabFragment"></activity>
     </application>
 
 </manifest>
