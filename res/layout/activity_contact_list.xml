@@ -1,44 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/btn_search"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/custom_btn_search" />
-
-    <Button
-        android:id="@+id/btn_add"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/custom_btn_options" />
-
     <ListView
         android:id="@+id/listView_contactList"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btn_search" >
+        android:layout_height="match_parent"
+        android:layout_weight="2.73" >
+
     </ListView>
 
-    <EditText
-        android:id="@+id/edtxt_stt_search"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/btn_add"
-        android:layout_toRightOf="@id/btn_search"
-        android:background="@drawable/custom_editext"
-        android:hint="Status"
-        android:lines="1"
-        android:paddingLeft="11sp"
-        android:textColor="#ffffff"
-        android:textColorHint="#ffffff" />
+        android:background="@drawable/background_tab"
+        android:orientation="horizontal" >
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_login_tab" />
+
+        <EditText
+            android:id="@+id/edtxt_stt_search"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_editext"
+            android:hint="@string/status"
+            android:lines="1"
+            android:paddingLeft="11sp"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff" />
+
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_btn_search" />
+
+        <Button
+            android:id="@+id/btn_options"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_btn_options" />
+    </LinearLayout>
+
+</LinearLayout>
