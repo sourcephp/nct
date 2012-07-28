@@ -7,10 +7,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import att.android.activity.ChatJointFragment;
 import att.android.activity.ContactFragment;
 import att.android.activity.LoginFragment;
+import att.android.activity.MusicFragment;
 import att.android.activity.RssFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
-private Context mContext;
+	private Context mContext;
 
 	public ViewPagerAdapter(Context mContext, FragmentManager fm) {
 		super(fm);
@@ -20,19 +21,22 @@ private Context mContext;
 	@Override
 	public Fragment getItem(int position) {
 		Fragment f = new Fragment();
-		switch(position){
+		switch (position) {
+
 		case 0:
-			f = LoginFragment.newInstance(mContext);
-			break;
-		case 1:
 			f = ContactFragment.newInstance(mContext);
 			break;
-		case 2:
-			f = ChatJointFragment.newInstance(mContext);
-			break;
-		case 3:
+		case 1:
 			f = RssFragment.newInstance(mContext);
 			break;
+
+		case 2:
+			f = MusicFragment.newInstance(mContext);
+			break;
+		case 3:
+			f = ChatJointFragment.newInstance(mContext);
+			break;
+
 		}
 		return f;
 	}

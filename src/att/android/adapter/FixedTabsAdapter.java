@@ -12,7 +12,7 @@ public class FixedTabsAdapter implements TabsAdapter {
 
 	private Activity mContext;
 
-	private int[] iconTab = {R.drawable.custom_login_tab,R.drawable.custom_contact_tab,R.drawable.custom_chat_tab, R.drawable.custom_rss_tab};
+	private int[] iconTab = {R.drawable.custom_contact_tab, R.drawable.custom_rss_tab,R.drawable.custom_tab_music,R.drawable.custom_chat_tab};
 
 	public FixedTabsAdapter(Activity ctx) {
 		this.mContext = ctx;
