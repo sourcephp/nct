@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="8"
         android:targetSdkVersion="15" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="att.android.activity.MainActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,14 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="att.android.activity.LoginFragment" >
-        </activity>
-        <activity android:name="att.android.activity.ContactListFragment" >
-        </activity>
-        <activity android:name="att.android.activity.RssFragment"></activity>
-        <activity android:name="att.android.activity.WebViewActivity"></activity>
-        <activity android:name="att.android.activity.ChatJointFragment"></activity>
-        <activity android:name="att.android.activity.ChatTabFragment"></activity>
+        <activity android:name="att.android.activity.LoginActivity"></activity>
     </application>
 
 </manifest>
