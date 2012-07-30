@@ -7,14 +7,11 @@ import org.openymsg.network.FailedLoginException;
 import org.openymsg.network.LoginRefusedException;
 import org.openymsg.network.Session;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -24,7 +21,7 @@ import att.android.model.YGeneralHandler;
 
 import com.example.multiapp.R;
 
-public class LoginFragment extends Fragment implements OnItemClickListener,
+public class LoginActivity extends Activity implements OnItemClickListener,
 		OnClickListener {
 	private static final String TAG = "LoginActivity";
 	private EditText edtxtUserName;
@@ -34,33 +31,18 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 	private Button btnLogin;
 	public YGeneralHandler sessionListener;
 
-	public static Fragment newInstance(Context context) {
-		LoginFragment f = new LoginFragment();
-
-		return f;
-	}
-
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.activity_login,
-				null);
-		return root;
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-
-		edtxtUserName = (EditText) getView().findViewById(R.id.edtxt_username);
-		edtxtPass = (EditText) getView().findViewById(R.id.edtxt_pass);
-		chBoxSave = (CheckBox) getView().findViewById(R.id.chbox_save);
-		chBoxHide = (CheckBox) getView().findViewById(R.id.chbox_hide);
-		btnLogin = (Button) getView().findViewById(R.id.btn_googleLogin);
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		edtxtUserName = (EditText) this.findViewById(R.id.edtxt_username);
+		edtxtPass = (EditText) this.findViewById(R.id.edtxt_pass);
+		chBoxSave = (CheckBox) this.findViewById(R.id.chbox_save);
+		chBoxHide = (CheckBox) this.findViewById(R.id.chbox_hide);
+		btnLogin = (Button) this.findViewById(R.id.btn_googleLogin);
 
 		btnLogin.setOnClickListener(this);
-
 	}
 
 	public void onClick(View v) {

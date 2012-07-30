@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import att.android.activity.ChatJointFragment;
 import att.android.activity.ContactFragment;
-import att.android.activity.LoginFragment;
+import att.android.activity.LoginActivity;
 import att.android.activity.MusicFragment;
 import att.android.activity.RssFragment;
 
