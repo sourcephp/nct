@@ -6,7 +6,7 @@
 <com.astuetz.viewpager.extensions.FixedTabsView
         android:id="@+id/fixed_tabs"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:background="@drawable/background_tab" />
 
     <android.support.v4.view.ViewPager

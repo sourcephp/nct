@@ -5,16 +5,16 @@
 
     <Button
         android:id="@+id/btn_backward"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="@drawable/media_backward" />
 
     <Button
         android:id="@+id/btn_forward"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/media_forward" />
@@ -26,13 +26,14 @@
         android:layout_toLeftOf="@id/btn_forward"
         android:layout_toRightOf="@id/btn_backward"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="2dp"
         android:max="200"
         android:maxHeight="3dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:progress="100"
-        android:progressDrawable="@drawable/custom_seekbar" />
+        android:progressDrawable="@drawable/custom_seekbar"
+        android:thumb="@drawable/ic_seekbar_move" />
 
     <LinearLayout
         android:id="@+id/layout_control"
