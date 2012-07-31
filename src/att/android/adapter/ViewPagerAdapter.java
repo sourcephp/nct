@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import att.android.activity.ChatJointFragment;
+import att.android.activity.ChatJointActivity;
 import att.android.activity.ContactFragment;
 import att.android.activity.LoginActivity;
 import att.android.activity.MusicFragment;
@@ -33,9 +33,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 		case 2:
 			f = MusicFragment.newInstance(mContext);
 			break;
-		case 3:
-			f = ChatJointFragment.newInstance(mContext);
-			break;
 
 		}
 		return f;
@@ -43,7 +40,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return 4;
+		return 3;
 	}
 
 }
