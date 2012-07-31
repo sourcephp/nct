@@ -134,7 +134,7 @@ public class RssDataHandler extends DefaultHandler {
 			
 			news.setmDes(""+StringEscapeUtils.unescapeHtml4(strTemp));
 		} else if (localName.equals("link") && parsingItem) {
-			news.setmUrl(builder.toString());
+			news.setmUrl(builder.toString().trim());
 		}
 		builder.setLength(0);
 	}

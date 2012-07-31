@@ -8,6 +8,7 @@ import org.openymsg.network.LoginRefusedException;
 import org.openymsg.network.Session;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +30,7 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 	private CheckBox chBoxSave;
 	private CheckBox chBoxHide;
 	private Button btnLogin;
+	private Button btnBack;
 	public YGeneralHandler sessionListener;
 
 	@Override
@@ -41,11 +43,13 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 		chBoxSave = (CheckBox) this.findViewById(R.id.chbox_save);
 		chBoxHide = (CheckBox) this.findViewById(R.id.chbox_hide);
 		btnLogin = (Button) this.findViewById(R.id.btn_googleLogin);
-
 		btnLogin.setOnClickListener(this);
+		btnBack = (Button) this.findViewById(R.id.btn_login_back);
+		btnBack.setOnClickListener(this);
 	}
 
 	public void onClick(View v) {
+		if(v == btnLogin){
 		Session session = new Session();
 		sessionListener = new YGeneralHandler();
 		session.addSessionListener(sessionListener);
@@ -80,7 +84,11 @@ public class LoginActivity extends Activity implements OnItemClickListener,
 			Log.i("TAG", "Login finish");
 			Log.e("......Toast", "khong thay o day ????");
 		}
-
+		}
+		if(v == btnBack){
+			Intent i = new Intent(LoginActivity.this, MainActivity.class);
+			startActivity(i);
+		}
 	}
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
