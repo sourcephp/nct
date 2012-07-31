@@ -2,6 +2,7 @@ package att.android.activity;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,31 +16,17 @@ import android.widget.TabHost.TabSpec;
 import com.example.multiapp.R;
 
 
-public class ChatJointFragment extends Fragment{
+public class ChatJointActivity extends Activity{
 	private TabHost chatJointTabHost;
 	private ArrayList<TabSpec> arlTabspace;
-
-	public static Fragment newInstance(Context context) {
-		ChatJointFragment f = new ChatJointFragment();
-
-		return f;
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.activity_chat,
-				null);
-		return root;
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	// TODO Auto-generated method stub
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_chat);
 	
-		chatJointTabHost = (TabHost) this.getView().findViewById(android.R.id.tabhost);
-		arlTabspace = new ArrayList<TabHost.TabSpec>();
+//		chatJointTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
+//		arlTabspace = new ArrayList<TabHost.TabSpec>();
 	}
 
 //	@Override
@@ -51,7 +38,7 @@ public class ChatJointFragment extends Fragment{
 //	private void newChatTab(String nameFriend) {
 //		TabSpec tabspec = chatJointTabHost.newTabSpec(nameFriend);
 //		tabspec.setIndicator(nameFriend);
-//		Intent i = new Intent(this.getActivity(), ChatTabFragment.class);
+//		Intent i = new Intent(this, ChatTabFragment.class);
 //		tabspec.setContent(i);
 //
 //		chatJointTabHost.addTab(tabspec);

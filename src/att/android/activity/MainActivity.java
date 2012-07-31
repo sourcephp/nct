@@ -1,8 +1,12 @@
 package att.android.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import att.android.adapter.FixedTabsAdapter;
 import att.android.adapter.ViewPagerAdapter;
 
@@ -17,6 +21,7 @@ public class MainActivity extends FragmentActivity {
 
 	private ViewPagerAdapter mPagerAdapter;
 	private TabsAdapter mFixedTabsAdapter;
+	private Button btnChat;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,15 @@ public class MainActivity extends FragmentActivity {
 		mFixedTabsAdapter = new FixedTabsAdapter(this);
 		mFixedTabs.setAdapter(mFixedTabsAdapter);
 		mFixedTabs.setViewPager(mPager);
+		btnChat = (Button) this.findViewById(R.id.btn_chat);
+		btnChat.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, ChatJointActivity.class);
+				startActivity(i);
+				
+			}
+		});
 	}
 
 	private void initViewPager(int pageCount, int backgroundColor, int textColor) {

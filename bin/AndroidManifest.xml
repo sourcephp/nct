@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name="att.android.activity.LoginActivity"></activity>
+        <activity android:name="att.android.activity.ChatJointActivity"></activity>
     </application>
 
 </manifest>
