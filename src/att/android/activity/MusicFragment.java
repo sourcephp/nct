@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import att.android.adapter.Music_HotSongAdapter;
 import att.android.bean.Music_Song;
 import att.android.network.Music_SongListNetWork;
@@ -33,10 +34,10 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	private ArrayList<Music_Song> mSongList;
 	private Music_HotSongAdapter mHotSongAdapter;
 	private String streamUrl;
-	private String songListUrl;
-	private Button mBtnPlay, mBtnPause;
-	private String text;
+	private Button mBtnPlay;
+	private boolean isPlaying = false;
 	private MediaPlayer mplay;
+	private TextView songName;
 	private Music_SongListNetWork mSongListNetwork;
 	private Handler mHandler = new Handler() {
 		@Override
@@ -70,59 +71,78 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
-		mBtnPause = (Button) this.getView().findViewById(R.id.btn_pause);
-
+		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
 		mBtnPlay.setOnClickListener(this);
-		mBtnPause.setOnClickListener(this);
-		
+
 		mSongList = new ArrayList<Music_Song>();
-		mHotSongAdapter = new Music_HotSongAdapter(getActivity(), R.id.tv_songName, mSongList);
+		mHotSongAdapter = new Music_HotSongAdapter(getActivity(),
+				R.id.tv_songName, mSongList);
 		mListView = (ListView) this.getView().findViewById(R.id.list_music);
 		mListView.setOnItemClickListener(this);
 		mListView.setAdapter(mHotSongAdapter);
-		
+
 		mSongListNetwork = new Music_SongListNetWork(mHandler);
 		Thread t = new Thread(mSongListNetwork);
 		t.start();
 	}
 
 	public void onClick(View v) {
-		/*String url = getHotSongs(0, 5);
-		JSONObject json = readJsonFromUrl(url);
-		text = parseJSON(json);
-		mplay = new MediaPlayer();
-		mplay.setDataSource(text);
-		mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		mplay.prepare();
-		mplay.start();*/
+		/*
+		 * String url = getHotSongs(0, 5); JSONObject json =
+		 * readJsonFromUrl(url); text = parseJSON(json); mplay = new
+		 * MediaPlayer(); mplay.setDataSource(text);
+		 * mplay.setAudioStreamType(AudioManager.STREAM_MUSIC); mplay.prepare();
+		 * mplay.start();
+		 */
 
 		if (v == mBtnPlay) {
-
-		} else if (v == mBtnPause) {
-			mplay.pause();
+			if (isPlaying) {
+				mplay.pause();
+				mBtnPlay.setBackgroundDrawable(this.getResources().getDrawable(
+						R.drawable.media_pause));
+				isPlaying = false;
+			} else {
+				mplay.start();
+				mBtnPlay.setBackgroundDrawable(this.getResources().getDrawable(
+						R.drawable.media_start));
+				isPlaying = true;
+			}
 		}
 	}
 
-	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+			long arg3) {
 		mHotSongAdapter.getItem(position);
-		Music_Song item = mHotSongAdapter.getItem(position);
+		final Music_Song item = mHotSongAdapter.getItem(position);
 		streamUrl = item.streamURL;
 		mplay = new MediaPlayer();
-		try {
-			mplay.setDataSource(streamUrl);
-			mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			mplay.prepare();
-			mplay.start();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
+		Thread t = new Thread() {
+			public void run() {
+				try {
+
+					mplay.setDataSource(streamUrl);
+					mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
+					mplay.prepare();
+					mplay.start();
+					isPlaying = true;
+
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		};
+		t.start();
+
+		songName.setText(item.name + " --- " + item.singer);
+
+	}
 }
