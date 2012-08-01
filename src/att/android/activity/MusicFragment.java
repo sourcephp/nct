@@ -1,36 +1,47 @@
 package att.android.activity;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.nio.charset.Charset;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import java.util.ArrayList;
 
 import com.example.multiapp.R;
 
 import android.content.Context;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ListView;
+import att.android.adapter.Music_HotSongAdapter;
+import att.android.bean.Music_Song;
 
-public class MusicFragment extends Fragment implements OnClickListener {
+public class MusicFragment extends Fragment implements OnClickListener,
+		OnItemClickListener {
 
-	private Button mBtnPlay;
+	private ListView mListView;
+	private Music_HotSongAdapter mHotSongAdapter;
+	private String streamUrl;
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			@SuppressWarnings("unchecked")
+			ArrayList<Music_Song> rs = (ArrayList<Music_Song>) msg.obj;
+			for (Music_Song itm : rs) {
+				mHotSongAdapter.add(itm);
+			}
+			mHotSongAdapter.notifyDataSetChanged();
+			mListView.setOnItemClickListener(MusicFragment.this);
+		}
+	};
+
+	private Button mBtnPlay, mBtnPause;
 
 	public static Fragment newInstance(Context context) {
 		MusicFragment f = new MusicFragment();
@@ -51,138 +62,27 @@ public class MusicFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
+		mBtnPause = (Button) this.getView().findViewById(R.id.btn_pause);
+
 		mBtnPlay.setOnClickListener(this);
+		mBtnPause.setOnClickListener(this);
 	}
 
 	private String text;
 	private MediaPlayer mplay;
 
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+
 		if (v == mBtnPlay) {
-			String url = getHotSongs(0, 5);
-			try {
-				JSONObject json = readJsonFromUrl(url);
-				text = parseJSON(json);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			mplay = new MediaPlayer();
-			try {
-				mplay.setDataSource(text);
-				mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
-				mplay.prepare();
-				mplay.start();
 
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		} else if (v == mBtnPause) {
 
-	}
-
-	private static String readAll(Reader rd) throws IOException {
-		StringBuilder sb = new StringBuilder();
-		int cp;
-		while ((cp = rd.read()) != -1) {
-			sb.append((char) cp);
-		}
-		return sb.toString();
-	}
-
-	// method lấy JSONOject từ URL cho trc
-	public static JSONObject readJsonFromUrl(String url) throws IOException,
-			JSONException {
-		InputStream is = new URL(url).openStream();
-		try {
-			BufferedReader rd = new BufferedReader(new InputStreamReader(is,
-					Charset.forName("UTF-8")));
-			String jsonText = readAll(rd);
-			JSONObject json = new JSONObject(jsonText);
-			Log.i("readJSONfromURL", json.toString());
-			return json;
-		} finally {
-			is.close();
 		}
 	}
 
-	/*
-	 * public static void main(String[] args) throws IOException, JSONException
-	 * { JSONObject json =
-	 * readJsonFromUrl("https://graph.facebook.com/19292868552");
-	 * System.out.println(json.toString()); System.out.println(json.get("id"));
-	 * }
-	 */
-
-	// method trả về URL
-	public static String getHotSongs(int paramInt1, int paramInt2) {
-		String str2 = "69f54e21b5a3e77b4b91c95ac1a2c37e", str1;
-		while (true) {
-			try {
-				String str3 = new StringBuilder(
-						String.valueOf(new StringBuilder(
-								String.valueOf(new StringBuilder(
-										String.valueOf(new StringBuilder(
-												String.valueOf(new StringBuilder(
-														String.valueOf("http://api.m.nhaccuatui.com/v4/api/song?"))
-														.append("secretkey=nct@mobile_service")
-														.toString())).append(
-												"&action=getHotSong")
-												.toString()))
-										.append("&pageindex=")
-										.append(String.valueOf(paramInt1))
-										.toString())).append("&pagesize=")
-								.append(String.valueOf(paramInt2)).toString()))
-						+ "&token=" + str2;
-				str1 = str3;
-				Log.i("getHotSongs", str3);
-				return str1;
-			} catch (Exception localException) {
-				localException.printStackTrace();
-			}
-			str1 = null;
-		}
-	}
-
-	public String parseJSON(JSONObject jsonObj) {
-		JSONTokener token = new JSONTokener(jsonObj.toString());
-		JSONObject object;
-		JSONArray array;
-		String songId = null;
-		try {
-			object = (JSONObject) token.nextValue();
-			/*
-			 * String getMore = object.getString("GetMore"); //key "GetMore" co
-			 * value kieu int int totalRecords = object.getInt("TotalRecords");
-			 * //key "TotalRecords" co value kieu int
-			 */
-			array = (JSONArray) object.getJSONArray("Items");// key "Items" co
-																// value la mot
-																// mang cac doi
-																// tuong JSON
-																// cung cau truc
-			JSONObject item1 = array.getJSONObject(0);
-			songId = item1.getString("Url");
-			Log.i("parseJSON", songId);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return songId;
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
 
 	}
+
 }
