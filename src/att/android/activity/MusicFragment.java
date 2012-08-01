@@ -14,19 +14,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import att.android.adapter.Music_HotSongAdapter;
 import att.android.bean.Music_Song;
+import att.android.bean.News;
+import att.android.network.Music_SongListNetWork;
 
 public class MusicFragment extends Fragment implements OnClickListener,
 		OnItemClickListener {
 
 	private ListView mListView;
+	private ArrayList<Music_Song> mSongList;
 	private Music_HotSongAdapter mHotSongAdapter;
 	private String streamUrl;
+	private String songListUrl;
+	private Button mBtnPlay, mBtnPause;
+	private String text;
+	private MediaPlayer mplay;
+	private Music_SongListNetWork mSongListNetwork;
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -40,8 +50,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 			mListView.setOnItemClickListener(MusicFragment.this);
 		}
 	};
-
-	private Button mBtnPlay, mBtnPause;
 
 	public static Fragment newInstance(Context context) {
 		MusicFragment f = new MusicFragment();
@@ -59,19 +67,33 @@ public class MusicFragment extends Fragment implements OnClickListener,
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
 		mBtnPause = (Button) this.getView().findViewById(R.id.btn_pause);
 
 		mBtnPlay.setOnClickListener(this);
 		mBtnPause.setOnClickListener(this);
+		
+		mSongList = new ArrayList<Music_Song>();
+		mHotSongAdapter = new Music_HotSongAdapter(getActivity(), R.id.tv_songName, mSongList);
+		mListView = (ListView) this.getView().findViewById(R.id.list_music);
+		mListView.setOnItemClickListener(this);
+		mListView.setAdapter(mHotSongAdapter);
+		
+		mSongListNetwork = new Music_SongListNetWork(mHandler);
+		Thread t = new Thread(mSongListNetwork);
+		t.start();
 	}
 
-	private String text;
-	private MediaPlayer mplay;
-
 	public void onClick(View v) {
+		/*String url = getHotSongs(0, 5);
+		JSONObject json = readJsonFromUrl(url);
+		text = parseJSON(json);
+		mplay = new MediaPlayer();
+		mplay.setDataSource(text);
+		mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
+		mplay.prepare();
+		mplay.start();*/
 
 		if (v == mBtnPlay) {
 
@@ -80,9 +102,10 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		}
 	}
 
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+		mHotSongAdapter.getItem(position);
+		Music_Song item = mHotSongAdapter.getItem(position);
+		streamUrl = item.streamURL;
 	}
 
 }
