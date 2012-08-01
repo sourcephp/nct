@@ -35,4 +35,7 @@ public class Music_Song extends BaseModel implements Serializable {
 	public String getSinger() {
 		return this.singer;
 	}
+	public String getStreamUrl() {
+		return streamURL;
+	}
 }
