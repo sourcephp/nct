@@ -35,16 +35,19 @@ public class Music_HotSongAdapter extends ArrayAdapter<Music_Song> {
 					.findViewById(R.id.tv_songName);
 			mHolder.singer = (TextView) convertView
 					.findViewById(R.id.tv_singer);
+			convertView.setTag(mHolder);
 		} else {
 			mHolder = (ViewHolder) convertView.getTag();
 		}
 		mHolder.songName.setText(mSong.getNameSong());
 		mHolder.singer.setText(mSong.getSinger());
+		mHolder.streamUrl = mSong.getStreamUrl();
 		return convertView;
 	}
 
 	private class ViewHolder {
 		private TextView songName;
 		private TextView singer;
+		private String streamUrl;
 	}
 }
