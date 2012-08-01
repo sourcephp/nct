@@ -1,10 +1,12 @@
 package att.android.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-import com.example.multiapp.R;
+import org.json.JSONObject;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,16 +16,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import att.android.adapter.Music_HotSongAdapter;
 import att.android.bean.Music_Song;
-import att.android.bean.News;
 import att.android.network.Music_SongListNetWork;
+
+import com.example.multiapp.R;
 
 public class MusicFragment extends Fragment implements OnClickListener,
 		OnItemClickListener {
@@ -98,7 +99,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		if (v == mBtnPlay) {
 
 		} else if (v == mBtnPause) {
-
+			mplay.pause();
 		}
 	}
 
@@ -106,6 +107,22 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		mHotSongAdapter.getItem(position);
 		Music_Song item = mHotSongAdapter.getItem(position);
 		streamUrl = item.streamURL;
+		mplay = new MediaPlayer();
+		try {
+			mplay.setDataSource(streamUrl);
+			mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
+			mplay.prepare();
+			mplay.start();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
