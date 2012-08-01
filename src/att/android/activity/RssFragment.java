@@ -79,6 +79,7 @@ public class RssFragment extends Fragment implements OnItemClickListener,
 		mListView = (ListView) this.getView().findViewById(R.id.listNews);
 		mListView.setOnItemClickListener(this);
 		mListView.setAdapter(mNewsAdapter);
+		
 		mWebView = (WebView) this.getView().findViewById(R.id.webView);
 		mWebView.setVisibility(View.GONE);
 		strUrl = "http://www.tinhte.vn/rss/";
