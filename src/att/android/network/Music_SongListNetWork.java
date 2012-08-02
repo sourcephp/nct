@@ -24,11 +24,10 @@ public class Music_SongListNetWork implements Runnable {
 	}
 
 	public void run() {
-		this.mSongListUrl = new URLProvider().getHotSongs(0, 10);
+		this.mSongListUrl = new URLProvider().getHotSongs(0, 66);
 		try {
 			json = new JSONProvider().readJsonFromUrl(mSongListUrl);
 			mSongList = new ParseJSONMusic().parseJSON(json);
-			Log.i("songlist", mSongList.toString());
 			Message msg = new Message();
 			msg.what = 1;
 			msg.obj = mSongList;

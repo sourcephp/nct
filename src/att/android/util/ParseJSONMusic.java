@@ -17,22 +17,16 @@ public class ParseJSONMusic {
 		JSONTokener token = new JSONTokener(jsonObj.toString());
 		JSONArray jsonArray;
 		try {
-			while (true) {
-				jsonArray = (JSONArray) jsonObj.getJSONArray("Items");
-				int i = 0;
-				while (i < jsonArray.length()) {
-					JSONObject localJSONObject = jsonArray.getJSONObject(i);
-					Music_Song song = new Music_Song();
-					song.name = localJSONObject.getString("Name");
-					song.singer = localJSONObject.getString("Singer");
-					song.streamURL = localJSONObject.getString("Url");
-					musicList.add(song);
-					i++;
-				}
-
-				jsonObj = (JSONObject) token.nextValue();
-				if (!jsonObj.get("GetMore").equals("yes"))
-					break;
+			jsonArray = (JSONArray) jsonObj.getJSONArray("Items");
+			int i = 0;
+			while (i < jsonArray.length()) {
+				JSONObject localJSONObject = jsonArray.getJSONObject(i);
+				Music_Song song = new Music_Song();
+				song.name = localJSONObject.getString("Name");
+				song.singer = localJSONObject.getString("Singer");
+				song.streamURL = localJSONObject.getString("Url");
+				musicList.add(song);
+				i++;
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

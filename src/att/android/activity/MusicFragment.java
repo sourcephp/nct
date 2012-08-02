@@ -124,6 +124,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 
 	private String duration = "";
 
+	@TargetApi(10)
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
 		mplay.reset();
@@ -140,35 +141,19 @@ public class MusicFragment extends Fragment implements OnClickListener,
 					mplay.prepare();
 					mplay.start();
 					isPlaying = true;
-					// TODO Auto-generated method stub
+					Log.i("time", ""+mplay.getDuration());
 
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 			}
 		};
 		t.start();
-
-		/*
-		 * Log.i("time", duration); long dur = Long.parseLong(duration); String
-		 * seconds = String.valueOf((dur % 60000) / 1000); String minutes =
-		 * String.valueOf(dur / 60000);
-		 */
-
-		/*
-		 * MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
-		 * metaRetriever.setDataSource(streamUrl); duration = metaRetriever
-		 * .extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-		 */
-
 		mSeekBar.setMax(27234);
 		mSeekBar.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
