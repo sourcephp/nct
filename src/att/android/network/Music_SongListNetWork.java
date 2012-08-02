@@ -28,7 +28,7 @@ public class Music_SongListNetWork implements Runnable {
 		try {
 			json = new JSONProvider().readJsonFromUrl(mSongListUrl);
 			mSongList = new ParseJSONMusic().parseJSON(json);
-			Log.i("songlist", mSongListUrl.toString());
+			Log.i("songlist", mSongList.toString());
 			Message msg = new Message();
 			msg.what = 1;
 			msg.obj = mSongList;
