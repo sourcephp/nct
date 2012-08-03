@@ -194,9 +194,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 					publishProgress(i);
 					i = mplay[0].getCurrentPosition();
 					Log.i("count", "" + countA);
-					if (i >= n) {
-						mPlayMusic.cancel(true);
-					}
 
 					if (isCancelled())
 						break;
