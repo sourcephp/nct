@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import android.R.bool;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -95,8 +96,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		mListView.setOnItemClickListener(this);
 		mListView.setAdapter(mHotSongAdapter);
 		mplay = new MediaPlayer();
-		
-		
 	}
 
 	@Override
@@ -126,6 +125,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		}
 	}
 
+	int count = 0, countTest = 0;
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
@@ -134,32 +134,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		mHotSongAdapter.getItem(position);
 		final Music_Song item = mHotSongAdapter.getItem(position);
 		streamUrl = item.streamURL;
-		mPlayMusic = new RunMusic();
-		mPlayMusic.execute(mplay);
-		
-//		Thread t = new Thread() {
-//			public void run() {
-//				try {
-//
-//					mplay.setDataSource(streamUrl);
-//					mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//					mplay.prepare();
-//					mplay.start();
-//					isPlaying = true;
-//					Log.i("time", ""+mplay.getDuration());
-//
-//				} catch (IllegalArgumentException e) {
-//					e.printStackTrace();
-//				} catch (IllegalStateException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//
-//			}
-//		};
-//		t.start();
-//		mSeekBar.setMax(27234);
 		mSeekBar.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				seekChange(v);
@@ -167,27 +141,27 @@ public class MusicFragment extends Fragment implements OnClickListener,
 			}
 		});
 
-//		startPlayProgressUpdater();
-
 		songName.setText(item.name + " --- " + item.singer);
 
+		count++;
+		Log.i("onItemClick", "" + count);
+		changeRunMusic();
 	}
 
-	private final Handler handler = new Handler();
-
-	public void startPlayProgressUpdater() {
-		mSeekBar.setProgress(mplay.getCurrentPosition());
-
-		if (mplay.isPlaying()) {
-			Runnable notification = new Runnable() {
-				public void run() {
-					startPlayProgressUpdater();
-				}
-			};
-			handler.postDelayed(notification, 1000);
+	private void changeRunMusic() {
+		if (1 == count) {
+			mPlayMusic = new RunMusic(count);
+			mPlayMusic.execute(mplay);
 		} else {
-			mplay.pause();
+			mPlayMusic.cancel(true);
+			playMusic();
 		}
+	}
+
+	private void playMusic() {
+
+		mPlayMusic = new RunMusic(count);
+		mPlayMusic.execute(mplay);
 	}
 
 	private void seekChange(View v) {
@@ -196,25 +170,36 @@ public class MusicFragment extends Fragment implements OnClickListener,
 			mplay.seekTo(sb.getProgress());
 		}
 	}
-	private class RunMusic extends AsyncTask<MediaPlayer, Integer, Integer>{
+
+	private class RunMusic extends AsyncTask<MediaPlayer, Integer, Integer> {
+
+		private int countA;
+
+		public RunMusic(int count) {
+			countA = count;
+		}
 
 		@Override
 		protected Integer doInBackground(MediaPlayer... mplay) {
 			try {
+
 				mplay[0].setDataSource(streamUrl);
 				mplay[0].setAudioStreamType(AudioManager.STREAM_MUSIC);
 				mplay[0].prepare();
 				mplay[0].start();
 				isPlaying = true;
 				MusicFragment.this.mSeekBar.setMax(mplay[0].getDuration());
-				Log.i("time", ""+mplay[0].getDuration());
-				for(int i=0, n = mplay[0].getDuration(); i < n;){
+				Log.i("time", "" + mplay[0].getDuration());
+				for (int i = 0, n = mplay[0].getDuration(); i < n;) {
 					publishProgress(i);
 					i = mplay[0].getCurrentPosition();
+					Log.i("count", "" + countA);
+
+					if (isCancelled())
+						break;
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -228,11 +213,19 @@ public class MusicFragment extends Fragment implements OnClickListener,
 			}
 			return null;
 		}
+
+		@Override
+		protected void onCancelled() {
+			// TODO Auto-generated method stub
+			super.onCancelled();
+		}
+
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
 			MusicFragment.this.mSeekBar.setProgress(values[0]);
 		}
+
 		@Override
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
