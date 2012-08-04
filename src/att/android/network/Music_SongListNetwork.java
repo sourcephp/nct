@@ -12,14 +12,14 @@ import android.util.Log;
 import att.android.bean.Music_Song;
 import att.android.util.ParseJSONMusic;
 
-public class Music_SongListNetWork implements Runnable {
+public class Music_SongListNetwork implements Runnable {
 
 	private String mSongListUrl;
 	private JSONObject json;
 	ArrayList<Music_Song> mSongList;
 	private Handler mHandler;
 
-	public Music_SongListNetWork(Handler mHandler) {
+	public Music_SongListNetwork(Handler mHandler) {
 		this.mHandler = mHandler;
 	}
 
@@ -27,7 +27,7 @@ public class Music_SongListNetWork implements Runnable {
 		this.mSongListUrl = new URLProvider().getHotSongs(0, 66);
 		try {
 			json = new JSONProvider().readJsonFromUrl(mSongListUrl);
-			mSongList = new ParseJSONMusic().parseJSON(json);
+			mSongList = new ParseJSONMusic().parseJSONHotMusic(json);
 			Message msg = new Message();
 			msg.what = 1;
 			msg.obj = mSongList;

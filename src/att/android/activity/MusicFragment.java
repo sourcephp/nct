@@ -34,7 +34,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import att.android.adapter.Music_HotSongAdapter;
 import att.android.bean.Music_Song;
-import att.android.network.Music_SongListNetWork;
+import att.android.network.Music_LyricNetwork;
+import att.android.network.Music_SongListNetwork;
 
 import com.example.multiapp.R;
 
@@ -45,12 +46,13 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	private ArrayList<Music_Song> mSongList;
 	private Music_HotSongAdapter mHotSongAdapter;
 	private String streamUrl;
+	private String mLyric = "";
 	private Button mBtnPlay;
 	private boolean isPlaying = false;
 	private MediaPlayer mplay;
 	private TextView songName;
 	private SeekBar mSeekBar;
-	private Music_SongListNetWork mSongListNetwork;
+	private Music_SongListNetwork mSongListNetwork;
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -102,8 +104,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		mHotSongAdapter.clear();
-		mSongListNetwork = new Music_SongListNetWork(mHandler);
+		mSongListNetwork = new Music_SongListNetwork(mHandler);
 		Thread t = new Thread(mSongListNetwork);
 		t.start();
 	}
@@ -140,7 +141,24 @@ public class MusicFragment extends Fragment implements OnClickListener,
 				return false;
 			}
 		});
+		Handler h = new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+				super.handleMessage(msg);
+				mLyric = (String) msg.obj;
+				Log.i("Lyric", mLyric);
+			}
+		};
+		if ("".equals(mLyric)) {
 
+			Log.i("lyric", "Hien ko co loi bai hat");
+		} else {
+
+			Log.i("lyric", mLyric);
+		}
+		Music_LyricNetwork lyric = new Music_LyricNetwork(h, item.songKey);
+		lyric.start();
 		songName.setText(item.name + " --- " + item.singer);
 
 		count++;
@@ -193,8 +211,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 				for (int i = 0, n = mplay[0].getDuration(); i < n;) {
 					publishProgress(i);
 					i = mplay[0].getCurrentPosition();
-					Log.i("count", "" + countA);
-
 					if (isCancelled())
 						break;
 
