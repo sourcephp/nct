@@ -1,29 +1,29 @@
 package att.android.activity;
 
-import java.util.ArrayList;
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
 
 import com.example.multiapp.R;
 
 
-public class ChatJointActivity extends Activity{
-	private TabHost chatJointTabHost;
-	private ArrayList<TabSpec> arlTabspace;
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-	// TODO Auto-generated method stub
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_chat);
+public class ChatFragment extends Fragment{
+	public static Fragment newInstance(Context context) {
+		ChatFragment f = new ChatFragment();
+
+		return f;
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.activity_chat,
+				null);
+		return root;
+	}
 	
 //		chatJointTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
 //		arlTabspace = new ArrayList<TabHost.TabSpec>();
@@ -45,4 +45,4 @@ protected void onCreate(Bundle savedInstanceState) {
 //
 //		arlTabspace.add(tabspec);
 //	}
-}
+

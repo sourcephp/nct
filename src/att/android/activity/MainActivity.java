@@ -1,57 +1,39 @@
 package att.android.activity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import att.android.adapter.FixedTabsAdapter;
-import att.android.adapter.ViewPagerAdapter;
-
-import com.astuetz.viewpager.extensions.FixedTabsView;
-import com.astuetz.viewpager.extensions.TabsAdapter;
 import com.example.multiapp.R;
 
-public class MainActivity extends FragmentActivity {
+import android.app.TabActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 
-	private ViewPager mPager;
-	private FixedTabsView mFixedTabs;
+public class MainActivity extends TabActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        TabHost mTabHost = getTabHost();
+        
+        TabSpec tabMess = mTabHost.newTabSpec("messenger");
+        tabMess.setIndicator("messenger").setContent(new Intent(this, MessengerFragmentActivity.class));
+        mTabHost.addTab(tabMess);
+        
+        TabSpec tabSong = mTabHost.newTabSpec("songs");
+        tabSong.setIndicator("songs").setContent(new Intent(this, MusicFragmentActivity.class));
+        mTabHost.addTab(tabSong);
+        
+        TabSpec tabRss = mTabHost.newTabSpec("rss");
+        tabRss.setIndicator("news").setContent(new Intent(this, RssFragmentActivity.class));
+        mTabHost.addTab(tabRss);
+    }
 
-	private ViewPagerAdapter mPagerAdapter;
-	private TabsAdapter mFixedTabsAdapter;
-	private Button btnChat;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-
-		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_main);
-		initViewPager(3, 0xFFFFFFFF, 0xFF000000);
-		mFixedTabs = (FixedTabsView) findViewById(R.id.fixed_tabs);
-		mFixedTabsAdapter = new FixedTabsAdapter(this);
-		mFixedTabs.setAdapter(mFixedTabsAdapter);
-		mFixedTabs.setViewPager(mPager);
-		btnChat = (Button) this.findViewById(R.id.btn_chat);
-		btnChat.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				Intent i = new Intent(MainActivity.this, ChatJointActivity.class);
-				startActivity(i);
-				
-			}
-		});
-	}
-
-	private void initViewPager(int pageCount, int backgroundColor, int textColor) {
-		mPager = (ViewPager) findViewById(R.id.pager);
-		mPagerAdapter = new ViewPagerAdapter(getApplicationContext(),
-				getSupportFragmentManager());
-		mPager.setAdapter(mPagerAdapter);
-		mPager.setCurrentItem(0);
-		mPager.setPageMargin(1);
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+	
 
 }

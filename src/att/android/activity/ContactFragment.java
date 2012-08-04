@@ -88,7 +88,7 @@ public class ContactFragment extends Fragment implements OnItemClickListener, On
 
 	public void onClick(View v) {
 		if(v == btnAcc){
-			Intent i = new Intent(this.getActivity(), LoginActivity.class);
+			Intent i = new Intent(this.getActivity(), LoginFragment.class);
 			startActivity(i);
 		}
 	}
