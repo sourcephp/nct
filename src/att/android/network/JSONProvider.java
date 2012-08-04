@@ -31,7 +31,6 @@ public class JSONProvider {
 					Charset.forName("UTF-8")));
 			String jsonText = readAll(rd);
 			JSONObject json = new JSONObject(jsonText);
-			Log.i("readJSONfromURL", json.toString());
 			return json;
 		} finally {
 			is.close();

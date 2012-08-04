@@ -9,6 +9,7 @@ public class Music_Song extends BaseModel implements Serializable {
 	public String name;
 	public String singer;
 	public String songID;
+	public String songKey;
 	public String streamURL = "";
 
 	public Music_Song() {
