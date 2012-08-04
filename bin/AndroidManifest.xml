@@ -22,8 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="att.android.activity.LoginActivity"></activity>
-        <activity android:name="att.android.activity.ChatJointActivity"></activity>
+        <activity android:name="att.android.activity.MessengerFragmentActivity"></activity>
+        <activity android:name="att.android.activity.MusicFragmentActivity"></activity>
+        <activity android:name="att.android.activity.RssFragmentActivity"></activity>
     </application>
 
 </manifest>

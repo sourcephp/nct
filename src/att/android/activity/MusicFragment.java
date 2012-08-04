@@ -1,9 +1,10 @@
 package att.android.activity;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
+
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -77,9 +78,9 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-//		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
-//		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
-//		mSeekBar = (SeekBar) this.getView().findViewById(R.id.seekBar1);
+		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
+		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
+		mSeekBar = (SeekBar) this.getView().findViewById(R.id.seekBar1);
 		mSeekBar.setProgress(0);
 		mBtnPlay.setOnClickListener(this);
 
@@ -94,7 +95,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		songName.setText(mSongName);
 		mSongListNetwork = new Music_SongListNetwork(mHandler);
@@ -215,7 +215,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 
 		@Override
 		protected void onCancelled() {
-			// TODO Auto-generated method stub
 			super.onCancelled();
 		}
 

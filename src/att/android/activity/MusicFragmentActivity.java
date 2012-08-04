@@ -23,7 +23,7 @@ public class MusicFragmentActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.fragment_activity_music);
-		initViewPager();
+		initViewPager(0);
 		mFixedTabs = (FixedTabsView) findViewById(R.id.fixed_tabs_music);
 		mFixedTabsAdapter = new MusicFixedTabsAdapter(this);
 		mFixedTabs.setAdapter(mFixedTabsAdapter);
@@ -31,12 +31,12 @@ public class MusicFragmentActivity extends FragmentActivity {
 		
 	}
 
-	private void initViewPager() {
+	private void initViewPager(int i) {
 		mPager = (ViewPager) findViewById(R.id.pager_music);
 		mPagerAdapter = new MusicViewPagerAdapter(getApplicationContext(),
 				getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
-		mPager.setCurrentItem(0);
+		mPager.setCurrentItem(i);
 		mPager.setPageMargin(1);
 	}
 }
