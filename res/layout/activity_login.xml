@@ -75,12 +75,4 @@
         android:layout_alignParentLeft="true"
         android:background="@drawable/logo_team" />
 
-    <Button
-        android:id="@+id/btn_login_back"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text=">" />
-
 </RelativeLayout>

@@ -17,15 +17,15 @@ public class MainActivity extends TabActivity {
         TabHost mTabHost = getTabHost();
         
         TabSpec tabMess = mTabHost.newTabSpec("messenger");
-        tabMess.setIndicator("messenger").setContent(new Intent(this, MessengerFragmentActivity.class));
+        tabMess.setIndicator("",getResources().getDrawable(R.drawable.custom_btn_login)).setContent(new Intent(this, MessengerFragmentActivity.class));
         mTabHost.addTab(tabMess);
         
         TabSpec tabSong = mTabHost.newTabSpec("songs");
-        tabSong.setIndicator("songs").setContent(new Intent(this, MusicFragmentActivity.class));
+        tabSong.setIndicator("", getResources().getDrawable(R.drawable.custom_tab_music)).setContent(new Intent(this, MusicFragmentActivity.class));
         mTabHost.addTab(tabSong);
         
         TabSpec tabRss = mTabHost.newTabSpec("rss");
-        tabRss.setIndicator("news").setContent(new Intent(this, RssFragmentActivity.class));
+        tabRss.setIndicator("", getResources().getDrawable(R.drawable.custom_rss_tab)).setContent(new Intent(this, RssFragmentActivity.class));
         mTabHost.addTab(tabRss);
     }
 
