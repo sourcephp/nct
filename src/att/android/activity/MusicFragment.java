@@ -2,17 +2,9 @@ package att.android.activity;
 
 import java.io.IOException;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
-
-import org.json.JSONObject;
-
-import android.R.bool;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -104,6 +96,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		songName.setText(mSongName);
 		mSongListNetwork = new Music_SongListNetwork(mHandler);
 		Thread t = new Thread(mSongListNetwork);
 		t.start();
@@ -125,8 +118,8 @@ public class MusicFragment extends Fragment implements OnClickListener,
 			}
 		}
 	}
-
-	int count = 0, countTest = 0;
+	private String mSongName;
+	private int count= 0;
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
@@ -147,19 +140,14 @@ public class MusicFragment extends Fragment implements OnClickListener,
 				// TODO Auto-generated method stub
 				super.handleMessage(msg);
 				mLyric = (String) msg.obj;
-				Log.i("Lyric", mLyric);
 			}
 		};
-		if ("".equals(mLyric)) {
+		Log.i("lyric", mLyric);
 
-			Log.i("lyric", "Hien ko co loi bai hat");
-		} else {
-
-			Log.i("lyric", mLyric);
-		}
 		Music_LyricNetwork lyric = new Music_LyricNetwork(h, item.songKey);
 		lyric.start();
-		songName.setText(item.name + " --- " + item.singer);
+		mSongName = item.name + " --- " + item.singer;
+		songName.setText(mSongName);
 
 		count++;
 		Log.i("onItemClick", "" + count);
@@ -168,7 +156,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 
 	private void changeRunMusic() {
 		if (1 == count) {
-			mPlayMusic = new RunMusic(count);
+			mPlayMusic = new RunMusic();
 			mPlayMusic.execute(mplay);
 		} else {
 			mPlayMusic.cancel(true);
@@ -178,7 +166,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 
 	private void playMusic() {
 
-		mPlayMusic = new RunMusic(count);
+		mPlayMusic = new RunMusic();
 		mPlayMusic.execute(mplay);
 	}
 
@@ -190,12 +178,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	}
 
 	private class RunMusic extends AsyncTask<MediaPlayer, Integer, Integer> {
-
-		private int countA;
-
-		public RunMusic(int count) {
-			countA = count;
-		}
 
 		@Override
 		protected Integer doInBackground(MediaPlayer... mplay) {
