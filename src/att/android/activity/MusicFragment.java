@@ -77,9 +77,9 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
-		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
-		mSeekBar = (SeekBar) this.getView().findViewById(R.id.seekBar1);
+//		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
+//		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
+//		mSeekBar = (SeekBar) this.getView().findViewById(R.id.seekBar1);
 		mSeekBar.setProgress(0);
 		mBtnPlay.setOnClickListener(this);
 
