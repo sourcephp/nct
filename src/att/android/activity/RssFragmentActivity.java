@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,8 @@ import att.android.adapter.RssAdapter;
 import att.android.bean.News;
 import att.android.network.ReadRssNetwork;
 
-public class RssFragment extends Fragment implements OnItemClickListener,
-		OnClickListener {
+public class RssFragmentActivity extends FragmentActivity implements
+		OnItemClickListener, OnClickListener {
 	private ListView mListView;
 	private RssAdapter mNewsAdapter;
 	private ArrayList<News> mNews;
@@ -49,47 +50,33 @@ public class RssFragment extends Fragment implements OnItemClickListener,
 				mNewsAdapter.add(itm);
 			}
 			mNewsAdapter.notifyDataSetChanged();
-			mListView.setOnItemClickListener(RssFragment.this);
+			mListView.setOnItemClickListener(RssFragmentActivity.this);
 		}
 	};
 	private ReadRssNetwork dataThread;
 	private Thread thread;
 
 	/** Called when the activity is first created. */
-	public static Fragment newInstance(Context context) {
-		RssFragment f = new RssFragment();
-
-		return f;
-	}
-
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		ViewGroup root = (ViewGroup) inflater.inflate(
-				R.layout.activity_read_rss, null);
-		return root;
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
+	protected void onCreate(Bundle arg0) {
 		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
+		super.onCreate(arg0);
+		setContentView(R.layout.activity_read_rss);
 		mNews = new ArrayList<News>();
-		mNewsAdapter = new RssAdapter(this.getActivity(), R.id.titleNews, mNews);
-		mListView = (ListView) this.getView().findViewById(R.id.listNews);
+		mNewsAdapter = new RssAdapter(this, R.id.titleNews, mNews);
+		mListView = (ListView) this.findViewById(R.id.listNews);
 		mListView.setOnItemClickListener(this);
 		mListView.setAdapter(mNewsAdapter);
 
-		mWebView = (WebView) this.getView().findViewById(R.id.webView);
+		mWebView = (WebView) this.findViewById(R.id.webView);
 		mWebView.setVisibility(View.GONE);
 		strUrl = "http://www.tinhte.vn/rss/";
-		btnBack = (Button) this.getView().findViewById(R.id.btn_webBack);
+		btnBack = (Button) this.findViewById(R.id.btn_webBack);
 		btnBack.setOnClickListener(this);
 		btnBack.setVisibility(View.INVISIBLE);
-		btnChangRss = (Button) this.getView().findViewById(R.id.btn_change_rss);
+		btnChangRss = (Button) this.findViewById(R.id.btn_change_rss);
 		btnChangRss.setOnClickListener(this);
-		txtViewRssWeb = (TextView) this.getView().findViewById(
-				R.id.txtview_rss_web);
+		txtViewRssWeb = (TextView) this.findViewById(R.id.txtview_rss_web);
 		txtViewRssWeb.setText(items[0]);
 
 	}
@@ -122,19 +109,19 @@ public class RssFragment extends Fragment implements OnItemClickListener,
 
 	public void onClick(View v) {
 		if (v == btnChangRss) {
-			AlertDialog.Builder builder = new Builder(this.getActivity());
+			AlertDialog.Builder builder = new Builder(this);
 			builder.setTitle("Chọn nguồn tin");
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which) {
 					if (items[which].equals("Tinhte.vn")) {
-						RssFragment.this.strUrl = "http://www.tinhte.vn/rss/";
+						RssFragmentActivity.this.strUrl = "http://www.tinhte.vn/rss/";
 					} else if (items[which].equals("VNExpress.net")) {
-						RssFragment.this.strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
+						RssFragmentActivity.this.strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
 					} else if (items[which].equals("Gamethu.vnexpress.net")) {
-						RssFragment.this.strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
+						RssFragmentActivity.this.strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
 					} else if (items[which].equals("24h.com.vn")) {
-						RssFragment.this.strUrl = "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
+						RssFragmentActivity.this.strUrl = "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
 					}
 
 					txtViewRssWeb.setText(items[which]);

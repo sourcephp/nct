@@ -4,16 +4,16 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import att.android.activity.ChatJointActivity;
+import att.android.activity.ChatFragment;
 import att.android.activity.ContactFragment;
-import att.android.activity.LoginActivity;
+import att.android.activity.LoginFragment;
 import att.android.activity.MusicFragment;
-import att.android.activity.RssFragment;
+import att.android.activity.RssFragmentActivity;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+public class MessViewPagerAdapter extends FragmentPagerAdapter {
 	private Context mContext;
 
-	public ViewPagerAdapter(Context mContext, FragmentManager fm) {
+	public MessViewPagerAdapter(Context mContext, FragmentManager fm) {
 		super(fm);
 		this.mContext = mContext;
 	}
@@ -24,14 +24,14 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 		switch (position) {
 
 		case 0:
-			f = ContactFragment.newInstance(mContext);
+			f = LoginFragment.newInstance(mContext);
 			break;
 		case 1:
-			f = RssFragment.newInstance(mContext);
+			f = ContactFragment.newInstance(mContext);
 			break;
 
 		case 2:
-			f = MusicFragment.newInstance(mContext);
+			f = ChatFragment.newInstance(mContext);
 			break;
 
 		}
