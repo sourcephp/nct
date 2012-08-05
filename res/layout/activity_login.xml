@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background" >
+    android:background="@drawable/background_login" >
 
     <EditText
         android:id="@+id/edtxt_username"
@@ -66,13 +66,6 @@
         android:layout_alignRight="@+id/edtxt_pass"
         android:layout_below="@+id/chbox_hide"
         android:layout_marginTop="50dp"
-        android:background="@drawable/custom_button_google_login" />
-
-    <ImageView
-        android:layout_width="160dp"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/logo_team" />
+        android:background="@drawable/custom_btn_yahoo" />
 
 </RelativeLayout>
