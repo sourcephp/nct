@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -23,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import att.android.adapter.Music_HotSongAdapter;
@@ -45,7 +45,11 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	private MediaPlayer mplay;
 	private TextView songName;
 	private SeekBar mSeekBar;
+	private RelativeLayout mMusicControler;
 	private Music_SongListNetwork mSongListNetwork;
+	private Button btnMusicBack;
+	private Button btnLyric;
+	private TextView txtLyric;
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -91,15 +95,25 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		mListView.setOnItemClickListener(this);
 		mListView.setAdapter(mHotSongAdapter);
 		mplay = new MediaPlayer();
+		mMusicControler = (RelativeLayout) this.getView().findViewById(
+				R.id.layout_lyric);
+		mMusicControler.setVisibility(View.INVISIBLE);
+
+		btnMusicBack = (Button) this.getView().findViewById(R.id.btn_add_music);
+		btnMusicBack.setOnClickListener(this);
+		btnLyric = (Button) this.getView().findViewById(R.id.btn_music);
+		btnLyric.setOnClickListener(this);
+		txtLyric = (TextView) this.getView().findViewById(R.id.txt_lyric);
+		songName.setText(mSongName);
+		mSongListNetwork = new Music_SongListNetwork(mHandler);
+		Thread t = new Thread(mSongListNetwork);
+		t.start();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		songName.setText(mSongName);
-		mSongListNetwork = new Music_SongListNetwork(mHandler);
-		Thread t = new Thread(mSongListNetwork);
-		t.start();
+		
 	}
 
 	public void onClick(View v) {
@@ -107,22 +121,29 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		if (v == mBtnPlay) {
 			if (isPlaying) {
 				mplay.pause();
-				mBtnPlay.setBackgroundDrawable(this.getResources().getDrawable(
-						R.drawable.media_pause));
 				isPlaying = false;
 			} else {
 				mplay.start();
-				mBtnPlay.setBackgroundDrawable(this.getResources().getDrawable(
-						R.drawable.media_start));
 				isPlaying = true;
 			}
 		}
+		if (v == btnMusicBack) {
+			mMusicControler.setVisibility(View.INVISIBLE);
+			mListView.setEnabled(true);
+		}
+		if (v == btnLyric) {
+			mMusicControler.setVisibility(View.VISIBLE);
+			mListView.setEnabled(false);
+		}
 	}
+
 	private String mSongName;
-	private int count= 0;
+	private int count = 0;
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
+		mMusicControler.setVisibility(View.VISIBLE);
+		mListView.setEnabled(false);
 		mplay.reset();
 		mSeekBar.setProgress(0);
 		mHotSongAdapter.getItem(position);
@@ -137,7 +158,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		Handler h = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				// TODO Auto-generated method stub
 				super.handleMessage(msg);
 				mLyric = (String) msg.obj;
 			}
@@ -222,6 +242,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
 			MusicFragment.this.mSeekBar.setProgress(values[0]);
+			txtLyric.setText(mLyric);
 		}
 
 		@Override
