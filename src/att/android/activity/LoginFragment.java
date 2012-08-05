@@ -7,12 +7,14 @@ import org.openymsg.network.FailedLoginException;
 import org.openymsg.network.LoginRefusedException;
 import org.openymsg.network.Session;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,7 +27,7 @@ import att.android.model.YGeneralHandler;
 import com.example.multiapp.R;
 
 public class LoginFragment extends Fragment implements OnItemClickListener,
-		OnClickListener {
+		OnClickListener, Runnable {
 	private static final String TAG = "LoginActivity";
 	private EditText edtxtUserName;
 	private EditText edtxtPass;
@@ -33,6 +35,11 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 	private CheckBox chBoxHide;
 	private Button btnLogin;
 	public YGeneralHandler sessionListener;
+//	WindowManager.LayoutParams lpWindow;
+//	public ProgressDialog waitDialog;
+//	public Context context;
+//	private String strUserName = "tommy_t9195";
+//	private String strPass = "xfile91yh";
 
 	public static Fragment newInstance(Context context) {
 		LoginFragment f = new LoginFragment();
@@ -62,41 +69,15 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 
 	public void onClick(View v) {
 		if (v == btnLogin) {
-			Session session = new Session();
-			sessionListener = new YGeneralHandler();
-			session.addSessionListener(sessionListener);
-			String strUserName = edtxtUserName.getText().toString().trim();
-			String strPass = edtxtPass.getText().toString().trim();
-			boolean bSave = chBoxSave.hasSelection();
-			boolean bHide = chBoxHide.hasSelection();
-
-			if ("".equals(strUserName) || "".equals(strPass)) {
-				Log.e("Toast.....", "khong nhan o day ????");
-			} else {
-				// new LoginNetwork(strUserName, strPass, bSave, bHide).start();
-				Log.i(TAG, "Login start");
-				try {
-					session.login(strUserName, strPass);
-				} catch (AccountLockedException e) {
-					Log.d(TAG, "Account has locked!");
-					e.printStackTrace();
-				} catch (IllegalStateException e) {
-					Log.d(TAG, "login false");
-					e.printStackTrace();
-				} catch (LoginRefusedException e) {
-					Log.d(TAG, "login false");
-					e.printStackTrace();
-				} catch (FailedLoginException e) {
-					Log.d(TAG, "Login false");
-					e.printStackTrace();
-				} catch (IOException e) {
-					Log.d(TAG, "IO error");
-					e.printStackTrace();
-				}
-				Log.i("TAG", "Login finish");
-				Log.e("......Toast", "khong thay o day ????");
-			}
+		
+//			showWaitDialog();
+			
+			new Thread(new LoginFragment()).start();
 		}
+				
+			
+			
+			
 		
 	}
 
@@ -104,5 +85,54 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 		// TODO Auto-generated method stub
 
 	}
+//	public void showWaitDialog() {
+//		lpWindow = new WindowManager.LayoutParams();
+//		lpWindow.flags = WindowManager.LayoutParams.FLAG_DITHER;
+//		lpWindow.dimAmount = 0.1f;
+//		lpWindow.alpha = 0.5f;
+//		waitDialog = new ProgressDialog(context);
+//		waitDialog.getWindow().setAttributes(lpWindow);
+//		waitDialog = ProgressDialog.show(context, "", "Loading...", true);
+//	    }
 
+	public void run() {
+		Session session = new Session();
+		sessionListener = new YGeneralHandler();
+		session.addSessionListener(sessionListener);
+		
+		String strUserName = edtxtUserName.getText().toString().trim();
+		Log.i("Username", strUserName);
+		String strPass = edtxtPass.getText().toString().trim();
+		Log.i("Password", strPass);
+		
+//		boolean bSave = chBoxSave.hasSelection();
+//		boolean bHide = chBoxHide.hasSelection();
+
+//		String strUserName="tommy_t9195";
+//		String strPass="xfile91yh";
+		
+		if ("".equals(strUserName) || "".equals(strPass)) {
+		} else {
+			Log.i(TAG, "Login start");
+			try {
+				session.login(strUserName, strPass);
+			} catch (AccountLockedException e) {
+				Log.d(TAG, "Account has locked!");
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				Log.d(TAG, "login false");
+				e.printStackTrace();
+			} catch (LoginRefusedException e) {
+				Log.d(TAG, "login false");
+				e.printStackTrace();
+			} catch (FailedLoginException e) {
+				Log.d(TAG, "Login false");
+				e.printStackTrace();
+			} catch (IOException e) {
+				Log.d(TAG, "IO error");
+				e.printStackTrace();
+			}
+			Log.i("TAG", "Login finish");
+		}
+	}
 }
