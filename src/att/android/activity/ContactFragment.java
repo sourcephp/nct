@@ -3,17 +3,14 @@ package att.android.activity;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import att.android.adapter.ContactListAdapter;
 import att.android.bean.Account;
@@ -21,9 +18,8 @@ import att.android.network.ReadContactListNetwork;
 
 import com.example.multiapp.R;
 
-public class ContactFragment extends Fragment implements OnItemClickListener, OnClickListener {
+public class ContactFragment extends Fragment implements OnItemClickListener {
 	private ListView listContact;
-	private Button btnAcc;
 	private ContactListAdapter mContactAdapter;
 	private ArrayList<Account> arlAccContact;
 	private Handler mHandler = new Handler() {
@@ -63,8 +59,6 @@ public class ContactFragment extends Fragment implements OnItemClickListener, On
 		listContact = (ListView) this.getView().findViewById(R.id.listView_contactList);
 		listContact.setOnItemClickListener(this);
 		listContact.setAdapter(mContactAdapter);
-		btnAcc = (Button) this.getView().findViewById(R.id.btn_login);
-		btnAcc.setOnClickListener(this);
 		
 	}
 
@@ -86,10 +80,4 @@ public class ContactFragment extends Fragment implements OnItemClickListener, On
 		thread.start();
 	}
 
-	public void onClick(View v) {
-		if(v == btnAcc){
-			Intent i = new Intent(this.getActivity(), LoginFragment.class);
-			startActivity(i);
-		}
-	}
 }

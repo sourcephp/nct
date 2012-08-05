@@ -9,7 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_weight="2.73" >
-
     </ListView>
 
     <LinearLayout
@@ -19,14 +18,14 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_search"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/custom_btn_login" />
+            android:background="@drawable/custom_btn_search" />
 
         <EditText
             android:id="@+id/edtxt_stt_search"
-            android:layout_width="170dp"
+            android:layout_width="220dp"
             android:layout_height="30dp"
             android:background="@drawable/custom_edittext_white"
             android:hint="@string/status"
@@ -34,12 +33,6 @@
             android:paddingLeft="11sp"
             android:textColor="#000000"
             android:textColorHint="#000000" />
-
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/custom_btn_search" />
 
         <Button
             android:id="@+id/btn_options"
