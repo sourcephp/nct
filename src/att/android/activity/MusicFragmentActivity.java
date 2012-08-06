@@ -1,20 +1,25 @@
 package att.android.activity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import att.android.adapter.MusicFixedTabsAdapter;
 import att.android.adapter.MusicViewPagerAdapter;
+import att.android.bean.Music_Song;
 import att.android.util.StartFragment;
 
 import com.astuetz.viewpager.extensions.FixedTabsView;
 import com.astuetz.viewpager.extensions.TabsAdapter;
 import com.example.multiapp.R;
 
-public class MusicFragmentActivity extends FragmentActivity implements StartFragment{
+public class MusicFragmentActivity extends FragmentActivity implements
+		StartFragment {
 	private ViewPager mPager;
 	private FixedTabsView mFixedTabs;
-
+	private static Music_Song item;
 	private MusicViewPagerAdapter mPagerAdapter;
 	private TabsAdapter mFixedTabsAdapter;
 
@@ -29,7 +34,7 @@ public class MusicFragmentActivity extends FragmentActivity implements StartFrag
 		mFixedTabsAdapter = new MusicFixedTabsAdapter(this);
 		mFixedTabs.setAdapter(mFixedTabsAdapter);
 		mFixedTabs.setViewPager(mPager);
-		
+
 	}
 
 	private void initViewPager(int i) {
@@ -43,7 +48,10 @@ public class MusicFragmentActivity extends FragmentActivity implements StartFrag
 
 	public void startFragment(int i) {
 		mPager.setCurrentItem(i);
-		
+
+	}
+
+	private static void setSongInfo(Music_Song m) {
+		item = m;
 	}
 }
-

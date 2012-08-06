@@ -29,6 +29,7 @@ import att.android.adapter.Music_HotSongAdapter;
 import att.android.bean.Music_Song;
 import att.android.network.Music_LyricNetwork;
 import att.android.network.Music_SongListNetwork;
+import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
 
@@ -67,7 +68,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 
 	public static Fragment newInstance(Context context) {
 		MusicFragment f = new MusicFragment();
-
 		return f;
 	}
 
@@ -76,6 +76,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 			Bundle savedInstanceState) {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.music_fragment,
 				null);
+
 		return root;
 	}
 
@@ -105,6 +106,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		btnLyric.setOnClickListener(this);
 		txtLyric = (TextView) this.getView().findViewById(R.id.txt_lyric);
 		songName.setText(mSongName);
+		songName.setSelected(true);
 		mSongListNetwork = new Music_SongListNetwork(mHandler);
 		Thread t = new Thread(mSongListNetwork);
 		t.start();
@@ -113,7 +115,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 	}
 
 	public void onClick(View v) {
@@ -139,6 +141,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 
 	private String mSongName;
 	private int count = 0;
+	private static Music_Song item;
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
@@ -147,7 +150,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		mplay.reset();
 		mSeekBar.setProgress(0);
 		mHotSongAdapter.getItem(position);
-		final Music_Song item = mHotSongAdapter.getItem(position);
+		item = mHotSongAdapter.getItem(position);
 		streamUrl = item.streamURL;
 		mSeekBar.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
@@ -162,7 +165,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 				mLyric = (String) msg.obj;
 			}
 		};
-		Log.i("lyric", mLyric);
 
 		Music_LyricNetwork lyric = new Music_LyricNetwork(h, item.songKey);
 		lyric.start();
@@ -172,6 +174,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		count++;
 		Log.i("onItemClick", "" + count);
 		changeRunMusic();
+
 	}
 
 	private void changeRunMusic() {

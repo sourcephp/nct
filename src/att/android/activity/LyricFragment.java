@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import att.android.bean.Music_Song;
 
 public class LyricFragment extends Fragment {
 	public static Fragment newInstance(Context context) {
