@@ -29,8 +29,9 @@ import com.example.multiapp.R;
 public class LoginFragment extends Fragment implements OnItemClickListener,
 		OnClickListener, Runnable {
 	private static final String TAG = "LoginActivity";
-	private EditText edtxtUserName;
-	private EditText edtxtPass;
+	//ko hieu tai sao phai static moi chay duoc???
+	private static EditText edtxtUserName;
+	private static EditText edtxtPass;
 	private CheckBox chBoxSave;
 	private CheckBox chBoxHide;
 	private Button btnLogin;
