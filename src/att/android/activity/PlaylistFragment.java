@@ -1,5 +1,6 @@
 package att.android.activity;
 
+
 import com.example.multiapp.R;
 
 import android.content.Context;
@@ -9,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class PlaylistFragment extends Fragment {
+public class PlaylistFragment extends BaseFragment {
 	public static Fragment newInstance(Context context) {
 		PlaylistFragment f = new PlaylistFragment();
 
@@ -22,5 +23,20 @@ public class PlaylistFragment extends Fragment {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.playlist_fragment,
 				null);
 		return root;
+	}
+
+	@Override
+	public void initVariables() {
+		
+	}
+
+	@Override
+	public void initViews() {
+		
+	}
+
+	@Override
+	public void initActions() {
+		
 	}
 }

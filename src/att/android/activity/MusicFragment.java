@@ -3,6 +3,8 @@ package att.android.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.example.multiapp.R;
+
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -29,11 +31,9 @@ import att.android.adapter.Music_HotSongAdapter;
 import att.android.bean.Music_Song;
 import att.android.network.Music_LyricNetwork;
 import att.android.network.Music_SongListNetwork;
-import att.android.util.StartFragment;
 
-import com.example.multiapp.R;
 
-public class MusicFragment extends Fragment implements OnClickListener,
+public class MusicFragment extends BaseFragment implements OnClickListener,
 		OnItemClickListener {
 
 	private ListView mListView;
@@ -51,6 +51,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	private Button btnMusicBack;
 	private Button btnLyric;
 	private TextView txtLyric;
+	
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -64,10 +65,13 @@ public class MusicFragment extends Fragment implements OnClickListener,
 			mListView.setOnItemClickListener(MusicFragment.this);
 		}
 	};
+	
+	
 	private RunMusic mPlayMusic;
 
 	public static Fragment newInstance(Context context) {
 		MusicFragment f = new MusicFragment();
+
 		return f;
 	}
 
@@ -76,46 +80,14 @@ public class MusicFragment extends Fragment implements OnClickListener,
 			Bundle savedInstanceState) {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.music_fragment,
 				null);
-
 		return root;
 	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
-		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
-		mSeekBar = (SeekBar) this.getView().findViewById(R.id.seekBar1);
-		mSeekBar.setProgress(0);
-		mBtnPlay.setOnClickListener(this);
-
-		mSongList = new ArrayList<Music_Song>();
-		mHotSongAdapter = new Music_HotSongAdapter(getActivity(),
-				R.id.tv_songName, mSongList);
-		mListView = (ListView) this.getView().findViewById(R.id.list_music);
-		mListView.setOnItemClickListener(this);
-		mListView.setAdapter(mHotSongAdapter);
-		mplay = new MediaPlayer();
-		mMusicControler = (RelativeLayout) this.getView().findViewById(
-				R.id.layout_lyric);
-		mMusicControler.setVisibility(View.INVISIBLE);
-
-		btnMusicBack = (Button) this.getView().findViewById(R.id.btn_add_music);
-		btnMusicBack.setOnClickListener(this);
-		btnLyric = (Button) this.getView().findViewById(R.id.btn_music);
-		btnLyric.setOnClickListener(this);
-		txtLyric = (TextView) this.getView().findViewById(R.id.txt_lyric);
-		songName.setText(mSongName);
-		songName.setSelected(true);
-		mSongListNetwork = new Music_SongListNetwork(mHandler);
-		Thread t = new Thread(mSongListNetwork);
-		t.start();
-	}
+	
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
 	}
 
 	public void onClick(View v) {
@@ -126,6 +98,8 @@ public class MusicFragment extends Fragment implements OnClickListener,
 				isPlaying = false;
 			} else {
 				mplay.start();
+				int i = mplay.getCurrentPosition();
+				mSeekBar.setProgress(i);
 				isPlaying = true;
 			}
 		}
@@ -141,7 +115,6 @@ public class MusicFragment extends Fragment implements OnClickListener,
 
 	private String mSongName;
 	private int count = 0;
-	private static Music_Song item;
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
@@ -150,7 +123,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		mplay.reset();
 		mSeekBar.setProgress(0);
 		mHotSongAdapter.getItem(position);
-		item = mHotSongAdapter.getItem(position);
+		final Music_Song item = mHotSongAdapter.getItem(position);
 		streamUrl = item.streamURL;
 		mSeekBar.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
@@ -174,13 +147,12 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		count++;
 		Log.i("onItemClick", "" + count);
 		changeRunMusic();
-
 	}
 
 	private void changeRunMusic() {
 		if (1 == count) {
 			mPlayMusic = new RunMusic();
-			mPlayMusic.execute(mplay);
+			mPlayMusic.execute();
 		} else {
 			mPlayMusic.cancel(true);
 			playMusic();
@@ -190,7 +162,7 @@ public class MusicFragment extends Fragment implements OnClickListener,
 	private void playMusic() {
 
 		mPlayMusic = new RunMusic();
-		mPlayMusic.execute(mplay);
+		mPlayMusic.execute();
 	}
 
 	private void seekChange(View v) {
@@ -200,22 +172,24 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		}
 	}
 
-	private class RunMusic extends AsyncTask<MediaPlayer, Integer, Integer> {
+	private class RunMusic extends AsyncTask<Integer,Integer, Integer> {
 
 		@Override
-		protected Integer doInBackground(MediaPlayer... mplay) {
+		protected Integer doInBackground(Integer... in) {
 			try {
 
-				mplay[0].setDataSource(streamUrl);
-				mplay[0].setAudioStreamType(AudioManager.STREAM_MUSIC);
-				mplay[0].prepare();
-				mplay[0].start();
-				isPlaying = true;
-				MusicFragment.this.mSeekBar.setMax(mplay[0].getDuration());
-				Log.i("time", "" + mplay[0].getDuration());
-				for (int i = 0, n = mplay[0].getDuration(); i < n;) {
+				mplay.setDataSource(streamUrl);
+				mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
+				mplay.prepare();
+				mplay.start();
+				
+				Log.i("time", "" + mplay.getDuration());
+				for (int i = 0, n = mplay.getDuration(); i < n;) {
+					mSeekBar.setMax(n);
 					publishProgress(i);
-					i = mplay[0].getCurrentPosition();
+					
+					i = mplay.getCurrentPosition();
+					Log.i("time", ""+mplay.getCurrentPosition());
 					if (isCancelled())
 						break;
 
@@ -252,5 +226,53 @@ public class MusicFragment extends Fragment implements OnClickListener,
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
 		}
+	}
+
+	@Override
+	public void initVariables() {
+		mSongList = new ArrayList<Music_Song>();
+		mHotSongAdapter = new Music_HotSongAdapter(getActivity(),
+				R.id.tv_songName, mSongList);
+		mplay = new MediaPlayer();
+		mSongListNetwork = new Music_SongListNetwork(mHandler);
+	}
+
+	@Override
+	public void initViews() {
+		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
+		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
+		mSeekBar = (SeekBar) this.getView().findViewById(R.id.seekBar1);
+		mListView = (ListView) this.getView().findViewById(R.id.list_music);
+		mMusicControler = (RelativeLayout) this.getView().findViewById(
+				R.id.layout_lyric);
+		mMusicControler.setVisibility(View.INVISIBLE);
+
+		btnMusicBack = (Button) this.getView().findViewById(R.id.btn_add_music);
+		btnLyric = (Button) this.getView().findViewById(R.id.btn_music);
+		txtLyric = (TextView) this.getView().findViewById(R.id.txt_lyric);
+	}
+
+	@Override
+	public void initActions() {
+		mSeekBar.setProgress(0);
+		mBtnPlay.setOnClickListener(this);
+		mListView.setOnItemClickListener(this);
+		mListView.setAdapter(mHotSongAdapter);
+		btnMusicBack.setOnClickListener(this);
+		btnLyric.setOnClickListener(this);
+		songName.setText(mSongName);
+		songName.setSelected(true);
+		if(mHotSongAdapter.isEmpty()){
+			getSongs();
+		}
+	}
+
+	private void getSongs() {
+		Thread t = new Thread(mSongListNetwork);
+		t.start();
+	}
+	public void startFragment(String a){
+		((MusicFragmentActivity)this.getActivity()).sendData("Test Data");
+		((MusicFragmentActivity)this.getActivity()).startFragment(1);
 	}
 }

@@ -1,27 +1,23 @@
 package att.android.activity;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import att.android.adapter.MusicFixedTabsAdapter;
-import att.android.adapter.MusicViewPagerAdapter;
-import att.android.bean.Music_Song;
-import att.android.util.StartFragment;
-
-import com.astuetz.viewpager.extensions.FixedTabsView;
-import com.astuetz.viewpager.extensions.TabsAdapter;
 import com.example.multiapp.R;
 
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import att.android.adapter.MusicViewPagerAdapter;
+import att.android.util.StartFragment;
+
+
 public class MusicFragmentActivity extends FragmentActivity implements
-		StartFragment {
+		StartFragment, ViewPager.OnPageChangeListener {
 	private ViewPager mPager;
-	private FixedTabsView mFixedTabs;
-	private static Music_Song item;
 	private MusicViewPagerAdapter mPagerAdapter;
-	private TabsAdapter mFixedTabsAdapter;
+	private String data;
+	private OnFragmentDataRecevier listener;
+	private boolean sended;
+	private boolean haveData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,11 +26,6 @@ public class MusicFragmentActivity extends FragmentActivity implements
 
 		setContentView(R.layout.fragment_activity_music);
 		initViewPager(0);
-		mFixedTabs = (FixedTabsView) findViewById(R.id.fixed_tabs_music);
-		mFixedTabsAdapter = new MusicFixedTabsAdapter(this);
-		mFixedTabs.setAdapter(mFixedTabsAdapter);
-		mFixedTabs.setViewPager(mPager);
-
 	}
 
 	private void initViewPager(int i) {
@@ -42,6 +33,7 @@ public class MusicFragmentActivity extends FragmentActivity implements
 		mPagerAdapter = new MusicViewPagerAdapter(getApplicationContext(),
 				getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
+		mPager.setOnPageChangeListener(this);
 		mPager.setCurrentItem(i);
 		mPager.setPageMargin(1);
 	}
@@ -51,7 +43,30 @@ public class MusicFragmentActivity extends FragmentActivity implements
 
 	}
 
-	private static void setSongInfo(Music_Song m) {
-		item = m;
+	public void onPageScrollStateChanged(int arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void onPageSelected(int arg0) {
+		Log.i("MusicFragmentAcitivty", "position = " + arg0);
+		if (haveData) {
+			haveData = false;
+			listener.onDataParameterData(data);
+		}
+	}
+
+	public void setDataListener(OnFragmentDataRecevier listener) {
+		this.listener = listener;
+	}
+
+	public void sendData(String data) {
+		this.data = data;
+		haveData = true;
 	}
 }

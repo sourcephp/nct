@@ -10,16 +10,20 @@ import att.android.activity.PlaylistFragment;
 
 public class MusicViewPagerAdapter extends FragmentPagerAdapter {
 	private Context mContext;
-
+	private FragmentManager mFragmentManager;
 	public MusicViewPagerAdapter(Context context, FragmentManager fm) {
 		super(fm);
 		this.mContext = context;
+		this.mFragmentManager = fm;
 	}
 
 	@Override
-	public Fragment getItem(int arg0) {
+	public Fragment getItem(int position) {
+		StringBuilder builder = new StringBuilder(1024);
+		builder.append("android:switcher:").append("");
 		Fragment f = new Fragment();
-		switch (arg0) {
+		this.mFragmentManager.getClass();
+		switch (position) {
 		case 0:
 			f = MusicFragment.newInstance(mContext);
 			break;
