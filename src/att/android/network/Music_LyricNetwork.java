@@ -29,7 +29,6 @@ public class Music_LyricNetwork extends Thread {
 
 			Message msg = new Message();
 			msg.obj = tokenizerString(lyric);
-			;
 			mHandler.sendMessage(msg);
 
 		} catch (IOException e) {
@@ -40,18 +39,8 @@ public class Music_LyricNetwork extends Thread {
 	}
 
 	private String tokenizerString(String str) {
-		String lyric = "";
-		int i = 0;
-		while (i < str.length()) {
-			if (str.charAt(i) == '<') {
-				str.replace(str.charAt(i - 1), '\n');
-			}
-			i++;
-		}
-		StringTokenizer strToken = new StringTokenizer(str, "<br/>");
-		while (strToken.hasMoreTokens()) {
-			lyric += strToken.nextToken();
-		}
+		String lyric = str.replace("<br />", "\n");
+	
 		return lyric;
 
 	}
