@@ -106,19 +106,41 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 			mMusicControler.setVisibility(View.VISIBLE);
 			mListView.setEnabled(false);
 		}
+		if (v == mBtnNext && instanceIndex < 65) {
+
+			mMusicControler.setVisibility(View.VISIBLE);
+			mListView.setEnabled(false);
+			mHotSongAdapter.getItem(instanceIndex + 1);
+			final Music_Song item = mHotSongAdapter.getItem(instanceIndex + 1);
+			doManyTimes(item);
+			instanceIndex++;
+
+			changeRunMusic();
+
+		}
+		if (v == mBtnPre && instanceIndex >= 1) {
+			mMusicControler.setVisibility(View.VISIBLE);
+			mListView.setEnabled(false);
+			mHotSongAdapter.getItem(instanceIndex - 1);
+			final Music_Song item = mHotSongAdapter.getItem(instanceIndex - 1);
+			doManyTimes(item);
+			instanceIndex--;
+
+			changeRunMusic();
+		}
 	}
 
 	private String mSongName;
 	private int count = 0;
+	private View mBtnNext;
+	private View mBtnPre;
+	private int instanceIndex = 0;
 
-	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-			long arg3) {
-		mMusicControler.setVisibility(View.VISIBLE);
-		mListView.setEnabled(false);
+	private void doManyTimes(Music_Song item) {
+
 		mplay.reset();
 		mSeekBar.setProgress(0);
-		mHotSongAdapter.getItem(position);
-		final Music_Song item = mHotSongAdapter.getItem(position);
+
 		streamUrl = item.streamURL;
 		mSeekBar.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
@@ -138,9 +160,20 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 		lyric.start();
 		mSongName = item.name + " --- " + item.singer;
 		songName.setText(mSongName);
+	}
 
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+			long arg3) {
+		mMusicControler.setVisibility(View.VISIBLE);
+		mListView.setEnabled(false);
+
+		mHotSongAdapter.getItem(position);
+		final Music_Song item = mHotSongAdapter.getItem(position);
+		instanceIndex = position;
+
+		doManyTimes(item);
 		count++;
-		Log.i("onItemClick", "" + count);
+
 		changeRunMusic();
 	}
 
@@ -242,6 +275,8 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 
 	@Override
 	public void initViews() {
+		mBtnPre = this.getView().findViewById(R.id.btn_backward);
+		mBtnNext = this.getView().findViewById(R.id.btn_forward);
 		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
 		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
 		mSeekBar = (SeekBar) this.getView().findViewById(R.id.seekBar1);
@@ -257,6 +292,8 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 
 	@Override
 	public void initActions() {
+		mBtnPre.setOnClickListener(this);
+		mBtnNext.setOnClickListener(this);
 		mSeekBar.setProgress(0);
 		mBtnPlay.setOnClickListener(this);
 		mListView.setOnItemClickListener(this);
