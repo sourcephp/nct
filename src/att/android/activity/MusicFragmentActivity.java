@@ -27,7 +27,7 @@ public class MusicFragmentActivity extends FragmentActivity implements
 		setContentView(R.layout.fragment_activity_music);
 		initViewPager(0);
 	}
-
+	//xoa cai dong comment nay di
 	private void initViewPager(int i) {
 		mPager = (ViewPager) findViewById(R.id.pager_music);
 		mPagerAdapter = new MusicViewPagerAdapter(getApplicationContext(),

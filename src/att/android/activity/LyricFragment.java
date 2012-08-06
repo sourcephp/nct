@@ -26,6 +26,7 @@ public class LyricFragment extends BaseFragment implements OnFragmentDataRecevie
 				null);
 		return root;
 	}
+	//xoa cai dong comment nay di
 	
 	@Override
 	public void onAttach(Activity activity) {
