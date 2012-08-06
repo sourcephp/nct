@@ -185,8 +185,7 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 				
 				Log.i("time", "" + mplay.getDuration());
 				for (int i = 0, n = mplay.getDuration(); i < n;) {
-					mSeekBar.setMax(n);
-					publishProgress(i);
+					publishProgress();
 					
 					i = mplay.getCurrentPosition();
 					Log.i("time", ""+mplay.getCurrentPosition());
@@ -218,7 +217,8 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
-			MusicFragment.this.mSeekBar.setProgress(values[0]);
+			mSeekBar.setMax(mplay.getDuration());
+			mSeekBar.setProgress(mplay.getCurrentPosition());
 			txtLyric.setText(mLyric);
 		}
 
