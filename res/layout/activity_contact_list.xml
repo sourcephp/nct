@@ -26,7 +26,7 @@
         <EditText
             android:id="@+id/edtxt_stt_search"
             android:layout_width="220dp"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:background="@drawable/custom_edittext_white"
             android:hint="@string/status"
             android:lines="1"
