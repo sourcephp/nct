@@ -50,7 +50,7 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 	private Button btnMusicBack;
 	private Button btnLyric;
 	private TextView txtLyric;
-	private Integer currentTime;
+	private int currentTime;
 	// xoa cai dong comment nay di
 	private Handler mHandler = new Handler() {
 		@Override
@@ -236,6 +236,7 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 				R.id.tv_songName, mSongList);
 		mplay = new MediaPlayer();
 		mSongListNetwork = new Music_SongListNetwork(mHandler);
+		currentTime = 0;
 
 	}
 
