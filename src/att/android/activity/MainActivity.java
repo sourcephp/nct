@@ -1,5 +1,6 @@
 package att.android.activity;
 
+
 import com.example.multiapp.R;
 
 import android.app.TabActivity;
@@ -29,6 +30,7 @@ public class MainActivity extends TabActivity {
         mTabHost.addTab(tabRss);
     }
 
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);

@@ -1,22 +1,18 @@
 package att.android.activity;
 
+import com.example.multiapp.R;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import att.android.adapter.MessFixedTabsAdapter;
 import att.android.adapter.MessViewPagerAdapter;
 import att.android.util.StartFragment;
 
-import com.astuetz.viewpager.extensions.FixedTabsView;
-import com.astuetz.viewpager.extensions.TabsAdapter;
-import com.example.multiapp.R;
 
 public class MessengerFragmentActivity extends FragmentActivity implements StartFragment{
 	private ViewPager mPager;
-	private FixedTabsView mFixedTabs;
 
 	private MessViewPagerAdapter mPagerAdapter;
-	private TabsAdapter mFixedTabsAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -25,10 +21,6 @@ public class MessengerFragmentActivity extends FragmentActivity implements Start
 
 		setContentView(R.layout.fragment_activity_messenger);
 		initViewPager(3, 0xFFFFFFFF, 0xFF000000);
-		mFixedTabs = (FixedTabsView) findViewById(R.id.fixed_tabs_mess);
-		mFixedTabsAdapter = new MessFixedTabsAdapter(this);
-		mFixedTabs.setAdapter(mFixedTabsAdapter);
-		mFixedTabs.setViewPager(mPager);
 		
 	}
 
