@@ -16,7 +16,7 @@ public class PlaylistFragment extends BaseFragment {
 
 		return f;
 	}
-
+	//xoa cai dong comment nay di
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
