@@ -5,12 +5,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import att.android.adapter.MusicFixedTabsAdapter;
 import att.android.adapter.MusicViewPagerAdapter;
+import att.android.util.StartFragment;
 
 import com.astuetz.viewpager.extensions.FixedTabsView;
 import com.astuetz.viewpager.extensions.TabsAdapter;
 import com.example.multiapp.R;
 
-public class MusicFragmentActivity extends FragmentActivity {
+public class MusicFragmentActivity extends FragmentActivity implements StartFragment{
 	private ViewPager mPager;
 	private FixedTabsView mFixedTabs;
 
@@ -38,6 +39,11 @@ public class MusicFragmentActivity extends FragmentActivity {
 		mPager.setAdapter(mPagerAdapter);
 		mPager.setCurrentItem(i);
 		mPager.setPageMargin(1);
+	}
+
+	public void startFragment(int i) {
+		mPager.setCurrentItem(i);
+		
 	}
 }
 

@@ -5,12 +5,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import att.android.adapter.MessFixedTabsAdapter;
 import att.android.adapter.MessViewPagerAdapter;
+import att.android.util.StartFragment;
 
 import com.astuetz.viewpager.extensions.FixedTabsView;
 import com.astuetz.viewpager.extensions.TabsAdapter;
 import com.example.multiapp.R;
 
-public class MessengerFragmentActivity extends FragmentActivity {
+public class MessengerFragmentActivity extends FragmentActivity implements StartFragment{
 	private ViewPager mPager;
 	private FixedTabsView mFixedTabs;
 
@@ -38,5 +39,9 @@ public class MessengerFragmentActivity extends FragmentActivity {
 		mPager.setAdapter(mPagerAdapter);
 		mPager.setCurrentItem(0);
 		mPager.setPageMargin(1);
+	}
+
+	public void startFragment(int i) {
+		mPager.setCurrentItem(i);
 	}
 }
