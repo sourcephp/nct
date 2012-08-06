@@ -32,7 +32,6 @@ import att.android.bean.Music_Song;
 import att.android.network.Music_LyricNetwork;
 import att.android.network.Music_SongListNetwork;
 
-
 public class MusicFragment extends BaseFragment implements OnClickListener,
 		OnItemClickListener {
 
@@ -42,7 +41,7 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 	private String streamUrl;
 	private String mLyric = "";
 	private Button mBtnPlay;
-	private boolean isPlaying = false;
+	private boolean isPlaying = true;
 	private MediaPlayer mplay;
 	private TextView songName;
 	private SeekBar mSeekBar;
@@ -51,7 +50,8 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 	private Button btnMusicBack;
 	private Button btnLyric;
 	private TextView txtLyric;
-	//xoa cai dong comment nay di
+	private Integer currentTime;
+	// xoa cai dong comment nay di
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -65,8 +65,7 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 			mListView.setOnItemClickListener(MusicFragment.this);
 		}
 	};
-	
-	
+
 	private RunMusic mPlayMusic;
 
 	public static Fragment newInstance(Context context) {
@@ -83,8 +82,6 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 		return root;
 	}
 
-	
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -98,8 +95,6 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 				isPlaying = false;
 			} else {
 				mplay.start();
-				int i = mplay.getCurrentPosition();
-				mSeekBar.setProgress(i);
 				isPlaying = true;
 			}
 		}
@@ -172,7 +167,7 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 		}
 	}
 
-	private class RunMusic extends AsyncTask<Integer,Integer, Integer> {
+	private class RunMusic extends AsyncTask<Integer, Integer, Integer> {
 
 		@Override
 		protected Integer doInBackground(Integer... in) {
@@ -182,13 +177,16 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 				mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				mplay.prepare();
 				mplay.start();
-				
+
 				Log.i("time", "" + mplay.getDuration());
+
 				for (int i = 0, n = mplay.getDuration(); i < n;) {
+
 					publishProgress();
-					
+
 					i = mplay.getCurrentPosition();
-					Log.i("time", ""+mplay.getCurrentPosition());
+					Log.i("time", "" + mplay.getCurrentPosition()
+							+ "------------" + mplay.getDuration());
 					if (isCancelled())
 						break;
 
@@ -218,7 +216,10 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
 			mSeekBar.setMax(mplay.getDuration());
-			mSeekBar.setProgress(mplay.getCurrentPosition());
+			if (isPlaying) {
+				currentTime = mplay.getCurrentPosition();
+			}
+			mSeekBar.setProgress(currentTime);
 			txtLyric.setText(mLyric);
 		}
 
@@ -235,6 +236,7 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 				R.id.tv_songName, mSongList);
 		mplay = new MediaPlayer();
 		mSongListNetwork = new Music_SongListNetwork(mHandler);
+
 	}
 
 	@Override
@@ -262,7 +264,7 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 		btnLyric.setOnClickListener(this);
 		songName.setText(mSongName);
 		songName.setSelected(true);
-		if(mHotSongAdapter.isEmpty()){
+		if (mHotSongAdapter.isEmpty()) {
 			getSongs();
 		}
 	}
@@ -271,8 +273,9 @@ public class MusicFragment extends BaseFragment implements OnClickListener,
 		Thread t = new Thread(mSongListNetwork);
 		t.start();
 	}
-	public void startFragment(String a){
-		((MusicFragmentActivity)this.getActivity()).sendData("Test Data");
-		((MusicFragmentActivity)this.getActivity()).startFragment(1);
+
+	public void startFragment(String a) {
+		((MusicFragmentActivity) this.getActivity()).sendData("Test Data");
+		((MusicFragmentActivity) this.getActivity()).startFragment(1);
 	}
 }
