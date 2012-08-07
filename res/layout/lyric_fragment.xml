@@ -48,7 +48,7 @@
             android:background="@drawable/btn_next" />
 
         <Button
-            android:id="@+id/btn_add_music"
+            android:id="@+id/btn_repeat"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_alignParentBottom="true"
