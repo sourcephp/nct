@@ -34,7 +34,8 @@ public class LyricFragment extends BaseFragment implements
 	private String mLyric = "";
 	private ArrayList<Music_Song> mSongList;
 	private Button mBtnPlay;
-	private boolean isPlaying = true;
+	private Button mBtnRepeat;
+	private boolean isRepeat;
 	private MediaPlayer mplay;
 	private TextView songName;
 	private SeekBar mSeekBar;
@@ -70,13 +71,14 @@ public class LyricFragment extends BaseFragment implements
 	public void initVariables() {
 		mplay = new MediaPlayer();
 		currentTime = 0;
-
+		isRepeat = false;
 	}
 
 	@Override
 	public void initViews() {
 		mBtnPre = this.getView().findViewById(R.id.btn_backward);
 		mBtnNext = this.getView().findViewById(R.id.btn_forward);
+		mBtnRepeat = (Button) this.getView().findViewById(R.id.btn_repeat);
 		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
 		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
 		mSeekBar = (SeekBar) this.getView().findViewById(R.id.seekBar1);
@@ -87,6 +89,7 @@ public class LyricFragment extends BaseFragment implements
 	public void initActions() {
 		mBtnPre.setOnClickListener(this);
 		mBtnNext.setOnClickListener(this);
+		mBtnRepeat.setOnClickListener(this);
 		mSeekBar.setProgress(0);
 		mBtnPlay.setOnClickListener(this);
 		songName.setText(mSongName);
@@ -94,27 +97,33 @@ public class LyricFragment extends BaseFragment implements
 	}
 
 	public void onClick(View v) {
-
-		if (v == mBtnPlay) {
-			if (isPlaying) {
-				mplay.pause();
-				isPlaying = false;
-			} else {
-				mplay.start();
-				isPlaying = true;
+		if (count > 1) {
+			if (v == mBtnPlay) {
+				if (mplay.isPlaying()) {
+					mplay.pause();
+				} else {
+					mplay.start();
+				}
 			}
-		}
-		if (v == mBtnNext && instanceIndex < mSongList.size()) {
-			instanceIndex++;
-			doManyTimes(mSongList.get(instanceIndex));
-			changeRunMusic();
+			if (v == mBtnRepeat) {
+				if (isRepeat) {
+					isRepeat = false;
+				} else {
+					isRepeat = true;
+				}
+			}
+			if (v == mBtnNext && instanceIndex < mSongList.size()) {
+				instanceIndex++;
+				doManyTimes(mSongList.get(instanceIndex));
+				changeRunMusic();
 
-		}
-		if (v == mBtnPre && instanceIndex >= 1) {
-			instanceIndex--;
-			doManyTimes(mSongList.get(instanceIndex));
-			changeRunMusic();
+			}
+			if (v == mBtnPre && instanceIndex >= 1) {
+				instanceIndex--;
+				doManyTimes(mSongList.get(instanceIndex));
+				changeRunMusic();
 
+			}
 		}
 	}
 
@@ -146,7 +155,6 @@ public class LyricFragment extends BaseFragment implements
 
 		mplay.reset();
 		mSeekBar.setProgress(0);
-
 		streamUrl = item.streamURL;
 		mSeekBar.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
@@ -188,10 +196,8 @@ public class LyricFragment extends BaseFragment implements
 
 				Log.i("time", "" + mplay.getDuration());
 
-				for (int i = 0, n = mplay.getDuration() - 1000; i < n;) {
-
+				for (; 0 < 1;) {
 					publishProgress();
-					i = mplay.getCurrentPosition();
 					Log.i("time", "" + mplay.getCurrentPosition()
 							+ "------------" + mplay.getDuration());
 					if (isCancelled())
@@ -224,8 +230,10 @@ public class LyricFragment extends BaseFragment implements
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
 			mSeekBar.setMax(mplay.getDuration());
-			if (isPlaying) {
+			if (mplay.isPlaying()) {
 				currentTime = mplay.getCurrentPosition();
+			} else if (isRepeat && (currentTime > (mplay.getDuration() - 500))) {
+				mplay.start();
 			}
 			mSeekBar.setProgress(currentTime);
 			txtLyric.setText(mLyric);
