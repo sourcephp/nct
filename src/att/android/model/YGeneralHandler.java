@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.openymsg.network.Session;
 import org.openymsg.network.YahooGroup;
 import org.openymsg.network.YahooUser;
 import org.openymsg.network.event.SessionAdapter;
@@ -19,5 +20,6 @@ import android.os.Vibrator;
 import att.android.model.Logger;
 
 public class YGeneralHandler extends SessionAdapter {
-	//TODO: Slim will write some method later
+
+	public static Session session;
 }
