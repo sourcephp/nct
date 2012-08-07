@@ -14,11 +14,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import att.android.adapter.ContactListAdapter;
 import att.android.bean.Account;
-import att.android.network.ReadContactListNetwork;
+import att.android.network.ReadFullContactListNetwork;
+import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
 
-public class ContactFragment extends Fragment implements OnItemClickListener {
+public class ContactFragment extends Fragment implements OnItemClickListener, StartFragment {
 	private ListView listContact;
 	private ContactListAdapter mContactAdapter;
 	private ArrayList<Account> arlAccContact;
@@ -70,14 +71,22 @@ public class ContactFragment extends Fragment implements OnItemClickListener {
 //		Intent i = new Intent(this.getActivity(), ChatJointFragment.class);
 //		i.putExtra("USERNAM", strUserName);
 //		startActivity(i);
+		((StartFragment)getActivity()).startFragment(2);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		ReadContactListNetwork readThread = new ReadContactListNetwork(mHandler);
+		ReadFullContactListNetwork readThread = new ReadFullContactListNetwork(mHandler);
 		Thread thread = new Thread(readThread);
 		thread.start();
 	}
+
+	public void startFragment(int i) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 
 }

@@ -2,15 +2,17 @@ package att.android.network;
 
 import java.util.ArrayList;
 
+import org.openymsg.network.Session;
+import org.openymsg.roster.Roster;
+
 import android.os.Handler;
 import android.os.Message;
 import att.android.bean.Account;
-import att.android.bean.News;
-import att.android.util.ParseXMLRss;
 
-public class ReadContactListNetwork implements Runnable{
+public class ReadFullContactListNetwork implements Runnable{
+	//TODO: Change something in here later
 	private Handler mHandler;
-public ReadContactListNetwork(Handler mHandler) {
+public ReadFullContactListNetwork(Handler mHandler) {
 	this.mHandler = mHandler;
 }
 public void run() {

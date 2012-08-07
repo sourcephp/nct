@@ -6,15 +6,14 @@ import org.openymsg.network.AccountLockedException;
 import org.openymsg.network.FailedLoginException;
 import org.openymsg.network.LoginRefusedException;
 import org.openymsg.network.Session;
+import org.openymsg.network.Status;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,11 +22,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import att.android.model.YGeneralHandler;
+import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
 
 public class LoginFragment extends Fragment implements OnItemClickListener,
-		OnClickListener, Runnable {
+		OnClickListener, Runnable, StartFragment {
 	private static final String TAG = "LoginActivity";
 	//ko hieu tai sao phai static moi chay duoc???
 	private static EditText edtxtUserName;
@@ -35,12 +35,10 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 	private CheckBox chBoxSave;
 	private CheckBox chBoxHide;
 	private Button btnLogin;
-	public YGeneralHandler sessionListener;
 //	WindowManager.LayoutParams lpWindow;
 //	public ProgressDialog waitDialog;
 //	public Context context;
-//	private String strUserName = "tommy_t9195";
-//	private String strPass = "xfile91yh";
+
 
 	public static Fragment newInstance(Context context) {
 		LoginFragment f = new LoginFragment();
@@ -74,6 +72,7 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 //			showWaitDialog();
 			
 			new Thread(new LoginFragment()).start();
+			((StartFragment)getActivity()).startFragment(1);
 		}
 				
 			
@@ -97,9 +96,9 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 //	    }
 
 	public void run() {
-		Session session = new Session();
-		sessionListener = new YGeneralHandler();
-		session.addSessionListener(sessionListener);
+		YGeneralHandler.session = new Session();
+		YGeneralHandler sessionListener = new YGeneralHandler();
+		YGeneralHandler.session.addSessionListener(sessionListener);	
 		
 		String strUserName = edtxtUserName.getText().toString().trim();
 		Log.i("Username", strUserName);
@@ -116,7 +115,8 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 		} else {
 			Log.i(TAG, "Login start");
 			try {
-				session.login(strUserName, strPass);
+				YGeneralHandler.session.login(strUserName, strPass);
+				YGeneralHandler.session.setStatus(Status.AVAILABLE);
 			} catch (AccountLockedException e) {
 				Log.d(TAG, "Account has locked!");
 				e.printStackTrace();
@@ -135,5 +135,10 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 			}
 			Log.i("TAG", "Login finish");
 		}
+	}
+
+	public void startFragment(int i) {
+		// TODO Auto-generated method stub
+		
 	}
 }
