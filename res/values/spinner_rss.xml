@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="planets_array">
+        <item>"Tinhte.vn"</item>
+        <item>VNExpress.net</item>
+        <item>Gamethu.net</item>
+        <item>24h.com.vn</item>
+    </string-array>
+
+</resources>

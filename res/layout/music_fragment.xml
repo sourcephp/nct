@@ -9,7 +9,7 @@
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/background_tab"
+        android:background="@drawable/tab_background"
         android:orientation="horizontal" >
 
         <Button
@@ -22,12 +22,13 @@
             android:id="@+id/edtxt_search_music"
             android:layout_width="230dp"
             android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/custom_edittext_white"
             android:hint="tìm kiếm ở đây"
             android:lines="1"
             android:paddingLeft="11sp"
             android:textColor="#000000"
-            android:textColorHint="#000000"
-            android:background="@drawable/custom_edittext_white" />
+            android:textColorHint="#000000" />
 
         <Button
             android:id="@+id/btn_music"
@@ -50,95 +51,95 @@
         android:layout_height="match_parent"
         android:background="@drawable/background_lyric" >
 
+        <TextView
+            android:id="@+id/txt_song_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="ID la txt_song_name aksjdfasdfladfasdfasdfasf"
+            android:textColor="#58FAF4"
+            android:textSize="15dp" />
+
         <Button
             android:id="@+id/btn_play"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/btn_glass" />
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_play" />
 
         <Button
             android:id="@+id/btn_backward"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_above="@id/btn_play"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/btn_glass" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@id/btn_play"
+            android:background="@drawable/btn_pre" />
 
         <Button
             android:id="@+id/btn_forward"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_above="@id/btn_play"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/btn_glass" />
-     
-
-        <TextView
-            android:id="@+id/txt_song_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/btn_play"
-            android:layout_alignTop="@+id/btn_backward"
-            android:layout_toLeftOf="@id/btn_forward"
-            android:layout_toRightOf="@id/btn_backward"
-            android:gravity="center"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="20dp"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:text="ID la txt_song_name aksjdfasdfladfasdfasdfasf"
-            android:textColor="#58FAF4"
-            android:textSize="15dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/btn_play"
+            android:background="@drawable/btn_next" />
 
         <Button
             android:id="@+id/btn_add_music"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="5dp"
-            android:background="@drawable/btn_glass" />
+            android:background="@drawable/btn_list" />
+
+        <Button
+            android:id="@+id/btn_love_song"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/btn_add" />
 
         <SeekBar
             android:id="@+id/seekBar1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="12dp"
+            android:layout_above="@id/btn_play"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/btn_add_music"
-            android:layout_toRightOf="@id/btn_play"
             android:max="200"
             android:maxHeight="3dp"
             android:progress="100"
             android:progressDrawable="@drawable/custom_seekbar"
             android:thumb="@drawable/ic_seekbar_move" />
 
-   <ScrollView
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:layout_above="@id/btn_backward"
-       android:layout_alignParentTop="true"
-       android:layout_marginTop="20dp"
-       android:layout_marginBottom="5dp"
-       android:scrollbarStyle="insideOverlay" >
-
-        <TextView
-            android:id="@+id/txt_lyric"
+        <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:textColor="#58FAF4" />
+            android:layout_height="wrap_content"
+            android:layout_above="@id/seekBar1"
+            android:layout_below="@id/txt_song_name"
+            android:layout_marginBottom="5dp"
+            android:scrollbarStyle="insideOverlay" >
+
+            <TextView
+                android:id="@+id/txt_lyric"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textColor="#58FAF4" />
         </ScrollView>
     </RelativeLayout>
 

@@ -24,7 +24,7 @@
         </activity>
         <activity android:name="att.android.activity.MessengerFragmentActivity"></activity>
         <activity android:name="att.android.activity.MusicFragmentActivity"></activity>
-        <activity android:name="att.android.activity.RssFragmentActivity"></activity>
+        <activity android:name="att.android.activity.RssActivity"></activity>
     </application>
 
 </manifest>
