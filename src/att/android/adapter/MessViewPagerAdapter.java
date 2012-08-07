@@ -8,7 +8,7 @@ import att.android.activity.ChatFragment;
 import att.android.activity.ContactFragment;
 import att.android.activity.LoginFragment;
 import att.android.activity.MusicFragment;
-import att.android.activity.RssFragmentActivity;
+import att.android.activity.RssActivity;
 
 public class MessViewPagerAdapter extends FragmentPagerAdapter {
 	private Context mContext;

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/custome_listview"
+    android:background="@drawable/background_listview_hotsong"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="date time"
-                android:textColor="#F7D358"
+                android:textColor="#ffffff"
                 android:textSize="10dp" />
 
             <TextView
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:text="tittleNews"
-                android:textColor="#F7D358"
+                android:textColor="#ffffff"
                 android:textSize="16dp" />
         </LinearLayout>
     </LinearLayout>
@@ -51,7 +51,7 @@
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:text="destNews"
-        android:textColor="#F7D358"
+        android:textColor="#ffffff"
         android:textSize="13dp" />
 
 </LinearLayout>

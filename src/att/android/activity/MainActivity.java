@@ -26,7 +26,7 @@ public class MainActivity extends TabActivity {
         mTabHost.addTab(tabSong);
         
         TabSpec tabRss = mTabHost.newTabSpec("rss");
-        tabRss.setIndicator("", getResources().getDrawable(R.drawable.custom_rss_tab)).setContent(new Intent(this, RssFragmentActivity.class));
+        tabRss.setIndicator("", getResources().getDrawable(R.drawable.custom_rss_tab)).setContent(new Intent(this, RssActivity.class));
         mTabHost.addTab(tabRss);
     }
 

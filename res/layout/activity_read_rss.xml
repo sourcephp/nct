@@ -2,40 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/background" >
 
-    <Button
-        android:id="@+id/btn_change_rss"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:adjustViewBounds="true"
-        android:background="@drawable/custom_btn_options"
-        android:scaleType="centerInside" />
-
-    <TextView
-        android:id="@+id/txtview_rss_web"
-        android:layout_width="match_parent"
+<Spinner
+        android:id="@+id/spinner_change_rss"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/btn_change_rss"
-        android:gravity="center_horizontal"
-        android:paddingBottom="8dp"
-        android:text="ten trang web"
-        android:textColor="#F7D358"
-        android:textSize="20px"
-        android:textStyle="bold" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
 
     <ListView
         android:id="@+id/listNews"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@id/btn_change_rss"
+        android:layout_below="@id/spinner_change_rss"
         android:background="@drawable/custome_listview"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentLeft="true"/>
 
     <WebView
         android:id="@+id/webView"
@@ -52,5 +36,7 @@
         android:adjustViewBounds="true"
         android:background="@drawable/back_icon"
         android:scaleType="centerInside" />
+
+    
 
 </RelativeLayout>

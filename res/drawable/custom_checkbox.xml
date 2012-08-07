@@ -3,6 +3,5 @@
 
     <item android:drawable="@drawable/checkbox_click" android:state_checked="true"/>
     <item android:drawable="@drawable/checkbox_nomal" android:state_focused="false"/>
-    <item android:drawable="@drawable/checkbox_focus" android:state_focused="true"/>
 
 </selector>
