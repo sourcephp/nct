@@ -1,6 +1,7 @@
 package att.android.activity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,13 +32,12 @@ public class LyricFragment extends BaseFragment implements
 
 	private String streamUrl;
 	private String mLyric = "";
+	private ArrayList<Music_Song> mSongList;
 	private Button mBtnPlay;
 	private boolean isPlaying = true;
 	private MediaPlayer mplay;
 	private TextView songName;
 	private SeekBar mSeekBar;
-	private Button btnMusicBack;
-	private Button btnLyric;
 	private TextView txtLyric;
 	private int currentTime;
 	private View mBtnPre;
@@ -57,7 +57,6 @@ public class LyricFragment extends BaseFragment implements
 			Bundle savedInstanceState) {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.lyric_fragment,
 				null);
-		Log.w("LyriFragment", "onCreateView");
 		return root;
 	}
 
@@ -65,18 +64,6 @@ public class LyricFragment extends BaseFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		((MusicFragmentActivity) activity).setDataListener(this);
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Log.i("LyricFragment", "onCreate");
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		Log.i("LyricFragment", "onResume");
 	}
 
 	@Override
@@ -93,8 +80,6 @@ public class LyricFragment extends BaseFragment implements
 		mBtnPlay = (Button) this.getView().findViewById(R.id.btn_play);
 		songName = (TextView) this.getView().findViewById(R.id.txt_song_name);
 		mSeekBar = (SeekBar) this.getView().findViewById(R.id.seekBar1);
-
-		btnLyric = (Button) this.getView().findViewById(R.id.btn_music);
 		txtLyric = (TextView) this.getView().findViewById(R.id.txt_lyric);
 	}
 
@@ -119,17 +104,23 @@ public class LyricFragment extends BaseFragment implements
 				isPlaying = true;
 			}
 		}
-		if (v == mBtnNext && instanceIndex < 65) {
+		if (v == mBtnNext && instanceIndex < mSongList.size()) {
 			instanceIndex++;
+			doManyTimes(mSongList.get(instanceIndex));
+			changeRunMusic();
 
 		}
 		if (v == mBtnPre && instanceIndex >= 1) {
 			instanceIndex--;
+			doManyTimes(mSongList.get(instanceIndex));
+			changeRunMusic();
+
 		}
 	}
 
 	public void onDataParameterData(Music_Song songInfo) {
 		Log.w("songinfo", songInfo.name);
+		instanceIndex = 1;
 		doManyTimes(songInfo);
 		changeRunMusic();
 	}
@@ -244,6 +235,20 @@ public class LyricFragment extends BaseFragment implements
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
 		}
+	}
+
+	public void onDataParameterData(ArrayList<Music_Song> listSong, int position) {
+		instanceIndex = position;
+		mSongList = listSong;
+		doManyTimes(mSongList.get(position));
+		changeRunMusic();
+
+	}
+
+	public void onDataParameterData(int index) {
+		instanceIndex = index;
+		doManyTimes(mSongList.get(index));
+		changeRunMusic();
 	}
 
 }
