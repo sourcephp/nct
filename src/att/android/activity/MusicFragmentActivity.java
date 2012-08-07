@@ -1,5 +1,7 @@
 package att.android.activity;
 
+import java.util.ArrayList;
+
 import com.example.multiapp.R;
 
 import android.os.Bundle;
@@ -14,10 +16,12 @@ public class MusicFragmentActivity extends FragmentActivity implements
 		StartFragment, ViewPager.OnPageChangeListener {
 	private ViewPager mPager;
 	private MusicViewPagerAdapter mPagerAdapter;
-	private Music_Song data;
+	private ArrayList<Music_Song> data;
 	private OnFragmentDataRecevier listener;
 	private boolean sended;
 	private boolean haveData;
+	private int index;
+	private int position;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,11 @@ public class MusicFragmentActivity extends FragmentActivity implements
 		Log.i("MusicFragmentAcitivty", "position = " + arg0);
 		if (haveData) {
 			haveData = false;
-			listener.onDataParameterData(data);
+			if (check) {
+				listener.onDataParameterData(index);
+			} else {
+				listener.onDataParameterData(data, position);
+			}
 		}
 	}
 
@@ -63,8 +71,18 @@ public class MusicFragmentActivity extends FragmentActivity implements
 		this.listener = listener;
 	}
 
-	public void sendData(Music_Song data) {
+	private boolean check;
+
+	public void sendData(int index) {
+		check = true;
+		this.index = index;
+		haveData = true;
+	}
+
+	public void sendData(ArrayList<Music_Song> data, int position) {
+		check = false;
 		this.data = data;
+		this.position = position;
 		haveData = true;
 	}
 }

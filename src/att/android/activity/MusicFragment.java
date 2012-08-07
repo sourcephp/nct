@@ -58,13 +58,19 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener {
 		super.onResume();
 	}
 
+	private boolean check = true;
+
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
 
 		mHotSongAdapter.getItem(position);
 		final Music_Song item = mHotSongAdapter.getItem(position);
-
-		startFragment(item);
+		if (check) {
+			startFragment(mSongList, position);
+		} else {
+			startFragment(position);
+		}
+		check = false;
 	}
 
 	@Override
@@ -95,8 +101,13 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener {
 		t.start();
 	}
 
-	public void startFragment(Music_Song item) {
-		((MusicFragmentActivity) this.getActivity()).sendData(item);
+	public void startFragment(int index) {
+		((MusicFragmentActivity) this.getActivity()).sendData(index);
+		((MusicFragmentActivity) this.getActivity()).startFragment(1);
+	}
+
+	public void startFragment(ArrayList<Music_Song> item, int position) {
+		((MusicFragmentActivity) this.getActivity()).sendData(item, position);
 		((MusicFragmentActivity) this.getActivity()).startFragment(1);
 	}
 }
