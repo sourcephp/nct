@@ -31,10 +31,10 @@
             android:textColorHint="#000000" />
 
         <Button
-            android:id="@+id/btn_music"
+            android:id="@+id/btn_hot_list"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@drawable/ic_music"
+            android:background="@drawable/btn_list"
             android:lines="1" />
     </LinearLayout>
 
