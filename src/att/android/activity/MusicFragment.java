@@ -9,22 +9,35 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import att.android.adapter.Music_HotSongAdapter;
+import att.android.adapter.Music_SearchSongAdapter;
 import att.android.bean.Music_Song;
+import att.android.network.Music_SearchSongNetwork;
 import att.android.network.Music_SongListNetwork;
 
-public class MusicFragment extends BaseFragment implements OnItemClickListener {
+public class MusicFragment extends BaseFragment implements OnItemClickListener,
+		OnClickListener {
 
 	private ListView mListView;
 	private ArrayList<Music_Song> mSongList;
+	private ArrayList<Music_Song> mSearchSongList;
 	private Music_HotSongAdapter mHotSongAdapter;
+	private Music_SearchSongAdapter mSearchSongAdapter;
 	private Music_SongListNetwork mSongListNetwork;
+	private Button mBtnSearch;
+	private EditText eKeySearch;
+	private boolean check = true;
+	private Music_SearchSongNetwork mSearchSongNetwork;
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -35,6 +48,20 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener {
 				mHotSongAdapter.add(itm);
 			}
 			mHotSongAdapter.notifyDataSetChanged();
+			mListView.setOnItemClickListener(MusicFragment.this);
+		}
+	};
+
+	private Handler mSearchHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			@SuppressWarnings("unchecked")
+			ArrayList<Music_Song> rs = (ArrayList<Music_Song>) msg.obj;
+			for (Music_Song itm : rs) {
+				mSearchSongAdapter.add(itm);
+			}
+			mSearchSongAdapter.notifyDataSetChanged();
 			mListView.setOnItemClickListener(MusicFragment.this);
 		}
 	};
@@ -58,8 +85,6 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener {
 		super.onResume();
 	}
 
-	private boolean check = true;
-
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
 
@@ -76,6 +101,7 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener {
 	@Override
 	public void initVariables() {
 		mSongList = new ArrayList<Music_Song>();
+		mSearchSongList = new ArrayList<Music_Song>();
 		mHotSongAdapter = new Music_HotSongAdapter(getActivity(),
 				R.id.tv_songName, mSongList);
 		mSongListNetwork = new Music_SongListNetwork(mHandler);
@@ -85,12 +111,17 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener {
 	@Override
 	public void initViews() {
 		mListView = (ListView) this.getView().findViewById(R.id.list_music);
+		mBtnSearch = (Button) this.getView()
+				.findViewById(R.id.btn_search_Music);
+		eKeySearch = (EditText) this.getView().findViewById(
+				R.id.edtxt_search_music);
 	}
 
 	@Override
 	public void initActions() {
+		mBtnSearch.setOnClickListener(this);
 		mListView.setOnItemClickListener(this);
-		mListView.setAdapter(mHotSongAdapter);
+		// mListView.setAdapter(mHotSongAdapter);
 		if (mHotSongAdapter.isEmpty()) {
 			getSongs();
 		}
@@ -98,6 +129,11 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener {
 
 	private void getSongs() {
 		Thread t = new Thread(mSongListNetwork);
+		t.start();
+	}
+
+	private void getSearchSong() {
+		Thread t = new Thread(mSearchSongNetwork);
 		t.start();
 	}
 
@@ -109,5 +145,19 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener {
 	public void startFragment(ArrayList<Music_Song> item, int position) {
 		((MusicFragmentActivity) this.getActivity()).sendData(item, position);
 		((MusicFragmentActivity) this.getActivity()).startFragment(1);
+	}
+
+	public void onClick(View v) {
+		if (v == mBtnSearch && (!eKeySearch.getText().toString().equals(""))) {
+
+			Log.w("key", eKeySearch.getText().toString());
+			mSearchSongAdapter = new Music_SearchSongAdapter(getActivity(),
+					R.id.tv_songName, mSearchSongList);
+			mSearchSongNetwork = new Music_SearchSongNetwork(mSearchHandler,
+					eKeySearch.getText().toString());
+			getSearchSong();
+
+			mListView.setAdapter(mSearchSongAdapter);
+		}
 	}
 }
