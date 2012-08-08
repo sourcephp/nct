@@ -1,6 +1,11 @@
 package att.android.activity;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -48,6 +53,8 @@ public class LyricFragment extends BaseFragment implements
 	private int instanceIndex = -1;
 	private RunMusic mPlayMusic;
 	private int count = 1;
+	private View mBtnAddSong;
+	private final static String NOTES = "notes.txt";
 
 	public static Fragment newInstance(Context context) {
 		LyricFragment f = new LyricFragment();
@@ -77,6 +84,7 @@ public class LyricFragment extends BaseFragment implements
 
 	@Override
 	public void initViews() {
+		mBtnAddSong = this.getView().findViewById(R.id.btn_love_song);
 		mBtnPre = this.getView().findViewById(R.id.btn_backward);
 		mBtnNext = this.getView().findViewById(R.id.btn_forward);
 		mBtnRepeat = (Button) this.getView().findViewById(R.id.btn_repeat);
@@ -88,6 +96,7 @@ public class LyricFragment extends BaseFragment implements
 
 	@Override
 	public void initActions() {
+		mBtnAddSong.setOnClickListener(this);
 		mBtnPre.setOnClickListener(this);
 		mBtnNext.setOnClickListener(this);
 		mBtnRepeat.setOnClickListener(this);
@@ -131,6 +140,40 @@ public class LyricFragment extends BaseFragment implements
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
 
+			}
+		}
+		if (v == mBtnAddSong) {
+			try {
+				File file = getActivity().getFileStreamPath(NOTES);
+				StringBuilder buf = new StringBuilder("");
+				if (file.exists()) {
+					InputStream in = getActivity().openFileInput(NOTES);
+
+					if (in != null) {
+						InputStreamReader tmp = new InputStreamReader(in);
+						BufferedReader reader = new BufferedReader(tmp);
+						String str1;
+
+						while ((str1 = reader.readLine()) != null) {
+							buf.append(str1 + "╨");
+						}
+
+						in.close();
+					}
+				}
+
+				OutputStreamWriter out = new OutputStreamWriter(getActivity()
+						.openFileOutput(NOTES, 0));
+				String str2 = buf + mSongList.get(instanceIndex).name + "╥"
+						+ mSongList.get(instanceIndex).singer + "╥"
+						+ mSongList.get(instanceIndex).songKey + "╥"
+						+ mSongList.get(instanceIndex).streamURL;
+
+				Log.w("str", str2);
+				out.write(str2);
+				out.close();
+			} catch (Throwable t) {
+				Log.w("Exc", "Exception: " + t.toString());
 			}
 		}
 
