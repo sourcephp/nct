@@ -19,10 +19,8 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -339,4 +337,5 @@ public class LyricFragment extends BaseFragment implements
 
 	public void onStopTrackingTouch(SeekBar seekBar) {
 	}
+	
 }
