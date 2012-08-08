@@ -205,8 +205,8 @@ public class LyricFragment extends BaseFragment implements
 
 				for (; 0 < 1;) {
 					publishProgress();
-					Log.i("time", "" + mplay.getCurrentPosition()
-							+ "------------" + mplay.getDuration());
+					// Log.i("time", "" + mplay.getCurrentPosition()
+					// + "------------" + mplay.getDuration());
 					if (isCancelled())
 						break;
 
@@ -240,9 +240,9 @@ public class LyricFragment extends BaseFragment implements
 			if (mplay.isPlaying()) {
 				currentTime = mplay.getCurrentPosition();
 			} else if (currentTime > (mplay.getDuration() - 500)) {
-				if(isRepeat){
-				mplay.start();
-				}else{
+				if (isRepeat) {
+					mplay.start();
+				} else {
 					instanceIndex++;
 					doManyTimes(mSongList.get(instanceIndex));
 					changeRunMusic();
