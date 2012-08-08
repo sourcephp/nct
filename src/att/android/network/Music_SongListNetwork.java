@@ -16,7 +16,7 @@ public class Music_SongListNetwork implements Runnable {
 
 	private String mSongListUrl;
 	private JSONObject json;
-	ArrayList<Music_Song> mSongList;
+	private ArrayList<Music_Song> mSongList;
 	private Handler mHandler;
 
 	public Music_SongListNetwork(Handler mHandler) {
@@ -24,7 +24,7 @@ public class Music_SongListNetwork implements Runnable {
 	}
 
 	public void run() {
-		this.mSongListUrl = new URLProvider().getHotSongs(0, 66);
+		this.mSongListUrl = new URLProvider().getHotSongs(0, 50);
 		try {
 			json = new JSONProvider().readJsonFromUrl(mSongListUrl);
 			mSongList = new ParseJSONMusic().parseJSONHotMusic(json);
@@ -33,10 +33,8 @@ public class Music_SongListNetwork implements Runnable {
 			msg.obj = mSongList;
 			mHandler.sendMessage(msg);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
