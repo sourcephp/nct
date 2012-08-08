@@ -2,23 +2,27 @@ package att.android.adapter;
 
 import java.util.ArrayList;
 
-import com.example.multiapp.R;
-import com.loopj.android.image.SmartImage;
-import com.loopj.android.image.SmartImageView;
+import org.openymsg.network.YahooUser;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
-import att.android.bean.Account;
 
-public class ContactListAdapter extends ArrayAdapter<Account> {
+import com.example.multiapp.R;
+import com.loopj.android.image.SmartImageView;
+
+public class ContactListAdapter extends ArrayAdapter<Object> implements Filterable{
 	private LayoutInflater mInflater;
+	private String lastName;
+	private String firstName;
 
 	public ContactListAdapter(Context context, int textViewResourceId,
-			ArrayList<Account> objects) {
+			ArrayList<Object> objects) {
 		super(context, textViewResourceId, objects);
 		mInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -27,7 +31,6 @@ public class ContactListAdapter extends ArrayAdapter<Account> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		viewHolder mHolder;
-		Account acc = this.getItem(position);
 		if (null == convertView) {
 			convertView = mInflater.inflate(R.layout.contact_layout_listview,
 					null);
@@ -42,10 +45,37 @@ public class ContactListAdapter extends ArrayAdapter<Account> {
 		} else {
 			mHolder = (viewHolder) convertView.getTag();
 		}
+		Object item = this.getItem(position);
+		if (item instanceof YahooUser){
+			YahooUser yahooUser = (YahooUser) item;
+			String customStatus = yahooUser.getCustomStatus();
+			String customStatusMsg = yahooUser.getCustomStatusMessage();
+			mHolder.strStatus.setText(customStatusMsg);
+			//TODO: Get Avatar later
+			//TODO: change display follow status later
+			lastName = yahooUser.getLastName();
+			firstName = yahooUser.getFirstName();
+			if ("null".equalsIgnoreCase(lastName) || lastName == null)
+				lastName = "";
+			if ("null".equalsIgnoreCase(firstName) || firstName == null)
+				firstName = "";
+			String YMid = yahooUser.getId();
+			if ("".equalsIgnoreCase(firstName+lastName)) {
+				mHolder.strUsername.setText(YMid);
+			} else {
+				mHolder.strUsername.setText(firstName + lastName);
+			}
+		}
 		mHolder.imgAccount.setImageUrl("https://docs.google.com/open?id=0BxqXERuaU046SGxCN1lPanZFa2s");
-		mHolder.strUsername.setText(acc.getStrName());
-		mHolder.strStatus.setText(acc.getStrStatus());
+//		mHolder.strUsername.setText(acc.getStrName());
+//		mHolder.strStatus.setText(acc.getStrStatus());
 		return convertView;
+	}
+	
+	@Override
+	public Filter getFilter() {
+		// TODO Auto-generated method stub
+		return super.getFilter();
 	}
 
 	private class viewHolder {

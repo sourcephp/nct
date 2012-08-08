@@ -12,6 +12,7 @@ import org.openymsg.network.event.SessionChatEvent;
 import org.openymsg.network.event.SessionEvent;
 import org.openymsg.network.event.SessionFriendEvent;
 import org.openymsg.network.event.SessionListEvent;
+import org.openymsg.roster.Roster;
 
 import android.content.Context;
 import android.os.Message;
@@ -20,6 +21,7 @@ import android.os.Vibrator;
 import att.android.model.Logger;
 
 public class YGeneralHandler extends SessionAdapter {
-
+	
 	public static Session session;
+	public static Roster roster;
 }

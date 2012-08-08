@@ -1,27 +1,38 @@
 package att.android.network;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.openymsg.network.Session;
+import org.openymsg.network.YahooUser;
 import org.openymsg.roster.Roster;
 
 import android.os.Handler;
 import android.os.Message;
-import att.android.bean.Account;
+import att.android.model.YGeneralHandler;
 
 public class ReadFullContactListNetwork implements Runnable{
-	//TODO: Change something in here later
 	private Handler mHandler;
 public ReadFullContactListNetwork(Handler mHandler) {
 	this.mHandler = mHandler;
 }
 public void run() {
-	Account obj = new Account("Tester", "Dang thu nghiem", 1);
-	ArrayList<Account> result = new ArrayList<Account>();
-	result.add(obj);
+	
+	YGeneralHandler.session = new Session();
+	YGeneralHandler sessionListener = new YGeneralHandler();
+	YGeneralHandler.session.addSessionListener(sessionListener);
+	
+	Roster roster = YGeneralHandler.session.getRoster();
+	ArrayList<YahooUser> alYahooUser = new ArrayList<YahooUser>();
+	Iterator<YahooUser> iterator = roster.iterator();
+	while(iterator.hasNext()){
+		YahooUser yahooUser = iterator.next();
+		alYahooUser.add(yahooUser);
+	}
+	
 	Message  msg = new Message();
 	msg.what = 1;
-	msg.obj = result;
+	msg.obj = alYahooUser;
 	mHandler.sendMessage(msg);
 }
 

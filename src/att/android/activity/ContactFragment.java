@@ -2,6 +2,8 @@ package att.android.activity;
 
 import java.util.ArrayList;
 
+import org.openymsg.network.YahooUser;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import att.android.adapter.ContactListAdapter;
-import att.android.bean.Account;
 import att.android.network.ReadFullContactListNetwork;
 import att.android.util.StartFragment;
 
@@ -22,13 +23,13 @@ import com.example.multiapp.R;
 public class ContactFragment extends Fragment implements OnItemClickListener, StartFragment {
 	private ListView listContact;
 	private ContactListAdapter mContactAdapter;
-	private ArrayList<Account> arlAccContact;
+	private ArrayList<Object> alYahooContact;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			super.handleMessage(msg);
 			@SuppressWarnings("unchecked")
-			ArrayList<Account> rs = (ArrayList<Account>) msg.obj;
-			for (Account itm : rs) {
+			ArrayList<YahooUser> rs = (ArrayList<YahooUser>) msg.obj;
+			for (YahooUser itm : rs) {
 				mContactAdapter.add(itm);
 			}
 			mContactAdapter.notifyDataSetChanged();
@@ -53,10 +54,10 @@ public class ContactFragment extends Fragment implements OnItemClickListener, St
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		arlAccContact = new ArrayList<Account>();
+		alYahooContact = new ArrayList<Object>();
 		
 		mContactAdapter = new ContactListAdapter(this.getActivity(),
-				1, arlAccContact);
+				1, alYahooContact);
 		listContact = (ListView) this.getView().findViewById(R.id.listView_contactList);
 		listContact.setOnItemClickListener(this);
 		listContact.setAdapter(mContactAdapter);
