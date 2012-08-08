@@ -178,7 +178,7 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 			mSearchSongList.clear();
 			changeAdapter = true;
 		}
-		if (v == mBtnBack) {
+		if (v == mBtnBack && changeAdapter == true) {
 			mListView.setAdapter(mHotSongAdapter);
 			changeAdapter = false;
 			check1 = true;
