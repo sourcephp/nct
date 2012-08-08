@@ -21,6 +21,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import att.android.bean.Music_Song;
 import att.android.network.Music_LyricNetwork;
@@ -28,7 +29,7 @@ import att.android.network.Music_LyricNetwork;
 import com.example.multiapp.R;
 
 public class LyricFragment extends BaseFragment implements
-		OnFragmentDataRecevier, OnClickListener {
+		OnFragmentDataRecevier, OnClickListener, OnSeekBarChangeListener {
 
 	private String streamUrl;
 	private String mLyric = "";
@@ -92,6 +93,7 @@ public class LyricFragment extends BaseFragment implements
 		mBtnRepeat.setOnClickListener(this);
 		mSeekBar.setProgress(0);
 		mSeekBar.setEnabled(false);
+		mSeekBar.setOnSeekBarChangeListener(this);
 		mBtnPlay.setOnClickListener(this);
 		songName.setText(mSongName);
 		songName.setSelected(true);
@@ -109,7 +111,7 @@ public class LyricFragment extends BaseFragment implements
 						R.drawable.btn_repeat_on));
 			}
 		} else if (count > 1) {
-			mSeekBar.setEnabled(true);
+
 			if (v == mBtnPlay) {
 				if (mplay.isPlaying()) {
 					mplay.pause();
@@ -144,6 +146,7 @@ public class LyricFragment extends BaseFragment implements
 	private void changeRunMusic() {
 		if (1 == count) {
 			mPlayMusic = new RunMusic();
+			mSeekBar.setEnabled(true);
 			mPlayMusic.execute();
 			count++;
 		} else {
@@ -163,12 +166,7 @@ public class LyricFragment extends BaseFragment implements
 		mplay.reset();
 		mSeekBar.setProgress(0);
 		streamUrl = item.streamURL;
-		mSeekBar.setOnTouchListener(new OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				seekChange(v);
-				return false;
-			}
-		});
+
 		Handler h = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -183,12 +181,12 @@ public class LyricFragment extends BaseFragment implements
 		songName.setText(mSongName);
 	}
 
-	private void seekChange(View v) {
-		if (mplay.isPlaying()) {
-			SeekBar sb = (SeekBar) v;
-			mplay.seekTo(sb.getProgress());
-		}
-	}
+	// private void seekChange(View v) {
+	// if (mplay.isPlaying()) {
+	// SeekBar sb = (SeekBar) v;
+	// mplay.seekTo(sb.getProgress());
+	// }
+	// }
 
 	private class RunMusic extends AsyncTask<Integer, Integer, Integer> {
 
@@ -241,6 +239,7 @@ public class LyricFragment extends BaseFragment implements
 				currentTime = mplay.getCurrentPosition();
 			} else if (currentTime > (mplay.getDuration() - 500)) {
 				if (isRepeat) {
+					mplay.seekTo(0);
 					mplay.start();
 				} else {
 					instanceIndex++;
@@ -281,5 +280,20 @@ public class LyricFragment extends BaseFragment implements
 		super.onDestroy();
 		mplay.stop();
 		mPlayMusic.cancel(true);
+	}
+
+	public void onProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser) {
+		if (fromUser) {
+			mplay.seekTo(progress);
+		}
+
+	}
+
+	public void onStartTrackingTouch(SeekBar seekBar) {
+
+	}
+
+	public void onStopTrackingTouch(SeekBar seekBar) {
 	}
 }
