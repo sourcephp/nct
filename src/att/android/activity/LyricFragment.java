@@ -249,7 +249,11 @@ public class LyricFragment extends BaseFragment implements
 				}
 			}
 			mSeekBar.setProgress(currentTime);
-			txtLyric.setText(mLyric);
+			if (mLyric.equals("")) {
+				txtLyric.setText("Hiện chưa có lời cho bài hát này");
+			} else {
+				txtLyric.setText(mLyric);
+			}
 		}
 
 		@Override

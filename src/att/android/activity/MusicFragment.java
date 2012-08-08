@@ -35,6 +35,7 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 	private Music_SearchSongAdapter mSearchSongAdapter;
 	private Music_SongListNetwork mSongListNetwork;
 	private Button mBtnSearch;
+	private Button mBtnBack;
 	private EditText eKeySearch;
 	private boolean check1 = true;
 	private boolean check2 = true;
@@ -98,7 +99,9 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 				startFragment(position);
 			}
 			check1 = false;
+			Log.w("hot", "hotttttttttttttt");
 		} else {
+			Log.w("search", "searchhhhhhhhhhhhhh");
 			mSearchSongAdapter.getItem(position);
 			final Music_Song item = mSearchSongAdapter.getItem(position);
 			if (check2) {
@@ -125,6 +128,7 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 		mListView = (ListView) this.getView().findViewById(R.id.list_music);
 		mBtnSearch = (Button) this.getView()
 				.findViewById(R.id.btn_search_Music);
+		mBtnBack = (Button) this.getView().findViewById(R.id.btn_hot_list);
 		eKeySearch = (EditText) this.getView().findViewById(
 				R.id.edtxt_search_music);
 	}
@@ -132,6 +136,7 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 	@Override
 	public void initActions() {
 		mBtnSearch.setOnClickListener(this);
+		mBtnBack.setOnClickListener(this);
 		mListView.setOnItemClickListener(this);
 		mListView.setAdapter(mHotSongAdapter);
 		if (mHotSongAdapter.isEmpty()) {
@@ -171,7 +176,13 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 
 			mListView.setAdapter(mSearchSongAdapter);
 			mSearchSongList.clear();
+			changeAdapter = true;
 		}
-		changeAdapter = true;
+		if (v == mBtnBack) {
+			mListView.setAdapter(mHotSongAdapter);
+			changeAdapter = false;
+			check1 = true;
+		}
+
 	}
 }
