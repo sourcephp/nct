@@ -91,13 +91,25 @@ public class LyricFragment extends BaseFragment implements
 		mBtnNext.setOnClickListener(this);
 		mBtnRepeat.setOnClickListener(this);
 		mSeekBar.setProgress(0);
+		mSeekBar.setEnabled(false);
 		mBtnPlay.setOnClickListener(this);
 		songName.setText(mSongName);
 		songName.setSelected(true);
 	}
 
 	public void onClick(View v) {
-		if (count > 1) {
+		if (v == mBtnRepeat) {
+			if (isRepeat) {
+				isRepeat = false;
+				mBtnRepeat.setBackgroundDrawable(getResources().getDrawable(
+						R.drawable.btn_repeat_off));
+			} else {
+				isRepeat = true;
+				mBtnRepeat.setBackgroundDrawable(getResources().getDrawable(
+						R.drawable.btn_repeat_on));
+			}
+		} else if (count > 1) {
+			mSeekBar.setEnabled(true);
 			if (v == mBtnPlay) {
 				if (mplay.isPlaying()) {
 					mplay.pause();
@@ -105,13 +117,7 @@ public class LyricFragment extends BaseFragment implements
 					mplay.start();
 				}
 			}
-			if (v == mBtnRepeat) {
-				if (isRepeat) {
-					isRepeat = false;
-				} else {
-					isRepeat = true;
-				}
-			}
+
 			if (v == mBtnNext && instanceIndex < mSongList.size()) {
 				instanceIndex++;
 				doManyTimes(mSongList.get(instanceIndex));
@@ -125,6 +131,7 @@ public class LyricFragment extends BaseFragment implements
 
 			}
 		}
+
 	}
 
 	public void onDataParameterData(Music_Song songInfo) {
@@ -232,8 +239,14 @@ public class LyricFragment extends BaseFragment implements
 			mSeekBar.setMax(mplay.getDuration());
 			if (mplay.isPlaying()) {
 				currentTime = mplay.getCurrentPosition();
-			} else if (isRepeat && (currentTime > (mplay.getDuration() - 500))) {
+			} else if (currentTime > (mplay.getDuration() - 500)) {
+				if(isRepeat){
 				mplay.start();
+				}else{
+					instanceIndex++;
+					doManyTimes(mSongList.get(instanceIndex));
+					changeRunMusic();
+				}
 			}
 			mSeekBar.setProgress(currentTime);
 			txtLyric.setText(mLyric);
@@ -259,4 +272,10 @@ public class LyricFragment extends BaseFragment implements
 		changeRunMusic();
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mplay.stop();
+		mPlayMusic.cancel(true);
+	}
 }
