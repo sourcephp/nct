@@ -36,7 +36,8 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 	private Music_SongListNetwork mSongListNetwork;
 	private Button mBtnSearch;
 	private EditText eKeySearch;
-	private boolean check = true;
+	private boolean check1 = true;
+	private boolean check2 = true;
 	private boolean changeAdapter = false;
 	private Music_SearchSongNetwork mSearchSongNetwork;
 	private Handler mHandler = new Handler() {
@@ -91,15 +92,21 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 		if (!changeAdapter) {
 			mHotSongAdapter.getItem(position);
 			final Music_Song item = mHotSongAdapter.getItem(position);
-			if (check) {
+			if (check1) {
 				startFragment(mSongList, position);
 			} else {
 				startFragment(position);
 			}
-			check = false;
-		}else{
+			check1 = false;
+		} else {
 			mSearchSongAdapter.getItem(position);
 			final Music_Song item = mSearchSongAdapter.getItem(position);
+			if (check2) {
+				startFragment(mSearchSongList, position);
+			} else {
+				startFragment(position);
+			}
+			check2 = false;
 		}
 	}
 
