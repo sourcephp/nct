@@ -153,7 +153,7 @@ public class LyricFragment extends BaseFragment implements
 						String str1;
 
 						while ((str1 = reader.readLine()) != null) {
-							buf.append(str1 + "╨");
+							buf.append(str1 + "\n");
 						}
 
 						in.close();
@@ -167,7 +167,6 @@ public class LyricFragment extends BaseFragment implements
 						+ mSongList.get(instanceIndex).songKey + "╥"
 						+ mSongList.get(instanceIndex).streamURL;
 
-				Log.w("str", str2);
 				out.write(str2);
 				out.close();
 			} catch (Throwable t) {
@@ -175,13 +174,6 @@ public class LyricFragment extends BaseFragment implements
 			}
 		}
 
-	}
-
-	public void onDataParameterData(Music_Song songInfo) {
-		Log.w("songinfo", songInfo.name);
-		instanceIndex = 1;
-		doManyTimes(songInfo);
-		changeRunMusic();
 	}
 
 	private void changeRunMusic() {
@@ -302,17 +294,18 @@ public class LyricFragment extends BaseFragment implements
 		}
 	}
 
-	public void onDataParameterData(ArrayList<Music_Song> listSong, int position) {
-		instanceIndex = position;
-		mSongList = listSong;
-		doManyTimes(mSongList.get(position));
-		changeRunMusic();
-
-	}
-
 	public void onDataParameterData(int index) {
 		instanceIndex = index;
 		doManyTimes(mSongList.get(index));
+		changeRunMusic();
+	}
+
+	public void onDataParameterData(ArrayList<Music_Song> listSong,
+			int position, boolean bool) {
+		Log.w("LyricFragment", "LyricFragment nhan dc du lieu");
+		instanceIndex = position;
+		mSongList = listSong;
+		doManyTimes(mSongList.get(position));
 		changeRunMusic();
 	}
 
@@ -337,5 +330,5 @@ public class LyricFragment extends BaseFragment implements
 
 	public void onStopTrackingTouch(SeekBar seekBar) {
 	}
-	
+
 }

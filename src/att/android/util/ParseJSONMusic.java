@@ -13,7 +13,7 @@ import att.android.bean.Music_Song;
 
 public class ParseJSONMusic {
 
-	public static ArrayList<Music_Song> parseJSONHotMusic(JSONObject jsonObj) {
+	public ArrayList<Music_Song> parseJSONHotMusic(JSONObject jsonObj) {
 		ArrayList<Music_Song> musicList = new ArrayList<Music_Song>();
 		JSONTokener token = new JSONTokener(jsonObj.toString());
 		JSONArray jsonArray;

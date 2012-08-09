@@ -40,7 +40,7 @@ public class Music_LyricNetwork extends Thread {
 
 	private String tokenizerString(String str) {
 		String lyric = str.replace("<br />", "\n");
-	
+
 		return lyric;
 
 	}

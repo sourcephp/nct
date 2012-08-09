@@ -22,6 +22,7 @@ public class MusicFragmentActivity extends FragmentActivity implements
 	private boolean haveData;
 	private int index;
 	private int position;
+	private OnFragmentDataRecevier listener2;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,13 +57,16 @@ public class MusicFragmentActivity extends FragmentActivity implements
 	}
 
 	public void onPageSelected(int arg0) {
-		Log.i("MusicFragmentAcitivty", "position = " + arg0);
+		Log.w("MusicFragmentActivity", "fragment" + arg0);
 		if (haveData) {
 			haveData = false;
-			if (check) {
-				listener.onDataParameterData(index);
+			if (test) {
+				listener.onDataParameterData(data, position, bool);
+				if (bool) {
+					listener2.onDataParameterData(null, arg0, bool);
+				}
 			} else {
-				listener.onDataParameterData(data, position);
+				listener.onDataParameterData(index);
 			}
 		}
 	}
@@ -71,18 +75,24 @@ public class MusicFragmentActivity extends FragmentActivity implements
 		this.listener = listener;
 	}
 
-	private boolean check;
+	public void setDataListener2(OnFragmentDataRecevier listener) {
+		this.listener2 = listener;
+	}
+
+	private boolean test;
+	private boolean bool = false;
 
 	public void sendData(int index) {
-		check = true;
+		test = false;
 		this.index = index;
 		haveData = true;
 	}
 
-	public void sendData(ArrayList<Music_Song> data, int position) {
-		check = false;
+	public void sendData(ArrayList<Music_Song> data, int position, boolean bool) {
+		test = true;
 		this.data = data;
 		this.position = position;
+		this.bool = bool;
 		haveData = true;
 	}
 }

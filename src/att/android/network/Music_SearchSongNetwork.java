@@ -28,8 +28,7 @@ public class Music_SearchSongNetwork implements Runnable {
 	public void run() {
 		this.mSongListUrl = URLProvider.getSearchData(1, key, "", 0, 50);
 		try {
-			json = new JSONProvider().readJsonFromUrl(mSongListUrl);
-			Log.w("search result", json.toString());
+			json = JSONProvider.readJsonFromUrl(mSongListUrl);
 			mSongList = new ParseJSONMusic().parseJSONHotMusic(json);
 			Message msg = new Message();
 			msg.what = 1;
