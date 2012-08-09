@@ -101,6 +101,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	public void onClick(View v) {
 		if (v == mBtnUpdate) {
 			if (file.exists()) {
+				mPlaylist.clear();
 				mReadingSongInfo = new ReadingSongInfo(mHandler);
 				getList();
 				playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
