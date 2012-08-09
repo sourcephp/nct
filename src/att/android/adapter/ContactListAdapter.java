@@ -16,14 +16,14 @@ import android.widget.TextView;
 import com.example.multiapp.R;
 import com.loopj.android.image.SmartImageView;
 
-public class ContactListAdapter extends ArrayAdapter<Object> implements Filterable{
+public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filterable{
 	private LayoutInflater mInflater;
 	private String lastName;
 	private String firstName;
 
 	public ContactListAdapter(Context context, int textViewResourceId,
-			ArrayList<Object> objects) {
-		super(context, textViewResourceId, objects);
+			ArrayList<YahooUser> yahooUsers) {
+		super(context, textViewResourceId, yahooUsers);
 		mInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -45,27 +45,25 @@ public class ContactListAdapter extends ArrayAdapter<Object> implements Filterab
 		} else {
 			mHolder = (viewHolder) convertView.getTag();
 		}
-		Object item = this.getItem(position);
-		if (item instanceof YahooUser){
-			YahooUser yahooUser = (YahooUser) item;
-			String customStatus = yahooUser.getCustomStatus();
-			String customStatusMsg = yahooUser.getCustomStatusMessage();
+		YahooUser item = this.getItem(position);
+			String customStatus = item.getCustomStatus();
+			String customStatusMsg = item.getCustomStatusMessage();
 			mHolder.strStatus.setText(customStatusMsg);
 			//TODO: Get Avatar later
 			//TODO: change display follow status later
-			lastName = yahooUser.getLastName();
-			firstName = yahooUser.getFirstName();
+			lastName = item.getLastName();
+			firstName = item.getFirstName();
 			if ("null".equalsIgnoreCase(lastName) || lastName == null)
 				lastName = "";
 			if ("null".equalsIgnoreCase(firstName) || firstName == null)
 				firstName = "";
-			String YMid = yahooUser.getId();
+			String YMid = item.getId();
 			if ("".equalsIgnoreCase(firstName+lastName)) {
 				mHolder.strUsername.setText(YMid);
 			} else {
 				mHolder.strUsername.setText(firstName + lastName);
 			}
-		}
+		
 		mHolder.imgAccount.setImageUrl("https://docs.google.com/open?id=0BxqXERuaU046SGxCN1lPanZFa2s");
 //		mHolder.strUsername.setText(acc.getStrName());
 //		mHolder.strStatus.setText(acc.getStrStatus());

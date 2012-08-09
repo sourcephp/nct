@@ -191,7 +191,7 @@ public class Session implements StatusConstants, FriendManager {
      * @throws MalformedURLException
      * @throws NumberFormatException
      */
-    public Session() throws NumberFormatException {
+    protected Session() throws NumberFormatException {
 	this(null);
     }
     
@@ -238,7 +238,7 @@ public class Session implements StatusConstants, FriendManager {
      * @author slim
      * @return: session
      */
-    public static Session getInstance() {
+    public synchronized static Session getInstance() {
         if(session == null) {
         	session = new Session();
         }

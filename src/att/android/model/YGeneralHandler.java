@@ -25,11 +25,11 @@ public class YGeneralHandler extends SessionAdapter {
 	
 	public static YGeneralHandler sessionListener = null;
 	
-	public YGeneralHandler(){
+	protected YGeneralHandler(){
 		
 	}
 	
-	public static YGeneralHandler getInstance(){
+	public synchronized static YGeneralHandler getInstance(){
 		if(sessionListener == null) {
 			sessionListener = new YGeneralHandler();
 	      }
