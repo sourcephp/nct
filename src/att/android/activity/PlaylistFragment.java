@@ -112,7 +112,10 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		}
 		if (v == mBtnDelete) {
 			if (file.exists()) {
+				mPlaylist.clear();
 				file.delete();
+				mListView.clearAnimation();
+				mListView.setAdapter(playlistAdapter);
 			}
 		}
 

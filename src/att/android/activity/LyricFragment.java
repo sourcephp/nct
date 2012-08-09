@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import att.android.bean.Music_Song;
 import att.android.network.Music_LyricNetwork;
 import att.android.receiver.PhoneReceiver;
@@ -128,7 +129,7 @@ public class LyricFragment extends BaseFragment implements
 				}
 			}
 
-			if (v == mBtnNext && instanceIndex < mSongList.size()) {
+			if (v == mBtnNext && instanceIndex < mSongList.size() - 1) {
 				instanceIndex++;
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
@@ -173,6 +174,7 @@ public class LyricFragment extends BaseFragment implements
 			} catch (Throwable t) {
 				Log.w("Exc", "Exception: " + t.toString());
 			}
+			Toast.makeText(getActivity(), "Added ", Toast.LENGTH_LONG).show();
 		}
 
 	}
@@ -274,7 +276,7 @@ public class LyricFragment extends BaseFragment implements
 				if (isRepeat) {
 					mplay.seekTo(0);
 					mplay.start();
-				} else {
+				} else if (instanceIndex < (mSongList.size() - 1)) {
 					instanceIndex++;
 					doManyTimes(mSongList.get(instanceIndex));
 					changeRunMusic();
