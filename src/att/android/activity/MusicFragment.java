@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.example.multiapp.R;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,7 +27,7 @@ import att.android.network.Music_SearchSongNetwork;
 import att.android.network.Music_SongListNetwork;
 
 public class MusicFragment extends BaseFragment implements OnItemClickListener,
-		OnClickListener {
+		OnClickListener, OnFragmentDataRecevier {
 
 	private ListView mListView;
 	private ArrayList<Music_Song> mSongList;
@@ -39,7 +40,7 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 	private EditText eKeySearch;
 	private boolean check1 = true;
 	private boolean check2 = true;
-	private boolean changeAdapter = false;
+	private static boolean changeAdapter = false;
 	private Music_SearchSongNetwork mSearchSongNetwork;
 	private Handler mHandler = new Handler() {
 		@Override
@@ -76,6 +77,12 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 	}
 
 	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		((MusicFragmentActivity) activity).setDataListener2(this);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.music_fragment,
@@ -91,23 +98,20 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
 		if (!changeAdapter) {
-			mHotSongAdapter.getItem(position);
-			final Music_Song item = mHotSongAdapter.getItem(position);
-			if (check1) {
-				startFragment(mSongList, position);
-			} else {
+			if (!check1) {
 				startFragment(position);
+			} else {
+
+				startFragment(mSongList, position, false);
+				Log.w("MusicFragment", "Gui du lieu di");
 			}
 			check1 = false;
-			Log.w("hot", "hotttttttttttttt");
 		} else {
-			Log.w("search", "searchhhhhhhhhhhhhh");
-			mSearchSongAdapter.getItem(position);
-			final Music_Song item = mSearchSongAdapter.getItem(position);
-			if (check2) {
-				startFragment(mSearchSongList, position);
-			} else {
+			if (!check2) {
 				startFragment(position);
+			} else {
+
+				startFragment(mSearchSongList, position, false);
 			}
 			check2 = false;
 		}
@@ -159,15 +163,16 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 		((MusicFragmentActivity) this.getActivity()).startFragment(1);
 	}
 
-	public void startFragment(ArrayList<Music_Song> item, int position) {
-		((MusicFragmentActivity) this.getActivity()).sendData(item, position);
+	public void startFragment(ArrayList<Music_Song> item, int position,
+			boolean bool) {
+		((MusicFragmentActivity) this.getActivity()).sendData(item, position,
+				bool);
 		((MusicFragmentActivity) this.getActivity()).startFragment(1);
 	}
 
 	public void onClick(View v) {
 		if (v == mBtnSearch && (!eKeySearch.getText().toString().equals(""))) {
 
-			Log.w("key", eKeySearch.getText().toString());
 			mSearchSongAdapter = new Music_SearchSongAdapter(getActivity(),
 					R.id.tv_songName, mSearchSongList);
 			mSearchSongNetwork = new Music_SearchSongNetwork(mSearchHandler,
@@ -184,5 +189,16 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 			check1 = true;
 		}
 
+	}
+
+	public void onDataParameterData(int index) {
+
+	}
+
+	public void onDataParameterData(ArrayList<Music_Song> listSong,
+			int position, boolean bool) {
+
+		check1 = check2 = bool;
+		Log.w("MusicFragment", "MusicFragment nhan dc du lieu");
 	}
 }
