@@ -23,7 +23,7 @@ import com.example.multiapp.R;
 public class ContactFragment extends Fragment implements OnItemClickListener, StartFragment {
 	private ListView listContact;
 	private ContactListAdapter mContactAdapter;
-	private ArrayList<Object> alYahooContact;
+	private ArrayList<YahooUser> alYahooContact;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			super.handleMessage(msg);
@@ -54,7 +54,7 @@ public class ContactFragment extends Fragment implements OnItemClickListener, St
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		alYahooContact = new ArrayList<Object>();
+		alYahooContact = new ArrayList<YahooUser>();
 		
 		mContactAdapter = new ContactListAdapter(this.getActivity(),
 				1, alYahooContact);
