@@ -13,16 +13,16 @@ import att.android.model.YGeneralHandler;
 
 public class ReadFullContactListNetwork implements Runnable{
 	private Handler mHandler;
+	Session instanceofSession = Session.getInstance();
+	YGeneralHandler sessionListenerInstance = YGeneralHandler.getInstance();
 public ReadFullContactListNetwork(Handler mHandler) {
 	this.mHandler = mHandler;
 }
 public void run() {
 	
-	YGeneralHandler.session = new Session();
-	YGeneralHandler sessionListener = new YGeneralHandler();
-	YGeneralHandler.session.addSessionListener(sessionListener);
+	instanceofSession.addSessionListener(sessionListenerInstance);
 	
-	Roster roster = YGeneralHandler.session.getRoster();
+	Roster roster = instanceofSession.getRoster();
 	ArrayList<YahooUser> alYahooUser = new ArrayList<YahooUser>();
 	Iterator<YahooUser> iterator = roster.iterator();
 	while(iterator.hasNext()){
