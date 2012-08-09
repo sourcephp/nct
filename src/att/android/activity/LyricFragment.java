@@ -28,6 +28,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import att.android.bean.Music_Song;
 import att.android.network.Music_LyricNetwork;
+import att.android.receiver.PhoneReceiver;
 
 import com.example.multiapp.R;
 
@@ -240,7 +241,6 @@ public class LyricFragment extends BaseFragment implements
 					// + "------------" + mplay.getDuration());
 					if (isCancelled())
 						break;
-
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {

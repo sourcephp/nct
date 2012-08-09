@@ -103,7 +103,6 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 			} else {
 
 				startFragment(mSongList, position, false);
-				Log.w("MusicFragment", "Gui du lieu di");
 			}
 			check1 = false;
 		} else {
@@ -199,6 +198,5 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 			int position, boolean bool) {
 
 		check1 = check2 = bool;
-		Log.w("MusicFragment", "MusicFragment nhan dc du lieu");
 	}
 }
