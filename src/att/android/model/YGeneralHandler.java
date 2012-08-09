@@ -22,6 +22,18 @@ import att.android.model.Logger;
 
 public class YGeneralHandler extends SessionAdapter {
 	
-	public static Session session;
-	public static Roster roster;
+	
+	public static YGeneralHandler sessionListener = null;
+	
+	public YGeneralHandler(){
+		
+	}
+	
+	public static YGeneralHandler getInstance(){
+		if(sessionListener == null) {
+			sessionListener = new YGeneralHandler();
+	      }
+		return sessionListener;
+		
+	}
 }

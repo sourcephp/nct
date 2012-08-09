@@ -21,6 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import att.android.model.Logger;
 import att.android.model.YGeneralHandler;
 import att.android.util.StartFragment;
 
@@ -28,13 +29,15 @@ import com.example.multiapp.R;
 
 public class LoginFragment extends Fragment implements OnItemClickListener,
 		OnClickListener, Runnable, StartFragment {
-	private static final String TAG = "LoginActivity";
+	private static final String TAG = "LoginFragment";
 	//ko hieu tai sao phai static moi chay duoc???
 	private static EditText edtxtUserName;
 	private static EditText edtxtPass;
 	private CheckBox chBoxSave;
 	private CheckBox chBoxHide;
 	private Button btnLogin;
+	Session instanceofSession = Session.getInstance();
+	YGeneralHandler sessionListenerInstance = YGeneralHandler.getInstance();
 //	WindowManager.LayoutParams lpWindow;
 //	public ProgressDialog waitDialog;
 //	public Context context;
@@ -96,9 +99,8 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 //	    }
 
 	public void run() {
-		YGeneralHandler.session = new Session();
-		YGeneralHandler sessionListener = new YGeneralHandler();
-		YGeneralHandler.session.addSessionListener(sessionListener);	
+		
+		instanceofSession.addSessionListener(sessionListenerInstance);	
 		
 		String strUserName = edtxtUserName.getText().toString().trim();
 		Log.i("Username", strUserName);
@@ -115,8 +117,8 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 		} else {
 			Log.i(TAG, "Login start");
 			try {
-				YGeneralHandler.session.login(strUserName, strPass);
-				YGeneralHandler.session.setStatus(Status.AVAILABLE);
+				instanceofSession.login(strUserName, strPass);
+				instanceofSession.setStatus(Status.AVAILABLE);
 			} catch (AccountLockedException e) {
 				Log.d(TAG, "Account has locked!");
 				e.printStackTrace();
@@ -140,5 +142,12 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 	public void startFragment(int i) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		instanceofSession.removeSessionListener(sessionListenerInstance);
+		Logger.e(TAG, "onPause");
 	}
 }

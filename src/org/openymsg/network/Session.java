@@ -83,6 +83,7 @@ import org.openymsg.network.event.SessionPictureEvent;
 import org.openymsg.network.event.SessionPictureHandler;
 import org.openymsg.roster.Roster;
 
+import android.content.IntentFilter.AuthorityEntry;
 import android.graphics.drawable.Drawable;
 import att.android.model.Logger;
 
@@ -96,6 +97,8 @@ import att.android.model.Logger;
  * @author S.E. Morris
  */
 public class Session implements StatusConstants, FriendManager {
+	/**@author slim */
+	public static Session session = null;
     /** Primary Yahoo ID: the real account id. */
     private YahooIdentity primaryID;
 
@@ -181,7 +184,7 @@ public class Session implements StatusConstants, FriendManager {
 
     /**
      * Creates a new Session based on a ConnectionHandler as configured in the
-     * current System properties.
+     * current System properties. Re-written by Slim
      * 
      * @throws IOException
      * @throws JDOMException
@@ -191,6 +194,8 @@ public class Session implements StatusConstants, FriendManager {
     public Session() throws NumberFormatException {
 	this(null);
     }
+    
+    
 
     /**
      * Creates a new Session based on the provided ConnectionHandler. If the
@@ -228,6 +233,17 @@ public class Session implements StatusConstants, FriendManager {
 	network.install(this);
 
     }
+    /**
+     * Method of Singleton Pattern
+     * @author slim
+     * @return: session
+     */
+    public static Session getInstance() {
+        if(session == null) {
+        	session = new Session();
+        }
+        return session;
+     }
 
     /**
      * Adds a session listener to the collection of listeners to which events
