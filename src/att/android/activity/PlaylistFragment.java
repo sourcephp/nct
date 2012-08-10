@@ -34,7 +34,6 @@ import att.android.bean.Music_Song;
 public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		OnItemClickListener, OnFragmentDataRecevier {
 
-	private View mBtnUpdate;
 	private ListView mListView;
 	private Music_MyPlaylistAdapter playlistAdapter;
 	ArrayList<Music_Song> mPlaylist;
@@ -84,7 +83,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	@Override
 	public void initViews() {
-		mBtnUpdate = this.getView().findViewById(R.id.btn_update);
 		mListView = (ListView) this.getView().findViewById(R.id.listView1);
 		mBtnDelete = this.getView().findViewById(R.id.btn_del);
 	}
@@ -92,7 +90,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	@Override
 	public void initActions() {
 		mBtnDelete.setOnClickListener(this);
-		mBtnUpdate.setOnClickListener(this);
 		mListView.setOnItemClickListener(this);
 	}
 
