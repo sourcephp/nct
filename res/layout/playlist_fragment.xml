@@ -4,27 +4,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+
     <Button
         android:id="@+id/btn_update"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:text="up" />
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/btn_update" />
 
     <Button
         android:id="@+id/btn_del"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
-        android:text="del" />
+        android:background="@drawable/btn_delete" />
 
     <ListView
         android:id="@+id/listView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/btn_update" >
+        android:layout_above="@+id/btn_update"
+        android:layout_alignParentTop="true" >
     </ListView>
 
 </RelativeLayout>
