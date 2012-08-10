@@ -54,6 +54,7 @@ public class LyricFragment extends BaseFragment implements
 	private RunMusic mPlayMusic;
 	private int count = 1;
 	private View mBtnAddSong;
+	private boolean isPause;
 	private final static String NOTES = "notes.txt";
 
 	public static Fragment newInstance(Context context) {
@@ -124,18 +125,20 @@ public class LyricFragment extends BaseFragment implements
 			if (v == mBtnPlay) {
 				if (mplay.isPlaying()) {
 					mplay.pause();
+					isPause = true;
 				} else {
 					mplay.start();
 				}
 			}
 
-			if (v == mBtnNext && instanceIndex < mSongList.size() - 1) {
+			if (v == mBtnNext && (instanceIndex < (mSongList.size() - 1))
+					&& mSongList.size() > 0) {
 				instanceIndex++;
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
 
 			}
-			if (v == mBtnPre && instanceIndex >= 1) {
+			if (v == mBtnPre && instanceIndex >= 1 && mSongList.size() > 0) {
 				instanceIndex--;
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
@@ -265,7 +268,7 @@ public class LyricFragment extends BaseFragment implements
 			mSeekBar.setMax(mplay.getDuration());
 			if (mplay.isPlaying()) {
 				currentTime = mplay.getCurrentPosition();
-			} else if (currentTime > (mplay.getDuration() - 500)) {
+			} else if (!isPause) {
 				if (isRepeat) {
 					mplay.seekTo(0);
 					mplay.start();
@@ -297,7 +300,6 @@ public class LyricFragment extends BaseFragment implements
 
 	public void onDataParameterData(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
-		Log.w("LyricFragment", "LyricFragment nhan dc du lieu");
 		instanceIndex = position;
 		mSongList = listSong;
 		doManyTimes(mSongList.get(position));
