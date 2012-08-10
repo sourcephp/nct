@@ -245,11 +245,11 @@ public class LyricFragment extends BaseFragment implements
 				Log.i("doIn", "het vong for");
 
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
+				Log.e("LyricFragment", "IllegalArgumentException");
 			} catch (IllegalStateException e) {
-				e.printStackTrace();
+				Log.e("LyricFragment", "IllegalStateException");
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.e("LyricFragment", "IOException");
 			}
 			return null;
 		}
@@ -307,7 +307,9 @@ public class LyricFragment extends BaseFragment implements
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		mplay.stop();
+		if (null != mplay) {
+			mplay.stop();
+		}
 		mPlayMusic.cancel(true);
 	}
 
