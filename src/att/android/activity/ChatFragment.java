@@ -6,13 +6,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+
 
 import com.example.multiapp.R;
 
 
 public class ChatFragment extends Fragment{
-	private ListView listMessage;
+	private ImageView icon_status;
+	private Button btn_close;
+	private ScrollView scrollView;
 	
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
