@@ -121,7 +121,7 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		mListView = (ListView) this.findViewById(R.id.listNews);
 		mWebView = (WebView) this.findViewById(R.id.webView);
 		btnBack = (Button) this.findViewById(R.id.btn_webBack);
-		mSpinner = (Spinner) this.findViewById(R.id.spinner_change_rss);
+//		mSpinner = (Spinner) this.findViewById(R.id.spinner_change_rss);
 	}
 
 	public void initActions() {

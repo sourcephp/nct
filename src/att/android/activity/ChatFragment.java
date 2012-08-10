@@ -6,11 +6,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.multiapp.R;
 
 
 public class ChatFragment extends Fragment{
+	private ListView listMessage;
+	
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
 
@@ -20,7 +23,7 @@ public class ChatFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.activity_chat,
+		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.formchat,
 				null);
 		return root;
 	}
