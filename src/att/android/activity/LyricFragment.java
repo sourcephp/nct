@@ -128,6 +128,7 @@ public class LyricFragment extends BaseFragment implements
 					isPause = true;
 				} else {
 					mplay.start();
+					isPause = false;
 				}
 			}
 
