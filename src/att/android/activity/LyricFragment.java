@@ -217,13 +217,6 @@ public class LyricFragment extends BaseFragment implements
 		songName.setText(mSongName);
 	}
 
-	// private void seekChange(View v) {
-	// if (mplay.isPlaying()) {
-	// SeekBar sb = (SeekBar) v;
-	// mplay.seekTo(sb.getProgress());
-	// }
-	// }
-
 	private class RunMusic extends AsyncTask<Integer, Integer, Integer> {
 
 		@Override

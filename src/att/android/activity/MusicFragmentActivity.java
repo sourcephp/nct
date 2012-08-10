@@ -23,6 +23,7 @@ public class MusicFragmentActivity extends FragmentActivity implements
 	private int index;
 	private int position;
 	private OnFragmentDataRecevier listener2;
+	private OnFragmentDataRecevier listener1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class MusicFragmentActivity extends FragmentActivity implements
 	}
 
 	public void onPageSelected(int arg0) {
+		if (arg0 == 2) {
+			listener1.onDataParameterData(0);
+		}
 		Log.w("MusicFragmentActivity", "fragment" + arg0);
 		if (haveData) {
 			haveData = false;
@@ -69,6 +73,10 @@ public class MusicFragmentActivity extends FragmentActivity implements
 				listener.onDataParameterData(index);
 			}
 		}
+	}
+
+	public void setDataListener1(OnFragmentDataRecevier listener) {
+		this.listener1 = listener;
 	}
 
 	public void setDataListener(OnFragmentDataRecevier listener) {
