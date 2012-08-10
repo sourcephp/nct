@@ -1,10 +1,16 @@
 package att.android.activity;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +30,7 @@ import android.widget.PopupWindow;
 import att.android.adapter.RssAdapter;
 import att.android.bean.News;
 import att.android.network.ReadRssNetwork;
+import att.android.util.ParseXMLRss;
 
 import com.example.multiapp.R;
 import com.quickaction.popup.ActionItem;
@@ -31,7 +38,7 @@ import com.quickaction.popup.QuickAction;
 import com.quickaction.popup.QuickAction.OnActionItemClickListener;
 
 public class RssActivity extends Activity implements OnItemClickListener,
-		OnClickListener{
+		OnClickListener {
 	private ListView mListView;
 	private RssAdapter mNewsAdapter;
 	private ArrayList<News> mNews;
@@ -40,23 +47,7 @@ public class RssActivity extends Activity implements OnItemClickListener,
 	private Button btnBack;
 	private Button btnWebName;
 	private QuickAction mQuickAction;
-	ArrayAdapter<String> adapterListWeb;
-	private final String[] items = { "Tinhte.vn", "VNExpress.net",
-			"Gamethu.vnexpress.net", "24h.com.vn" };
-	private Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			@SuppressWarnings("unchecked")
-			ArrayList<News> rs = (ArrayList<News>) msg.obj;
-			for (News itm : rs) {
-				mNewsAdapter.add(itm);
-			}
-			mNewsAdapter.notifyDataSetChanged();
-			mListView.setOnItemClickListener(RssActivity.this);
-		}
-	};
-	private ReadRssNetwork dataThread;
+	private OnDataNetwork mData;
 	private Thread thread;
 	private boolean didInit = false;
 
@@ -91,27 +82,6 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		mWebView.loadUrl(strUrl);
 	}
 
-//	public void onItemSelected(AdapterView<?> arg0, View arg1, int pos,
-//			long arg3) {
-//		switch (pos) {
-//		case 0:
-//			strUrl = "http://www.tinhte.vn/rss/";
-//			break;
-//		case 1:
-//			strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
-//			break;
-//		case 2:
-//			strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
-//			break;
-//		case 3:
-//			strUrl = "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
-//			break;
-//
-//		}
-//		mNewsAdapter.clear();
-//		startAsyncTask(strUrl);
-//	}
-
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}
@@ -120,8 +90,8 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		mNews = new ArrayList<News>();
 		mNewsAdapter = new RssAdapter(this, R.id.titleNews, mNews);
 		strUrl = "http://www.tinhte.vn/rss/";
-		adapterListWeb = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
 		mQuickAction = new QuickAction(this);
+		mData = new OnDataNetwork();
 	}
 
 	public void initViews() {
@@ -135,7 +105,7 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		mNewsAdapter.notifyDataSetChanged();
 		mListView.setOnItemClickListener(this);
 		mListView.setAdapter(mNewsAdapter);
-		
+
 		mWebView.setVisibility(View.GONE);
 		btnBack.setOnClickListener(this);
 		btnBack.setVisibility(View.INVISIBLE);
@@ -152,38 +122,35 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		mQuickAction.addActionItem(actionVnEx);
 		mQuickAction.addActionItem(actionGame);
 		mQuickAction.addActionItem(action24h);
-		mQuickAction.setOnActionItemClickListener(new OnActionItemClickListener() {
-			
-			public void onItemClick(QuickAction source, int pos, int actionId) {
-				switch (pos) {
-				case 0:
-					strUrl = "http://www.tinhte.vn/rss/";
-					break;
-				case 1:
-					strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
-					break;
-				case 2:
-					strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
-					break;
-				case 3:
-					strUrl = "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
-					break;
-		
-				}
-				Log.i("popup-----", pos+"-------"+actionId);
-				btnWebName.setText(source.getActionItem(pos).getTitle());
-				mNewsAdapter.clear();
-				startAsyncTask(strUrl);
-			
-			}
-		});
-		startAsyncTask(strUrl);
-	}
+		mQuickAction
+				.setOnActionItemClickListener(new OnActionItemClickListener() {
 
-	public void startAsyncTask(String url) {
-		dataThread = new ReadRssNetwork(mHandler, url);
-		thread = new Thread(dataThread);
-		thread.start();
+					public void onItemClick(QuickAction source, int pos,
+							int actionId) {
+						switch (pos) {
+						case 0:
+							strUrl = "http://www.tinhte.vn/rss/";
+							break;
+						case 1:
+							strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
+							break;
+						case 2:
+							strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
+							break;
+						case 3:
+							strUrl = "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
+							break;
+						}
+						Log.i("popup-----", pos + "-------" + actionId);
+						btnWebName
+								.setText(source.getActionItem(pos).getTitle());
+						mNewsAdapter.clear();
+						mData.cancel(true);
+						mData = new OnDataNetwork();
+						mData.execute(strUrl);
+					}
+				});
+		mData.execute(strUrl);
 	}
 
 	public void onClick(View v) {
@@ -191,9 +158,43 @@ public class RssActivity extends Activity implements OnItemClickListener,
 			btnBack.setVisibility(View.INVISIBLE);
 			mWebView.setVisibility(View.GONE);
 		}
-		if(v == btnWebName){
+		if (v == btnWebName) {
 			mQuickAction.show(v);
 		}
 	}
 
+	private class OnDataNetwork extends AsyncTask<String, Integer, Integer> {
+
+		@Override
+		protected Integer doInBackground(String... url) {
+			URL mUrl;
+			try {
+				mUrl = new URL(url[0]);
+				URLConnection ucon = mUrl.openConnection();
+				ucon.connect();
+				InputStream mIs = mUrl.openStream();
+				mNews = ParseXMLRss.getDataFromXML(mIs);
+				publishProgress();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			super.onProgressUpdate(values);
+			for (News itm : mNews) {
+				mNewsAdapter.add(itm);
+			}
+			mNewsAdapter.notifyDataSetChanged();
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+	}
 }
