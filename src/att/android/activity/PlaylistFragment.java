@@ -32,7 +32,7 @@ import att.android.adapter.Music_MyPlaylistAdapter;
 import att.android.bean.Music_Song;
 
 public class PlaylistFragment extends BaseFragment implements OnClickListener,
-		OnItemClickListener {
+		OnItemClickListener, OnFragmentDataRecevier {
 
 	private View mBtnUpdate;
 	private ListView mListView;
@@ -41,7 +41,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	private View mBtnDelete;
 	private final static String NOTES = "notes.txt";
 	private ReadingSongInfo mReadingSongInfo;
-	private boolean check = true;
 	private File file;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -65,17 +64,22 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			Bundle savedInstanceState) {
 		ViewGroup root = (ViewGroup) inflater.inflate(
 				R.layout.playlist_fragment, null);
+		Log.e("PlaylistFragment", "onCreateView");
 		return root;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		((MusicFragmentActivity) activity).setDataListener1(this);
 	}
 
 	@Override
 	public void initVariables() {
 		file = getActivity().getFileStreamPath(NOTES);
 		mPlaylist = new ArrayList<Music_Song>();
-		if (file.exists()) {
-			playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
-					mPlaylist);
-		}
+		playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
+				mPlaylist);
 	}
 
 	@Override
@@ -90,26 +94,9 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		mBtnDelete.setOnClickListener(this);
 		mBtnUpdate.setOnClickListener(this);
 		mListView.setOnItemClickListener(this);
-		if (file.exists() && playlistAdapter.isEmpty()) {
-			getList();
-		}
-		if (file.exists()) {
-			mListView.setAdapter(playlistAdapter);
-		}
 	}
 
 	public void onClick(View v) {
-		if (v == mBtnUpdate) {
-			if (file.exists()) {
-				mPlaylist.clear();
-				mReadingSongInfo = new ReadingSongInfo(mHandler);
-				getList();
-				playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
-						mPlaylist);
-				mListView.setAdapter(playlistAdapter);
-
-			}
-		}
 		if (v == mBtnDelete) {
 			if (file.exists()) {
 				mPlaylist.clear();
@@ -128,6 +115,8 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	}
 
 	private void getList() {
+		mPlaylist.clear();
+		mReadingSongInfo = new ReadingSongInfo(mHandler);
 		Thread t = new Thread(mReadingSongInfo);
 		t.start();
 	}
@@ -194,6 +183,18 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			mHandler.sendMessage(msg);
 
 		}
+
+	}
+
+	public void onDataParameterData(int index) {
+		if (file.exists()) {
+			getList();
+			mListView.setAdapter(playlistAdapter);
+		}
+	}
+
+	public void onDataParameterData(ArrayList<Music_Song> listSong,
+			int position, boolean bool) {
 
 	}
 
