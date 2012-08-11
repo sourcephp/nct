@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_chatbox_me"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignBottom="@+id/txt_chatbox_me"
+        android:layout_alignLeft="@+id/txt_chatbox_me"
+        android:layout_alignRight="@+id/txt_chatbox_me"
+        android:layout_alignTop="@+id/txt_chatbox_me"
+        android:background="@drawable/chatform_chatbox2_bg" >
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txt_chatbox_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/img_avatar_chatbox_me"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="5dip"
+        android:layout_marginTop="5dip"
+        android:layout_toLeftOf="@+id/img_avatar_chatbox_me"
+        android:paddingBottom="10dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="15dip"
+        android:paddingTop="10dip"
+        android:text="abcadfasdfasdf"
+        android:textColor="#000000" >
+    </TextView>
+
+    <ImageView
+        android:id="@+id/img_avatar_chatbox_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        android:background="@drawable/avatar_border" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/avatar_me"
+        android:layout_width="48dip"
+        android:layout_height="48dip"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="6dip"
+        android:layout_marginTop="6dip" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/real_avatar_me"
+        android:layout_width="48dip"
+        android:layout_height="48dip"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="6dip"
+        android:layout_marginTop="6dip"
+        android:background="@drawable/avatar_yadroid" >
+    </ImageView>
+
+</RelativeLayout>
