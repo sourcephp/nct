@@ -2,6 +2,8 @@ package att.android.activity;
 
 import java.util.ArrayList;
 
+import org.openymsg.network.YahooUser;
+
 import com.example.multiapp.R;
 
 import android.app.Activity;
@@ -25,9 +27,10 @@ import att.android.adapter.Music_SearchSongAdapter;
 import att.android.bean.Music_Song;
 import att.android.network.Music_SearchSongNetwork;
 import att.android.network.Music_SongListNetwork;
+import att.android.util.StartFragment;
 
 public class MusicFragment extends BaseFragment implements OnItemClickListener,
-		OnClickListener, OnFragmentDataRecevier {
+		OnClickListener, OnFragmentDataRecevier, StartFragment {
 
 	private ListView mListView;
 	private ArrayList<Music_Song> mSongList;
@@ -102,7 +105,7 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 				startFragment(position);
 			} else {
 
-				startFragment(mSongList, position, false);
+				startFragment1(mSongList, position, false);
 			}
 			check1 = false;
 		} else {
@@ -110,7 +113,7 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 				startFragment(position);
 			} else {
 
-				startFragment(mSearchSongList, position, false);
+				startFragment1(mSearchSongList, position, false);
 			}
 			check2 = false;
 		}
@@ -162,7 +165,7 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 		((MusicFragmentActivity) this.getActivity()).startFragment(1);
 	}
 
-	public void startFragment(ArrayList<Music_Song> item, int position,
+	public void startFragment1(ArrayList<Music_Song> item, int position,
 			boolean bool) {
 		((MusicFragmentActivity) this.getActivity()).sendData(item, position,
 				bool);
@@ -194,9 +197,22 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 
 	}
 
-	public void onDataParameterData(ArrayList<Music_Song> listSong,
+	public void onDataParameterData1(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
 
 		check1 = check2 = bool;
 	}
+
+	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
+			int position, boolean bool) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void startFragment2(ArrayList<YahooUser> item, int position,
+			boolean bool) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

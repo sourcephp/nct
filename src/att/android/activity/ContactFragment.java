@@ -15,12 +15,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import att.android.adapter.ContactListAdapter;
+import att.android.bean.Music_Song;
 import att.android.network.ReadFullContactListNetwork;
 import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
 
-public class ContactFragment extends Fragment implements OnItemClickListener, StartFragment {
+public class ContactFragment extends Fragment implements OnItemClickListener,
+		StartFragment, OnFragmentDataRecevier {
 	private ListView listContact;
 	private ContactListAdapter mContactAdapter;
 	private ArrayList<YahooUser> alYahooContact;
@@ -36,6 +38,7 @@ public class ContactFragment extends Fragment implements OnItemClickListener, St
 			listContact.setOnItemClickListener(ContactFragment.this);
 		};
 	};
+
 	public static Fragment newInstance(Context context) {
 		ContactFragment f = new ContactFragment();
 
@@ -45,8 +48,8 @@ public class ContactFragment extends Fragment implements OnItemClickListener, St
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.activity_contact_list,
-				null);
+		ViewGroup root = (ViewGroup) inflater.inflate(
+				R.layout.activity_contact_list, null);
 		return root;
 	}
 
@@ -55,39 +58,77 @@ public class ContactFragment extends Fragment implements OnItemClickListener, St
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		alYahooContact = new ArrayList<YahooUser>();
-		
-		mContactAdapter = new ContactListAdapter(this.getActivity(),
-				1, alYahooContact);
-		listContact = (ListView) this.getView().findViewById(R.id.listView_contactList);
+
+		mContactAdapter = new ContactListAdapter(this.getActivity(), 1,
+				alYahooContact);
+		listContact = (ListView) this.getView().findViewById(
+				R.id.listView_contactList);
 		listContact.setOnItemClickListener(this);
 		listContact.setAdapter(mContactAdapter);
-		
+
 	}
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-//		mContactAdapter.getItem(position);
-//		Account item = mContactAdapter.getItem(position);
-//		String strUserName = item.getStrName();
-//		Intent i = new Intent(this.getActivity(), ChatJointFragment.class);
-//		i.putExtra("USERNAM", strUserName);
-//		startActivity(i);
-		((StartFragment)getActivity()).startFragment(2);
+		// mContactAdapter.getItem(position);
+		// Account item = mContactAdapter.getItem(position);
+		// String strUserName = item.getStrName();
+		// Intent i = new Intent(this.getActivity(), ChatJointFragment.class);
+		// i.putExtra("USERNAM", strUserName);
+		// startActivity(i);
+		((StartFragment) getActivity()).startFragment(2);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		ReadFullContactListNetwork readThread = new ReadFullContactListNetwork(mHandler);
+		ReadFullContactListNetwork readThread = new ReadFullContactListNetwork(
+				mHandler);
 		Thread thread = new Thread(readThread);
 		thread.start();
 	}
 
 	public void startFragment(int i) {
 		// TODO Auto-generated method stub
+
+	}
+
+	public void onDataParameterData(int index) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void onDataParameterData(ArrayList<Music_Song> listSong,
+			int position, boolean bool) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	public void startFragment1(ArrayList<Music_Song> item, int position,
+			boolean bool) {
+		// TODO Auto-generated method stub
 		
 	}
-	
+
+	public void startFragment2(ArrayList<YahooUser> item, int position,
+			boolean bool) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onDataParameterData1(ArrayList<Music_Song> listSong,
+			int position, boolean bool) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
+			int position, boolean bool) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }

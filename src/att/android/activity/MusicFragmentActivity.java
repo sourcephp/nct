@@ -2,6 +2,8 @@ package att.android.activity;
 
 import java.util.ArrayList;
 
+import org.openymsg.network.YahooUser;
+
 import com.example.multiapp.R;
 
 import android.os.Bundle;
@@ -65,9 +67,9 @@ public class MusicFragmentActivity extends FragmentActivity implements
 		if (haveData) {
 			haveData = false;
 			if (test) {
-				listener.onDataParameterData(data, position, bool);
+				listener.onDataParameterData1(data, position, bool);
 				if (bool) {
-					listener2.onDataParameterData(null, arg0, bool);
+					listener2.onDataParameterData1(null, arg0, bool);
 				}
 			} else {
 				listener.onDataParameterData(index);
@@ -102,5 +104,17 @@ public class MusicFragmentActivity extends FragmentActivity implements
 		this.position = position;
 		this.bool = bool;
 		haveData = true;
+	}
+
+	public void startFragment1(ArrayList<Music_Song> item, int position,
+			boolean bool) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void startFragment2(ArrayList<YahooUser> item, int position,
+			boolean bool) {
+		// TODO Auto-generated method stub
+		
 	}
 }
