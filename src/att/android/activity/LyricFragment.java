@@ -1,6 +1,7 @@
 package att.android.activity;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -17,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,11 +33,12 @@ import android.widget.Toast;
 import att.android.bean.Music_Song;
 import att.android.network.Music_LyricNetwork;
 import att.android.receiver.PhoneReceiver;
-
+import att.android.receiver.PhoneReceiver.OnIncommingCall;
 import com.example.multiapp.R;
 
 public class LyricFragment extends BaseFragment implements
-		OnFragmentDataRecevier, OnClickListener, OnSeekBarChangeListener {
+		OnFragmentDataRecevier, OnClickListener, OnSeekBarChangeListener,
+		OnIncommingCall {
 
 	private String streamUrl;
 	private String mLyric = "";
@@ -55,6 +59,7 @@ public class LyricFragment extends BaseFragment implements
 	private int count = 1;
 	private View mBtnAddSong;
 	private boolean isPause;
+	private PhoneReceiver broadcast;
 	private final static String NOTES = "notes.txt";
 
 	public static Fragment newInstance(Context context) {
@@ -107,6 +112,25 @@ public class LyricFragment extends BaseFragment implements
 		mBtnPlay.setOnClickListener(this);
 		songName.setText(mSongName);
 		songName.setSelected(true);
+	}
+
+	public void turnOnBroadcast() {
+		broadcast = new PhoneReceiver(this);
+		IntentFilter filter = new IntentFilter(
+				TelephonyManager.ACTION_PHONE_STATE_CHANGED);
+		getActivity().registerReceiver(broadcast, filter);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		turnOnBroadcast();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		getActivity().unregisterReceiver(broadcast);
 	}
 
 	public void onClick(View v) {
@@ -329,6 +353,13 @@ public class LyricFragment extends BaseFragment implements
 	}
 
 	public void onStopTrackingTouch(SeekBar seekBar) {
+	}
+
+	public void onIncommingCall() {
+		if (mplay.isPlaying()) {
+			mplay.pause();
+			isPause = true;
+		}
 	}
 
 }

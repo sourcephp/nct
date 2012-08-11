@@ -24,9 +24,9 @@
             
         </activity>
         <receiver android:name="att.android.receiver.PhoneReceiver">
-            <intent-filter >
+            <!-- <intent-filter >
                 <action android:name="android.intent.action.PHONE_STATE"/>
-            </intent-filter>
+            </intent-filter> -->
         </receiver>
         <activity android:name="att.android.activity.MessengerFragmentActivity"></activity>
         <activity android:name="att.android.activity.MusicFragmentActivity"></activity>
