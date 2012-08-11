@@ -7,6 +7,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import org.openymsg.network.YahooUser;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
@@ -46,11 +48,21 @@ public class RssActivity extends Activity implements OnItemClickListener,
 	private WebView mWebView;
 	private Button btnBack;
 	private Button btnWebName;
+	
 	private QuickAction mQuickAction;
-	private OnDataNetwork mData;
-	private Thread thread;
 	private boolean didInit = false;
-
+	private Handler mHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			super.handleMessage(msg);
+			@SuppressWarnings("unchecked")
+			ArrayList<News> rs = (ArrayList<News>) msg.obj;
+			for (News itm : rs) {
+				mNewsAdapter.add(itm);
+			}
+			mNewsAdapter.notifyDataSetChanged();
+			mListView.setOnItemClickListener(RssActivity.this);
+		};
+	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,34 +76,11 @@ public class RssActivity extends Activity implements OnItemClickListener,
 
 	}
 
-	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-			long arg3) {
-		mNewsAdapter.getItem(position);
-		News item = mNewsAdapter.getItem(position);
-		String strUrl = item.getmUrl();
-		mWebView.setVisibility(View.VISIBLE);
-		btnBack.setVisibility(View.VISIBLE);
-		mWebView.getSettings().setJavaScriptEnabled(true);
-		mWebView.setWebViewClient(new WebViewClient() {
-			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				view.loadUrl(url);
-				return true;
-			}
-		});
-		mWebView.loadUrl(strUrl);
-	}
-
-	public void onNothingSelected(AdapterView<?> arg0) {
-
-	}
-
 	public void initVariables(Context context) {
 		mNews = new ArrayList<News>();
 		mNewsAdapter = new RssAdapter(this, R.id.titleNews, mNews);
 		strUrl = "http://www.tinhte.vn/rss/";
 		mQuickAction = new QuickAction(this);
-		mData = new OnDataNetwork();
 	}
 
 	public void initViews() {
@@ -145,12 +134,10 @@ public class RssActivity extends Activity implements OnItemClickListener,
 						btnWebName
 								.setText(source.getActionItem(pos).getTitle());
 						mNewsAdapter.clear();
-						mData.cancel(true);
-						mData = new OnDataNetwork();
-						mData.execute(strUrl);
+						getDataNetwork(strUrl);
 					}
 				});
-		mData.execute(strUrl);
+		getDataNetwork(strUrl);
 	}
 
 	public void onClick(View v) {
@@ -163,38 +150,30 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		}
 	}
 
-	private class OnDataNetwork extends AsyncTask<String, Integer, Integer> {
-
-		@Override
-		protected Integer doInBackground(String... url) {
-			URL mUrl;
-			try {
-				mUrl = new URL(url[0]);
-				URLConnection ucon = mUrl.openConnection();
-				ucon.connect();
-				InputStream mIs = mUrl.openStream();
-				mNews = ParseXMLRss.getDataFromXML(mIs);
-				publishProgress();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+			long arg3) {
+		mNewsAdapter.getItem(position);
+		News item = mNewsAdapter.getItem(position);
+		String strUrl = item.getmUrl();
+		mWebView.setVisibility(View.VISIBLE);
+		btnBack.setVisibility(View.VISIBLE);
+		mWebView.getSettings().setJavaScriptEnabled(true);
+		mWebView.setWebViewClient(new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				view.loadUrl(url);
+				return true;
 			}
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			super.onProgressUpdate(values);
-			for (News itm : mNews) {
-				mNewsAdapter.add(itm);
-			}
-			mNewsAdapter.notifyDataSetChanged();
-		}
-
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
-		}
+		});
+		mWebView.loadUrl(strUrl);
 	}
+
+	public void onNothingSelected(AdapterView<?> arg0) {
+
+	}
+private void getDataNetwork(String url){
+	ReadRssNetwork mConnectNetwork = new ReadRssNetwork(mHandler, url);
+	Thread thread = new Thread(mConnectNetwork);
+	thread.start();
+}
 }
