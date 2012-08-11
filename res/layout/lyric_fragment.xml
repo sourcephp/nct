@@ -27,7 +27,7 @@
             android:layout_height="45dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/btn_play" />
+            android:background="@drawable/btn_pause" />
 
         <Button
             android:id="@+id/btn_backward"
