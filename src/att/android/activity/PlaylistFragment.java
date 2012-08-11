@@ -10,6 +10,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import org.openymsg.network.YahooUser;
+
 import com.example.multiapp.R;
 
 import android.R.bool;
@@ -190,9 +192,16 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		}
 	}
 
-	public void onDataParameterData(ArrayList<Music_Song> listSong,
+	public void onDataParameterData1(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
 
 	}
+
+	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
+			int position, boolean bool) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

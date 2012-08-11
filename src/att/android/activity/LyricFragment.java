@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
+import org.openymsg.network.YahooUser;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -325,7 +327,7 @@ public class LyricFragment extends BaseFragment implements
 		changeRunMusic();
 	}
 
-	public void onDataParameterData(ArrayList<Music_Song> listSong,
+	public void onDataParameterData1(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
 		instanceIndex = position;
 		mSongList = listSong;
@@ -362,6 +364,12 @@ public class LyricFragment extends BaseFragment implements
 			mplay.pause();
 			isPause = true;
 		}
+	}
+
+	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
+			int position, boolean bool) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

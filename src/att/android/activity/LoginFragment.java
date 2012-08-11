@@ -1,12 +1,14 @@
 package att.android.activity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.openymsg.network.AccountLockedException;
 import org.openymsg.network.FailedLoginException;
 import org.openymsg.network.LoginRefusedException;
 import org.openymsg.network.Session;
 import org.openymsg.network.Status;
+import org.openymsg.network.YahooUser;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import att.android.bean.Music_Song;
 import att.android.model.Logger;
 import att.android.model.YGeneralHandler;
 import att.android.util.StartFragment;
@@ -149,5 +152,17 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 		super.onPause();
 		instanceofSession.removeSessionListener(sessionListenerInstance);
 		Logger.e(TAG, "onPause");
+	}
+
+	public void startFragment1(ArrayList<Music_Song> item, int position,
+			boolean bool) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void startFragment2(ArrayList<YahooUser> item, int position,
+			boolean bool) {
+		// TODO Auto-generated method stub
+		
 	}
 }
