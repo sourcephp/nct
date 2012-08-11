@@ -1,108 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:background="@drawable/setting_form_bg">
-	<View android:id="@+id/View02" android:layout_height="1dip"
-		android:layout_width="fill_parent" android:background="#3b4755"></View>
-	<RelativeLayout android:id="@+id/LinearLayout01"
-		android:orientation="horizontal" android:layout_width="fill_parent"
-		android:background="@drawable/changestatus_buttonbar_bg"
-		android:layout_height="wrap_content">
-		<ImageView android:layout_height="wrap_content"
-			android:layout_marginLeft="5dip" android:layout_width="wrap_content"
-			android:layout_alignParentLeft="true" android:layout_centerVertical="true"
-			android:paddingLeft="10dip" android:paddingRight="10dip"
-			android:shadowDx="0.0" android:shadowDy="1.0" android:textColor="#FFFFFF"
-			android:shadowColor="#000000" android:shadowRadius="2.0"
-			android:textStyle="bold" android:text="Update" android:id="@+id/formchat_icon_status"
-			android:background="@drawable/avai_icon_focus"></ImageView>
-		<TextView android:textSize="20dip" android:shadowColor="#FFFFFF"
-			android:shadowDx="0.0" android:textColor="#3b4755"
-			android:layout_height="wrap_content" android:layout_centerVertical="true"
-			android:layout_centerInParent="true" android:textStyle="bold"
-			android:shadowDy="2.0" android:shadowRadius="1.5"
-			android:id="@+id/formchat_friends_name" android:lines="1"
-			android:layout_width="fill_parent" android:layout_toRightOf="@+id/formchat_icon_status"
-			android:layout_toLeftOf="@+id/formchat_btt_close"></TextView>
-		<Button android:background="@drawable/command_popup_edit_status"
-			android:layout_height="wrap_content" android:layout_marginRight="5dip"
-			android:layout_width="wrap_content" android:layout_alignParentRight="true"
-			android:layout_centerVertical="true" android:paddingLeft="10dip"
-			android:paddingRight="10dip" android:shadowDx="0.0" android:shadowDy="1.0"
-			android:textColor="#FFFFFF" android:shadowColor="#000000"
-			android:shadowRadius="2.0" android:textStyle="bold"
-			android:id="@+id/formchat_btt_close" android:text="Close"></Button>
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/setting_form_bg"
+    android:orientation="vertical" >
 
+    <View
+        android:id="@+id/View02"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#3b4755" >
+    </View>
 
+    <RelativeLayout
+        android:id="@+id/LinearLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/changestatus_buttonbar_bg"
+        android:orientation="horizontal" >
 
-	</RelativeLayout>
-	<View android:id="@+id/View01" android:layout_width="fill_parent"
-		android:layout_height="1dip" android:background="#3b4755"></View>
-	<ScrollView android:layout_weight="1" android:layout_height="fill_parent"
-		android:layout_width="fill_parent" android:id="@+id/formchat_scrollbar">
-		<LinearLayout android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:id="@+id/formchat_content"
-			android:orientation="vertical" android:paddingBottom="60dip"></LinearLayout>
+        <ImageView
+            android:id="@+id/formchat_icon_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dip"
+            android:background="@drawable/avai_icon_focus"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:shadowColor="#000000"
+            android:shadowDx="0.0"
+            android:shadowDy="1.0"
+            android:shadowRadius="2.0"
+            android:text="Update"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" >
+        </ImageView>
 
-	</ScrollView>
-	<View android:id="@+id/View03" android:layout_height="1dip"
-		android:layout_width="fill_parent" android:background="#3b4755"></View>
-	<RelativeLayout android:id="@+id/LinearLayout01"
-		android:orientation="horizontal" android:layout_width="fill_parent"
-		android:background="#FFFFFF" android:layout_height="60dip">
+        <TextView
+            android:id="@+id/formchat_friends_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/formchat_btt_close"
+            android:layout_toRightOf="@+id/formchat_icon_status"
+            android:lines="1"
+            android:shadowColor="#FFFFFF"
+            android:shadowDx="0.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="1.5"
+            android:textColor="#3b4755"
+            android:textSize="20dip"
+            android:textStyle="bold" >
+        </TextView>
 
+        <Button
+            android:id="@+id/formchat_btt_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dip"
+            android:background="@drawable/command_popup_edit_status"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:shadowColor="#000000"
+            android:shadowDx="0.0"
+            android:shadowDy="1.0"
+            android:shadowRadius="2.0"
+            android:text="Close"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" >
+        </Button>
+    </RelativeLayout>
 
-		<Button android:layout_width="wrap_content"
-			android:layout_alignParentLeft="true" android:layout_centerVertical="true"
-			android:shadowDx="0.0" android:shadowDy="1.0" android:textColor="#FFFFFF"
-			android:shadowColor="#000000" android:shadowRadius="2.0"
-			android:textStyle="bold" android:id="@+id/formchat_icon_emo"
-			android:layout_height="wrap_content" android:background="@drawable/cmd_choice_emo"></Button>
-		<EditText android:layout_centerInParent="true"
-			android:layout_width="fill_parent" android:background="#FFFFFF"
-			android:layout_toRightOf="@+id/formchat_icon_emo" android:hint="Write message"
-			android:layout_toLeftOf="@+id/formchat_btt_send"
-			android:layout_marginRight="10dip" android:id="@+id/txt_formchat_message"
-			android:textSize="16dip" android:layout_height="60dip" android:paddingLeft="10dip"></EditText>
-		<Button android:background="@drawable/command_popup_edit_status"
-			android:layout_marginRight="5dip" android:layout_alignParentRight="true"
-			android:layout_centerVertical="true" android:paddingLeft="10dip"
-			android:paddingRight="10dip" android:shadowDx="0.0" android:shadowDy="1.0"
-			android:textColor="#FFFFFF" android:shadowColor="#000000"
-			android:shadowRadius="2.0" android:textStyle="bold" android:text="Send"
-			android:id="@+id/formchat_btt_send" android:layout_height="fill_parent"
-			android:layout_width="wrap_content" android:layout_marginTop="10dip"></Button>
+    <View
+        android:id="@+id/View01"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#3b4755" >
+    </View>
 
+    <ScrollView
+        android:id="@+id/formchat_scrollbar"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
 
+        <LinearLayout
+            android:id="@+id/formchat_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="60dip" >
+        </LinearLayout>
+    </ScrollView>
 
-	</RelativeLayout>
-	<LinearLayout android:layout_width="fill_parent" android:background="@drawable/commandbar_bg" android:layout_height="wrap_content" android:gravity="center_vertical" android:id="@+id/formchat_bar_bottom" android:visibility="gone">
+    <View
+        android:id="@+id/View03"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#3b4755" >
+    </View>
 
-		<RelativeLayout android:layout_width="fill_parent" android:layout_weight="1" android:gravity="center_vertical|center_horizontal" android:layout_height="fill_parent" android:orientation="vertical" android:id="@+id/layout_friendlist">
-			<CheckBox android:layout_marginTop="1px" android:id="@+id/cmd_friendlist" android:button="@drawable/commandbar_selector_friendslist" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/checkbox_background" android:checked="true" android:paddingLeft="76dip"></CheckBox>
-			<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10dip" android:layout_marginLeft="15dip" android:layout_marginTop="32dip" android:text="Friend List" android:textColor="#FFFFFF"></TextView>
-		</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/LinearLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:background="#FFFFFF"
+        android:orientation="horizontal" >
 
-		<RelativeLayout android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="fill_parent" android:gravity="center_vertical|center_horizontal" android:id="@+id/layout_current">
-			<CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1px" android:id="@+id/cmd_current" android:button="@drawable/commandbar_selector_current" android:background="@drawable/checkbox_background" android:paddingRight="76dip"></CheckBox>
-			<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="32dip" android:layout_marginLeft="18dip" android:textSize="10dip" android:textColor="#FFFFFF" android:text="Chat List">
-			</TextView>
-			<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical|center_horizontal" android:layout_marginLeft="50dip" android:id="@+id/layout_icon_notify_number">
-				<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/img_current" android:background="@drawable/commandbar_notification_icon"></ImageView>
-				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/number_current" android:text="5" android:textColor="#FFFFFF" android:textSize="12dip" android:textStyle="bold" android:layout_centerInParent="true"></TextView>
-			</RelativeLayout>
-		</RelativeLayout>
+        <Button
+            android:id="@+id/formchat_icon_emo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/cmd_choice_emo"
+            android:shadowColor="#000000"
+            android:shadowDx="0.0"
+            android:shadowDy="1.0"
+            android:shadowRadius="2.0"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" >
+        </Button>
 
-		<RelativeLayout android:layout_weight="1" android:layout_width="fill_parent" android:gravity="center_vertical|center_horizontal" android:layout_height="fill_parent" android:id="@+id/layout_settings">
-			<CheckBox android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="1dip" android:id="@+id/cmd_settings" android:button="@drawable/command_selector_settings" android:background="@drawable/checkbox_background" android:paddingRight="76dip"></CheckBox>
-			<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="32dip" android:textSize="10dip" android:text="Settings" android:layout_marginLeft="20dip" android:textColor="#FFFFFF"></TextView>
-		</RelativeLayout>
+        <EditText
+            android:id="@+id/txt_formchat_message"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dip"
+            android:layout_toLeftOf="@+id/formchat_btt_send"
+            android:layout_toRightOf="@+id/formchat_icon_emo"
+            android:background="#FFFFFF"
+            android:hint="Write message"
+            android:paddingLeft="10dip"
+            android:textSize="16dip" >
+        </EditText>
 
-		<RelativeLayout android:layout_weight="1" android:layout_width="fill_parent" android:gravity="center_vertical|center_horizontal" android:layout_height="fill_parent" android:id="@+id/layout_logout">
-			<CheckBox android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="1dip" android:id="@+id/cmd_logout" android:button="@drawable/commandbar_selector_logout" android:background="@drawable/checkbox_background" android:paddingRight="76dip"></CheckBox>
-			<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="32dip" android:textSize="10dip" android:text="Logout" android:layout_marginLeft="26dip" android:textColor="#FFFFFF"></TextView>
-		</RelativeLayout>
-	</LinearLayout>
-
+        <Button
+            android:id="@+id/formchat_btt_send"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/command_popup_edit_status"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:shadowColor="#000000"
+            android:shadowDx="0.0"
+            android:shadowDy="1.0"
+            android:shadowRadius="2.0"
+            android:text="Send"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" >
+        </Button>
+    </RelativeLayout>
 
 </LinearLayout>
