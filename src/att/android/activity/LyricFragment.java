@@ -149,9 +149,11 @@ public class LyricFragment extends BaseFragment implements
 			if (v == mBtnPlay) {
 				if (mplay.isPlaying()) {
 					mplay.pause();
+					mBtnPlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_play));
 					isPause = true;
 				} else {
 					mplay.start();
+					mBtnPlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_pause));
 					isPause = false;
 				}
 			}
