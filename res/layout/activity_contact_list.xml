@@ -34,6 +34,10 @@
             android:layout_height="50dp"
             android:background="@drawable/custom_btn_options" />
     </LinearLayout>
+    <ProgressBar 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"/>
     <ListView
         android:id="@+id/listView_contactList"
         android:layout_width="fill_parent"
@@ -42,10 +46,7 @@
         android:layout_alignParentTop="true"
          >
     </ListView>
-<ProgressBar 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"/>
+
    
 
 </RelativeLayout>
