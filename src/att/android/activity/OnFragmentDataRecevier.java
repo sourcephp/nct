@@ -18,11 +18,11 @@ public interface OnFragmentDataRecevier {
 	 * @param listSong : an Array of Music_Song (att.android.bean.Music_Song)
 	 * @param position : data receiving fragment's position*/
 	public void onDataParameterData1(ArrayList<Music_Song> listSong,
-			int position, boolean bool);
+			int position, boolean flag);
 	
 	/**This method for YahooMessenger function implements
-	 * @param listSong : an Array of Music_Song (att.android.bean.Music_Song)
+	 * @param alYahooUsers : an Array of YahooUser (org.openymsg.network.YahooUser)
 	 * @param position : data receiving fragment's position*/
 	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
-			int position, boolean bool);
+			int position, boolean flag);
 }
