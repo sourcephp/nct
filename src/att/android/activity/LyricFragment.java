@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.openymsg.network.YahooUser;
 
 import android.app.Activity;
@@ -33,9 +35,13 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import att.android.bean.Music_Song;
+import att.android.network.JSONProvider;
 import att.android.network.Music_LyricNetwork;
+import att.android.network.URLProvider;
 import att.android.receiver.PhoneReceiver;
 import att.android.receiver.PhoneReceiver.OnIncommingCall;
+import att.android.util.ParseJSONMusic;
+
 import com.example.multiapp.R;
 
 public class LyricFragment extends BaseFragment implements
@@ -60,8 +66,11 @@ public class LyricFragment extends BaseFragment implements
 	private RunMusic mPlayMusic;
 	private int count = 1;
 	private View mBtnAddSong;
+	private String urlLyric;
 	private boolean isPause;
+	private JSONObject json;
 	private PhoneReceiver broadcast;
+	private String mSongKey;
 	private final static String NOTES = "notes.txt";
 
 	public static Fragment newInstance(Context context) {
@@ -151,17 +160,21 @@ public class LyricFragment extends BaseFragment implements
 			if (v == mBtnPlay) {
 				if (mplay.isPlaying()) {
 					mplay.pause();
-					mBtnPlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_play));
+					mBtnPlay.setBackgroundDrawable(getResources().getDrawable(
+							R.drawable.btn_play));
 					isPause = true;
 				} else {
 					mplay.start();
-					mBtnPlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_pause));
+					mBtnPlay.setBackgroundDrawable(getResources().getDrawable(
+							R.drawable.btn_pause));
 					isPause = false;
 				}
 			}
 
 			if (v == mBtnNext && (instanceIndex < (mSongList.size() - 1))
 					&& mSongList.size() > 0) {
+				mBtnNext.setEnabled(false);
+				mBtnPre.setEnabled(false);
 				instanceIndex++;
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
@@ -169,6 +182,8 @@ public class LyricFragment extends BaseFragment implements
 			}
 			if (v == mBtnPre && instanceIndex >= 1 && mSongList.size() > 0) {
 				instanceIndex--;
+				mBtnNext.setEnabled(false);
+				mBtnPre.setEnabled(false);
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
 
@@ -234,17 +249,7 @@ public class LyricFragment extends BaseFragment implements
 		mplay.reset();
 		mSeekBar.setProgress(0);
 		streamUrl = item.streamURL;
-
-		Handler h = new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				mLyric = (String) msg.obj;
-			}
-		};
-
-		Music_LyricNetwork lyric = new Music_LyricNetwork(h, item.songKey);
-		lyric.start();
+		mSongKey = item.songKey;
 		mSongName = item.name + " --- " + item.singer;
 		songName.setText(mSongName);
 	}
@@ -254,12 +259,21 @@ public class LyricFragment extends BaseFragment implements
 		@Override
 		protected Integer doInBackground(Integer... in) {
 			try {
-
+				urlLyric = URLProvider.getLyric(mSongKey);
+				json = null;
+				try {
+					json = JSONProvider.readJsonFromUrl(urlLyric);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				mLyric = ParseJSONMusic.parseLyric(json);
+				mLyric = mLyric.replace("<br />", "\n");
 				mplay.setDataSource(streamUrl);
 				mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				mplay.prepare();
 				mplay.start();
-
+				
 				Log.i("time", "" + mplay.getDuration());
 
 				for (; 0 < 1;) {
@@ -294,6 +308,8 @@ public class LyricFragment extends BaseFragment implements
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
+			mBtnNext.setEnabled(true);
+			mBtnPre.setEnabled(true);
 			mSeekBar.setMax(mplay.getDuration());
 			if (mplay.isPlaying()) {
 				currentTime = mplay.getCurrentPosition();
@@ -369,7 +385,7 @@ public class LyricFragment extends BaseFragment implements
 	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
 			int position, boolean bool) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
