@@ -39,8 +39,8 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 	private CheckBox chBoxSave;
 	private CheckBox chBoxHide;
 	private Button btnLogin;
-	Session instanceofSession = Session.getInstance();
-	YGeneralHandler sessionListenerInstance = YGeneralHandler.getInstance();
+	Session singletonSession = Session.getInstance();
+	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
 //	WindowManager.LayoutParams lpWindow;
 //	public ProgressDialog waitDialog;
 //	public Context context;
@@ -103,7 +103,7 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 
 	public void run() {
 		
-		instanceofSession.addSessionListener(sessionListenerInstance);	
+		singletonSession.addSessionListener(singletonSessionListener);	
 		
 		String strUserName = edtxtUserName.getText().toString().trim();
 		Log.i("Username", strUserName);
@@ -120,8 +120,8 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 		} else {
 			Log.i(TAG, "Login start");
 			try {
-				instanceofSession.login(strUserName, strPass);
-				instanceofSession.setStatus(Status.AVAILABLE);
+				singletonSession.login(strUserName, strPass);
+				singletonSession.setStatus(Status.AVAILABLE);
 			} catch (AccountLockedException e) {
 				Log.d(TAG, "Account has locked!");
 				e.printStackTrace();
@@ -150,7 +150,7 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 	@Override
 	public void onPause() {
 		super.onPause();
-		instanceofSession.removeSessionListener(sessionListenerInstance);
+		singletonSession.removeSessionListener(singletonSessionListener);
 		Logger.e(TAG, "onPause");
 	}
 

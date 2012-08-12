@@ -1,5 +1,6 @@
 package att.android.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.openymsg.network.Session;
@@ -10,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import att.android.bean.Music_Song;
+import att.android.model.Logger;
 import att.android.model.YGeneralHandler;
 import att.android.util.StartFragment;
 
@@ -29,7 +32,9 @@ import com.example.multiapp.R;
 
 public class ChatFragment extends Fragment implements OnClickListener,
 		StartFragment, OnFragmentDataRecevier {
+	private static final String TAG = "ChatFragment";
 	private ImageView icon_status;
+	private ArrayList<YahooUser> malYahooUsers;
 	private Button btn_back;
 	private Button btn_send;
 	private EditText edt_message;
@@ -40,8 +45,8 @@ public class ChatFragment extends Fragment implements OnClickListener,
 	private YahooUser YMuser;
 	private LayoutInflater inflater;
 	private LinearLayout formchat;
-	Session instanceofSession = Session.getInstance();
-	YGeneralHandler sessionListenerInstance = YGeneralHandler.getInstance();
+	Session singletonSession = Session.getInstance();
+	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
@@ -89,7 +94,7 @@ public class ChatFragment extends Fragment implements OnClickListener,
 	@Override
 	public void onResume() {
 		super.onResume();
-		instanceofSession.addSessionListener(sessionListenerInstance);
+		singletonSession.addSessionListener(singletonSessionListener);
 	}
 
 	public void onClick(View v) {
@@ -104,6 +109,15 @@ public class ChatFragment extends Fragment implements OnClickListener,
 	}
 
 	private void sendMessageProcess(String msg) {
+		try {
+			singletonSession.sendMessage("o0otuano0o", msg);
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		View layout = inflater.inflate(R.layout.chatbox_me, null);
 		TextView me = (TextView) layout.findViewById(R.id.txt_chatbox_me);
 		ImageView avt_me = (ImageView) layout.findViewById(R.id.real_avatar_me);
@@ -137,12 +151,6 @@ public class ChatFragment extends Fragment implements OnClickListener,
 
 	}
 
-	public void onDataParameterData(ArrayList<Music_Song> listSong,
-			int position, boolean bool) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void startFragment1(ArrayList<Music_Song> item, int position,
 			boolean bool) {
 		// TODO Auto-generated method stub
@@ -163,8 +171,10 @@ public class ChatFragment extends Fragment implements OnClickListener,
 
 	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
 			int position, boolean bool) {
-		// TODO Auto-generated method stub
-		
+		malYahooUsers = alYahooUsers;
+		YMuser = malYahooUsers.get(position);
+		YMuserID = YMuser.getId();
+		Log.i(TAG, YMuserID);
 	}
 
 	
