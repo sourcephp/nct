@@ -308,8 +308,10 @@ public class LyricFragment extends BaseFragment implements
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
+			if(!mBtnNext.isEnabled()){
 			mBtnNext.setEnabled(true);
 			mBtnPre.setEnabled(true);
+			}
 			mSeekBar.setMax(mplay.getDuration());
 			if (mplay.isPlaying()) {
 				currentTime = mplay.getCurrentPosition();
