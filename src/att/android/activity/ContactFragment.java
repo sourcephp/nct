@@ -70,6 +70,12 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
+		//cach truc tiep:
+		Fragment fragment = new Fragment();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("YahooUser", alYahooContact.get(position));
+		fragment.setArguments(bundle);
+		//cach qua FragmentActivity
 		startFragment2(alYahooContact, position, false);
 	}
 

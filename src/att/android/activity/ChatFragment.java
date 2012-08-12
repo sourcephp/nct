@@ -42,11 +42,13 @@ public class ChatFragment extends Fragment implements OnClickListener,
 	private TextView friends_name;
 	private Status actionSttFriends;
 	private String YMuserID;
-	private YahooUser YMuser;
 	private LayoutInflater inflater;
 	private LinearLayout formchat;
 	Session singletonSession = Session.getInstance();
 	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
+	private Bundle bundle;
+	private YahooUser YMuser;
+
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
@@ -89,6 +91,11 @@ public class ChatFragment extends Fragment implements OnClickListener,
 		btn_send.setOnClickListener(this);
 		btn_back.setOnClickListener(this);
 		friends_name.setText("Somefriends here");
+		//Lay theo cach truc tiep:
+		bundle = this.getArguments();
+		YMuser = (YahooUser) bundle.getSerializable("YahooUser");
+		YMuserID = YMuser.getId();
+		//YMuserID  bi null
 	}
 
 	@Override
@@ -110,7 +117,8 @@ public class ChatFragment extends Fragment implements OnClickListener,
 
 	private void sendMessageProcess(String msg) {
 		try {
-			singletonSession.sendMessage("o0otuano0o", msg);
+			//YMuserID bi null
+			singletonSession.sendMessage(YMuserID, msg);
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
