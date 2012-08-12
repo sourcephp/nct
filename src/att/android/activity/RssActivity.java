@@ -79,7 +79,7 @@ public class RssActivity extends Activity implements OnItemClickListener,
 	public void initVariables(Context context) {
 		mNews = new ArrayList<News>();
 		mNewsAdapter = new RssAdapter(this, R.id.titleNews, mNews);
-		strUrl = "http://www.tinhte.vn/rss/";
+		strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
 		mQuickAction = new QuickAction(this);
 	}
 
@@ -101,15 +101,19 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		btnWebName.setOnClickListener(this);
 		ActionItem actionTinhTe = new ActionItem();
 		actionTinhTe.setTitle("Tinhte.vn");
+		actionTinhTe.setIcon(getResources().getDrawable(R.drawable.logo_tinhte));
 		ActionItem actionVnEx = new ActionItem();
 		actionVnEx.setTitle("VnExpress.net");
+		actionVnEx.setIcon(getResources().getDrawable(R.drawable.logo_vnexpress));
 		ActionItem actionGame = new ActionItem();
 		actionGame.setTitle("Gamethu.net");
+		actionGame.setIcon(getResources().getDrawable(R.drawable.logo_gamethu));
 		ActionItem action24h = new ActionItem();
 		action24h.setTitle("24h.com.vn");
-		mQuickAction.addActionItem(actionTinhTe);
-		mQuickAction.addActionItem(actionVnEx);
+		action24h.setIcon(getResources().getDrawable(R.drawable.logo_24h));
 		mQuickAction.addActionItem(actionGame);
+		mQuickAction.addActionItem(actionVnEx);
+		mQuickAction.addActionItem(actionTinhTe);
 		mQuickAction.addActionItem(action24h);
 		mQuickAction
 				.setOnActionItemClickListener(new OnActionItemClickListener() {
@@ -118,13 +122,13 @@ public class RssActivity extends Activity implements OnItemClickListener,
 							int actionId) {
 						switch (pos) {
 						case 0:
-							strUrl = "http://www.tinhte.vn/rss/";
+							strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
 							break;
 						case 1:
 							strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
 							break;
 						case 2:
-							strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
+							strUrl = "http://www.tinhte.vn/rss/";
 							break;
 						case 3:
 							strUrl = "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss";

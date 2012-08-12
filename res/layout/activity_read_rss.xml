@@ -19,7 +19,7 @@
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="Tinhte.vn" />
+        android:text="Gamethu.net" />
 
     <ListView
         android:id="@+id/listNews"
