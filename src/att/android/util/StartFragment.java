@@ -18,11 +18,11 @@ public void startFragment(int i);
  * @param item : an Array of Music_Song (att.android.bean.Music_Song)
  * @param position : destination fragment's position*/
 public void startFragment1(ArrayList<Music_Song> item, int position,
-		boolean bool);
+		boolean flag);
 
 /**This method for YahooMessenger function implements
  * @param item : an Array of YahooUser (org.openymsg.network.YahooUser)
  * @param position : destination fragment's position*/
 public void startFragment2(ArrayList<YahooUser> item, int position,
-		boolean bool);
+		boolean flag);
 }

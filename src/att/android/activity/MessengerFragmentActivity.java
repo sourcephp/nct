@@ -67,13 +67,13 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 		if (arg0 == 2) {
 			listener1.onDataParameterData(0);
 		}
-		Log.w("MusicFragmentActivity", "fragment" + arg0);
+		Log.w("MessengerFragmentActivity", "fragment" + arg0);
 		if (haveData) {
 			haveData = false;
 			if (test) {
-				listener.onDataParameterData2(data, position, bool);
-				if (bool) {
-					listener2.onDataParameterData2(null, arg0, bool);
+				listener.onDataParameterData2(data, position, flag);
+				if (flag) {
+					listener2.onDataParameterData2(null, arg0, flag);
 				}
 			} else {
 				listener.onDataParameterData(index);
@@ -93,7 +93,7 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 	}
 
 	private boolean test;
-	private boolean bool = false;
+	private boolean flag = false;
 
 	public void sendData(int index) {
 		test = false;
@@ -101,11 +101,11 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 		haveData = true;
 	}
 
-	public void sendData(ArrayList<YahooUser> data, int position, boolean bool) {
+	public void sendData(ArrayList<YahooUser> data, int position, boolean flag) {
 		test = true;
 		this.data = data;
 		this.position = position;
-		this.bool = bool;
+		this.flag = flag;
 		haveData = true;
 	}
 

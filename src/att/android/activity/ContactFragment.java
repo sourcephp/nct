@@ -70,13 +70,7 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-		// mContactAdapter.getItem(position);
-		// Account item = mContactAdapter.getItem(position);
-		// String strUserName = item.getStrName();
-		// Intent i = new Intent(this.getActivity(), ChatJointFragment.class);
-		// i.putExtra("USERNAM", strUserName);
-		// startActivity(i);
-		((StartFragment) getActivity()).startFragment(2);
+		startFragment2(alYahooContact, position, false);
 	}
 
 	@Override
@@ -105,9 +99,9 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 	}
 
 	public void startFragment2(ArrayList<YahooUser> item, int position,
-			boolean bool) {
-		// TODO Auto-generated method stub
-		
+			boolean flag) {
+		((MessengerFragmentActivity) this.getActivity()).sendData(alYahooContact, position, flag);
+		((MessengerFragmentActivity) this.getActivity()).startFragment(2);
 	}
 
 	public void onDataParameterData1(ArrayList<Music_Song> listSong,
@@ -121,6 +115,7 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 		// TODO Auto-generated method stub
 		
 	}
+	
 
 	
 
