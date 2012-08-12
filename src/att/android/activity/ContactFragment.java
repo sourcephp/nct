@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import org.openymsg.network.YahooUser;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -44,7 +46,11 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 
 		return f;
 	}
-
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		((MessengerFragmentActivity) activity).setDataListener2(this);
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -71,10 +77,12 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
 		//cach truc tiep:
-		Fragment fragment = new Fragment();
-		Bundle bundle = new Bundle();
-		bundle.putSerializable("YahooUser", alYahooContact.get(position));
-		fragment.setArguments(bundle);
+//		Intent intent = new Intent(arg1.getContext(), MessengerFragmentActivity.class);
+//		ContactFragment fragment = new ContactFragment();
+//		Bundle bundle = new Bundle();
+//		bundle.putSerializable("YahooUser", alYahooContact.get(position));
+//		fragment.setArguments(bundle);
+//		intent.putExtra("YahooUser", bundle);
 		//cach qua FragmentActivity
 		startFragment2(alYahooContact, position, false);
 	}

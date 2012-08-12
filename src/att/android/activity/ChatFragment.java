@@ -8,6 +8,7 @@ import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,21 +42,28 @@ public class ChatFragment extends Fragment implements OnClickListener,
 	private ScrollView scrollView;
 	private TextView friends_name;
 	private Status actionSttFriends;
-	private String YMuserID;
 	private LayoutInflater inflater;
 	private LinearLayout formchat;
 	Session singletonSession = Session.getInstance();
 	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
-	private Bundle bundle;
+	private Bundle bundle = this.getArguments();
+//	private YahooUser YMuser= (YahooUser) bundle.getSerializable("YahooUser");
+//	private String YMuserID = YMuser.getId();
+	private String YMuserID;
 	private YahooUser YMuser;
-
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
 
 		return f;
 	}
-
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		((MessengerFragmentActivity) activity).setDataListener(this);
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -92,9 +100,8 @@ public class ChatFragment extends Fragment implements OnClickListener,
 		btn_back.setOnClickListener(this);
 		friends_name.setText("Somefriends here");
 		//Lay theo cach truc tiep:
-		bundle = this.getArguments();
-		YMuser = (YahooUser) bundle.getSerializable("YahooUser");
-		YMuserID = YMuser.getId();
+//		YMuser = (YahooUser) bundle.getSerializable("YahooUser");
+//		YMuserID = bundle.getString("YahooUser");;
 		//YMuserID  bi null
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.openymsg.network.YahooUser;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -38,6 +39,8 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 
 		setContentView(R.layout.fragment_activity_messenger);
 		initViewPager(3, 0xFFFFFFFF, 0xFF000000);
+//		Intent intent = new Intent();
+//		intent.getExtras().getBundle("YahooUser");
 	}
 
 	private void initViewPager(int pageCount, int backgroundColor, int textColor) {
