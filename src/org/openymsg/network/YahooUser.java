@@ -18,6 +18,7 @@
  */
 package org.openymsg.network;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +44,7 @@ import android.graphics.drawable.Drawable;
  * @author G. der Kinderen, Nimbuzz B.V. guus@nimbuzz.com
  * @author S.E. Morris
  */
-public class YahooUser {
+public class YahooUser implements Serializable{
     /**
      * The ID by which this user is identified.
      */

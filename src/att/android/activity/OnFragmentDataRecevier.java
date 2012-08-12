@@ -10,7 +10,7 @@ public interface OnFragmentDataRecevier {
 	
 	/**
 	 * 
-	 * @param index: data receiving fragment's position
+	 * @param index : data receiving fragment's position
 	 */
 	public void onDataParameterData(int index);
 	

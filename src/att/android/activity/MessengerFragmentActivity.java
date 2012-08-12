@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import att.android.adapter.MessViewPagerAdapter;
 import att.android.bean.Music_Song;
+import att.android.network.ReadFullContactListNetwork;
 import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
@@ -21,12 +22,12 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 	
 	private OnFragmentDataRecevier listener2;
 	private OnFragmentDataRecevier listener1;
-	private ArrayList<YahooUser> data;
 	private OnFragmentDataRecevier listener;
 	private boolean sended;
 	private boolean haveData;
 	private int index;
 	private int position;
+	private ArrayList<YahooUser> data;
 
 	
 
@@ -37,7 +38,6 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 
 		setContentView(R.layout.fragment_activity_messenger);
 		initViewPager(3, 0xFFFFFFFF, 0xFF000000);
-
 	}
 
 	private void initViewPager(int pageCount, int backgroundColor, int textColor) {
@@ -64,9 +64,6 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 	}
 
 	public void onPageSelected(int arg0) {
-		if (arg0 == 2) {
-			listener1.onDataParameterData(0);
-		}
 		Log.w("MessengerFragmentActivity", "fragment" + arg0);
 		if (haveData) {
 			haveData = false;
