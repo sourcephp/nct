@@ -98,13 +98,6 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 
 	}
 
-	public void onDataParameterData(ArrayList<Music_Song> listSong,
-			int position, boolean bool) {
-		// TODO Auto-generated method stub
-
-	}
-
-
 	public void startFragment1(ArrayList<Music_Song> item, int position,
 			boolean bool) {
 		// TODO Auto-generated method stub
@@ -118,13 +111,13 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 	}
 
 	public void onDataParameterData1(ArrayList<Music_Song> listSong,
-			int position, boolean bool) {
+			int position, boolean flag) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
-			int position, boolean bool) {
+			int position, boolean flag) {
 		// TODO Auto-generated method stub
 		
 	}
