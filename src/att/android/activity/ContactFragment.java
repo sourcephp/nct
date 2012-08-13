@@ -24,7 +24,7 @@ import att.android.util.StartFragment;
 import com.example.multiapp.R;
 
 public class ContactFragment extends Fragment implements OnItemClickListener,
-		StartFragment, OnFragmentDataRecevier {
+		StartFragment {
 	private ListView listContact;
 	private ContactListAdapter mContactAdapter;
 	private ArrayList<YahooUser> alYahooContact;
@@ -46,11 +46,7 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 
 		return f;
 	}
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		((MessengerFragmentActivity) activity).setDataListener2(this);
-	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -101,11 +97,6 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 
 	}
 
-	public void onDataParameterData(int index) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void startFragment1(ArrayList<Music_Song> item, int position,
 			boolean bool) {
 		// TODO Auto-generated method stub
@@ -117,19 +108,6 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 		((MessengerFragmentActivity) this.getActivity()).sendData(alYahooContact, position, flag);
 		((MessengerFragmentActivity) this.getActivity()).startFragment(2);
 	}
-
-	public void onDataParameterData1(ArrayList<Music_Song> listSong,
-			int position, boolean flag) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
-			int position, boolean flag) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 
 	
 

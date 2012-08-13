@@ -46,7 +46,7 @@ public class ChatFragment extends Fragment implements OnClickListener,
 	private LinearLayout formchat;
 	Session singletonSession = Session.getInstance();
 	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
-	private Bundle bundle = this.getArguments();
+//	private Bundle bundle = this.getArguments();
 //	private YahooUser YMuser= (YahooUser) bundle.getSerializable("YahooUser");
 //	private String YMuserID = YMuser.getId();
 	private String YMuserID;
@@ -102,6 +102,9 @@ public class ChatFragment extends Fragment implements OnClickListener,
 		//Lay theo cach truc tiep:
 //		YMuser = (YahooUser) bundle.getSerializable("YahooUser");
 //		YMuserID = bundle.getString("YahooUser");;
+//		Bundle bundle = getActivity().getIntent().getExtras().getBundle("YahooUser");
+//		YMuser = (YahooUser) bundle.getSerializable("YahooUser");
+//		YMuserID = YMuser.getId();
 		//YMuserID  bi null
 	}
 
