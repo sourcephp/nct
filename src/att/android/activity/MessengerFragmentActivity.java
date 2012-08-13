@@ -21,8 +21,6 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 	private ViewPager mPager;
 	private MessViewPagerAdapter mPagerAdapter;
 	
-	private OnFragmentDataRecevier listener2;
-	private OnFragmentDataRecevier listener1;
 	private OnFragmentDataRecevier listener;
 	private boolean sended;
 	private boolean haveData;
@@ -39,8 +37,8 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 
 		setContentView(R.layout.fragment_activity_messenger);
 		initViewPager(3, 0xFFFFFFFF, 0xFF000000);
-//		Intent intent = new Intent();
-//		intent.getExtras().getBundle("YahooUser");
+//		Intent intent = getIntent();
+//		Bundle bundle = intent.getExtras().getBundle("YahooUser");
 	}
 
 	private void initViewPager(int pageCount, int backgroundColor, int textColor) {
@@ -72,24 +70,14 @@ public class MessengerFragmentActivity extends FragmentActivity implements
 			haveData = false;
 			if (test) {
 				listener.onDataParameterData2(data, position, flag);
-				if (flag) {
-					listener2.onDataParameterData2(null, arg0, flag);
-				}
 			} else {
 				listener.onDataParameterData(index);
 			}
 		}
 	}
-	public void setDataListener1(OnFragmentDataRecevier listener) {
-		this.listener1 = listener;
-	}
 
 	public void setDataListener(OnFragmentDataRecevier listener) {
 		this.listener = listener;
-	}
-
-	public void setDataListener2(OnFragmentDataRecevier listener) {
-		this.listener2 = listener;
 	}
 
 	private boolean test;
