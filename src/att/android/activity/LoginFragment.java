@@ -31,7 +31,7 @@ import att.android.util.StartFragment;
 import com.example.multiapp.R;
 
 public class LoginFragment extends Fragment implements OnItemClickListener,
-		OnClickListener, Runnable, StartFragment {
+		OnClickListener, Runnable {
 	private static final String TAG = "LoginFragment";
 	//ko hieu tai sao phai static moi chay duoc???
 	private static EditText edtxtUserName;
@@ -78,7 +78,7 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 //			showWaitDialog();
 			
 			new Thread(new LoginFragment()).start();
-			((StartFragment)getActivity()).startFragment(1);
+			((MessengerFragmentActivity) this.getActivity()).startFragment(1);
 		}
 				
 			
@@ -142,11 +142,7 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 		}
 	}
 
-	public void startFragment(int i) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -154,15 +150,4 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 		Logger.e(TAG, "onPause");
 	}
 
-	public void startFragment1(ArrayList<Music_Song> item, int position,
-			boolean bool) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void startFragment2(ArrayList<YahooUser> item, int position,
-			boolean bool) {
-		// TODO Auto-generated method stub
-		
-	}
 }
