@@ -61,7 +61,7 @@ public class LyricFragment extends BaseFragment implements
 	private int currentTime;
 	private View mBtnPre;
 	private View mBtnNext;
-	private CharSequence mSongName;
+	private String mSongName = "Hiện chưa có bài hát nào được chọn";
 	private int instanceIndex = -1;
 	private RunMusic mPlayMusic;
 	private int count = 1;
@@ -273,7 +273,7 @@ public class LyricFragment extends BaseFragment implements
 				mplay.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				mplay.prepare();
 				mplay.start();
-				
+
 				Log.i("time", "" + mplay.getDuration());
 
 				for (; 0 < 1;) {
@@ -308,9 +308,9 @@ public class LyricFragment extends BaseFragment implements
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
-			if(!mBtnNext.isEnabled()){
-			mBtnNext.setEnabled(true);
-			mBtnPre.setEnabled(true);
+			if (!mBtnNext.isEnabled()) {
+				mBtnNext.setEnabled(true);
+				mBtnPre.setEnabled(true);
 			}
 			mSeekBar.setMax(mplay.getDuration());
 			if (mplay.isPlaying()) {
