@@ -127,6 +127,7 @@ public class ChatFragment extends Fragment implements OnClickListener, OnFragmen
 	private void sendMessageProcess(String msg) {
 		try {
 			//YMuserID bi null
+			//vanx bi null
 			singletonSession.sendMessage(YMuserID, msg);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -166,8 +167,10 @@ public class ChatFragment extends Fragment implements OnClickListener, OnFragmen
 	}
 
 	public void onDataParameterData(YahooUser yahooUsers) {
-		malYahooUsers = yahooUsers;
-		YMuserID = YMuser.getId();
+//		YMuser = yahooUsers;
+		YMuserID = yahooUsers.getId();
+		//ko in ra dong nay trong logcat
+		//doc rat ky logcat roi nhe
 		Log.i(TAG, YMuserID);
 	}
 
