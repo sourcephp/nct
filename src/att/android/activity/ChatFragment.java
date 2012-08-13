@@ -31,11 +31,10 @@ import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
 
-public class ChatFragment extends Fragment implements OnClickListener,
-		StartFragment, OnFragmentDataRecevier {
+public class ChatFragment extends Fragment implements OnClickListener, OnFragmentDataRecevier {
 	private static final String TAG = "ChatFragment";
 	private ImageView icon_status;
-	private ArrayList<YahooUser> malYahooUsers;
+	private YahooUser malYahooUsers;
 	private Button btn_back;
 	private Button btn_send;
 	private EditText edt_message;
@@ -130,10 +129,8 @@ public class ChatFragment extends Fragment implements OnClickListener,
 			//YMuserID bi null
 			singletonSession.sendMessage(YMuserID, msg);
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		View layout = inflater.inflate(R.layout.chatbox_me, null);
@@ -159,38 +156,17 @@ public class ChatFragment extends Fragment implements OnClickListener,
 		scrollView.scrollBy(0, distance);
 	}
 
-	public void startFragment(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void onDataParameterData(int index) {
-		// TODO Auto-generated method stub
 
 	}
 
-	public void startFragment1(ArrayList<Music_Song> item, int position,
-			boolean bool) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void startFragment2(ArrayList<YahooUser> item, int position,
-			boolean bool) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void onDataParameterData1(ArrayList<Music_Song> listSong,
+	public void onDataParameterData(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
-		// TODO Auto-generated method stub
 		
 	}
 
-	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
-			int position, boolean bool) {
-		malYahooUsers = alYahooUsers;
-		YMuser = malYahooUsers.get(position);
+	public void onDataParameterData(YahooUser yahooUsers) {
+		malYahooUsers = yahooUsers;
 		YMuserID = YMuser.getId();
 		Log.i(TAG, YMuserID);
 	}

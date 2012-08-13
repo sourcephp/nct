@@ -29,7 +29,7 @@ import att.android.util.StartFragment;
 import com.example.multiapp.R;
 
 public class MusicFragment extends BaseFragment implements OnItemClickListener,
-		OnClickListener, OnFragmentDataRecevier, StartFragment {
+		OnClickListener, OnFragmentDataRecevier {
 
 	private ListView mListView;
 	private ArrayList<Music_Song> mSongList;
@@ -196,21 +196,13 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 
 	}
 
-	public void onDataParameterData1(ArrayList<Music_Song> listSong,
+	public void onDataParameterData(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
 
 		check1 = check2 = bool;
 	}
 
-	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
-			int position, boolean bool) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void startFragment2(ArrayList<YahooUser> item, int position,
-			boolean bool) {
-		// TODO Auto-generated method stub
+	public void onDataParameterData(YahooUser yahooUsers) {
 		
 	}
 

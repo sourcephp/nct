@@ -192,14 +192,12 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		}
 	}
 
-	public void onDataParameterData1(ArrayList<Music_Song> listSong,
+	public void onDataParameterData(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
 
 	}
 
-	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
-			int position, boolean bool) {
-		// TODO Auto-generated method stub
+	public void onDataParameterData(YahooUser yahooUsers) {
 		
 	}
 

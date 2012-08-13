@@ -61,7 +61,7 @@ public class LyricFragment extends BaseFragment implements
 	private int currentTime;
 	private View mBtnPre;
 	private View mBtnNext;
-	private String mSongName = "Hiện chưa có bài hát nào được chọn";
+	private String mSongName = "Hiá»‡n chÆ°a cÃ³ bÃ i hÃ¡t nÃ o Ä‘Æ°á»£c chá»�n";
 	private int instanceIndex = -1;
 	private RunMusic mPlayMusic;
 	private int count = 1;
@@ -211,9 +211,9 @@ public class LyricFragment extends BaseFragment implements
 
 				OutputStreamWriter out = new OutputStreamWriter(getActivity()
 						.openFileOutput(NOTES, 0));
-				String str2 = buf + mSongList.get(instanceIndex).name + "╥"
-						+ mSongList.get(instanceIndex).singer + "╥"
-						+ mSongList.get(instanceIndex).songKey + "╥"
+				String str2 = buf + mSongList.get(instanceIndex).name + "â•¥"
+						+ mSongList.get(instanceIndex).singer + "â•¥"
+						+ mSongList.get(instanceIndex).songKey + "â•¥"
 						+ mSongList.get(instanceIndex).streamURL;
 
 				out.write(str2);
@@ -264,7 +264,6 @@ public class LyricFragment extends BaseFragment implements
 				try {
 					json = JSONProvider.readJsonFromUrl(urlLyric);
 				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				mLyric = ParseJSONMusic.parseLyric(json);
@@ -345,7 +344,7 @@ public class LyricFragment extends BaseFragment implements
 		changeRunMusic();
 	}
 
-	public void onDataParameterData1(ArrayList<Music_Song> listSong,
+	public void onDataParameterData(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
 		instanceIndex = position;
 		mSongList = listSong;
@@ -384,9 +383,7 @@ public class LyricFragment extends BaseFragment implements
 		}
 	}
 
-	public void onDataParameterData2(ArrayList<YahooUser> alYahooUsers,
-			int position, boolean bool) {
-		// TODO Auto-generated method stub
+	public void onDataParameterData(YahooUser yahooUser) {
 
 	}
 

@@ -23,8 +23,7 @@ import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
 
-public class ContactFragment extends Fragment implements OnItemClickListener,
-		StartFragment {
+public class ContactFragment extends Fragment implements OnItemClickListener {
 	private ListView listContact;
 	private ContactListAdapter mContactAdapter;
 	private ArrayList<YahooUser> alYahooContact;
@@ -57,7 +56,6 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		alYahooContact = new ArrayList<YahooUser>();
 
@@ -72,15 +70,16 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-		//cach truc tiep:
-//		Intent intent = new Intent(arg1.getContext(), MessengerFragmentActivity.class);
-//		ContactFragment fragment = new ContactFragment();
-//		Bundle bundle = new Bundle();
-//		bundle.putSerializable("YahooUser", alYahooContact.get(position));
-//		fragment.setArguments(bundle);
-//		intent.putExtra("YahooUser", bundle);
-		//cach qua FragmentActivity
-		startFragment2(alYahooContact, position, false);
+		// cach truc tiep:
+		// Intent intent = new Intent(arg1.getContext(),
+		// MessengerFragmentActivity.class);
+		// ContactFragment fragment = new ContactFragment();
+		// Bundle bundle = new Bundle();
+		// bundle.putSerializable("YahooUser", alYahooContact.get(position));
+		// fragment.setArguments(bundle);
+		// intent.putExtra("YahooUser", bundle);
+		// cach qua FragmentActivity
+		startFragment(alYahooContact.get(position));
 	}
 
 	@Override
@@ -92,23 +91,9 @@ public class ContactFragment extends Fragment implements OnItemClickListener,
 		thread.start();
 	}
 
-	public void startFragment(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void startFragment1(ArrayList<Music_Song> item, int position,
-			boolean bool) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void startFragment2(ArrayList<YahooUser> item, int position,
-			boolean flag) {
-		((MessengerFragmentActivity) this.getActivity()).sendData(alYahooContact, position, flag);
+	public void startFragment(YahooUser item) {
+		((MessengerFragmentActivity) this.getActivity()).sendData(item);
 		((MessengerFragmentActivity) this.getActivity()).startFragment(2);
 	}
-
-	
 
 }
