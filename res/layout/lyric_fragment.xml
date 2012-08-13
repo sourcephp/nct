@@ -17,10 +17,11 @@
         android:paddingTop="5dp"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="ID la txt_song_name aksjdfasdfladfasdfasdfasf"
+        android:text="Chưa có bài hát"
         android:textColor="#58FAF4"
         android:textSize="15dp" />
 
+    
     <Button
         android:id="@+id/btn_play"
         android:layout_width="45dp"
