@@ -54,7 +54,7 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 	}
 
 	public void onPageSelected(int arg0) {
-		Log.w("MessengerFragmentActivity", "fragment" + arg0);
+		Log.e("MessengerFragmentActivity", "fragment" + arg0);
 		if (haveData) {
 			haveData = false;
 			listener.onDataParameterData(data);
