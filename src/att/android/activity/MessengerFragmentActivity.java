@@ -37,6 +37,7 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 		mPagerAdapter = new MessViewPagerAdapter(getApplicationContext(),
 				getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
+		mPager.setOnPageChangeListener(this);
 		mPager.setCurrentItem(0);
 		mPager.setPageMargin(1);
 	}
