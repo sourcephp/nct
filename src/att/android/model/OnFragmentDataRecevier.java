@@ -19,9 +19,4 @@ public interface OnFragmentDataRecevier {
 	 * @param position : data receiving fragment's position*/
 	public void onDataParameterData(ArrayList<Music_Song> listSong,
 			int position, boolean flag);
-	
-	/**This method for YahooMessenger function implements
-	 * @param alYahooUsers : an Array of YahooUser (org.openymsg.network.YahooUser)
-	 * @param position : data receiving fragment's position*/
-	public void onDataParameterData(YahooUser yahooUsers);
 }

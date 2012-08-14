@@ -62,7 +62,7 @@ public class LyricFragment extends BaseFragment implements
 	private int currentTime;
 	private View mBtnPre;
 	private View mBtnNext;
-	private String mSongName = "Hiá»‡n chÆ°a cÃ³ bÃ i hÃ¡t nÃ o Ä‘Æ°á»£c chá»�n";
+	private String mSongName = "Hiện chưa có bài hát nào được chọn";
 	private int instanceIndex = -1;
 	private RunMusic mPlayMusic;
 	private int count = 1;
@@ -212,9 +212,9 @@ public class LyricFragment extends BaseFragment implements
 
 				OutputStreamWriter out = new OutputStreamWriter(getActivity()
 						.openFileOutput(NOTES, 0));
-				String str2 = buf + mSongList.get(instanceIndex).name + "â•¥"
-						+ mSongList.get(instanceIndex).singer + "â•¥"
-						+ mSongList.get(instanceIndex).songKey + "â•¥"
+				String str2 = buf + mSongList.get(instanceIndex).name + "Ã¢â€¢Â¥"
+						+ mSongList.get(instanceIndex).singer + "Ã¢â€¢Â¥"
+						+ mSongList.get(instanceIndex).songKey + "Ã¢â€¢Â¥"
 						+ mSongList.get(instanceIndex).streamURL;
 
 				out.write(str2);
@@ -327,7 +327,7 @@ public class LyricFragment extends BaseFragment implements
 			}
 			mSeekBar.setProgress(currentTime);
 			if (mLyric.equals("")) {
-				txtLyric.setText("Hiện chưa có lời cho bài hát này");
+				txtLyric.setText("Hiá»‡n chÆ°a cÃ³ lá»�i cho bÃ i hÃ¡t nÃ y");
 			} else {
 				txtLyric.setText(mLyric);
 			}
@@ -382,10 +382,6 @@ public class LyricFragment extends BaseFragment implements
 			mplay.pause();
 			isPause = true;
 		}
-	}
-
-	public void onDataParameterData(YahooUser yahooUser) {
-
 	}
 
 }

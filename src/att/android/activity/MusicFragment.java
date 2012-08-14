@@ -203,8 +203,4 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 		check1 = check2 = bool;
 	}
 
-	public void onDataParameterData(YahooUser yahooUsers) {
-		
-	}
-
 }
