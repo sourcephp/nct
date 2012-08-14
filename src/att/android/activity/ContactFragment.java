@@ -71,15 +71,6 @@ public class ContactFragment extends Fragment implements OnItemClickListener {
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-		// cach truc tiep:
-		// Intent intent = new Intent(arg1.getContext(),
-		// MessengerFragmentActivity.class);
-		// ContactFragment fragment = new ContactFragment();
-		// Bundle bundle = new Bundle();
-		// bundle.putSerializable("YahooUser", alYahooContact.get(position));
-		// fragment.setArguments(bundle);
-		// intent.putExtra("YahooUser", bundle);
-		// cach qua FragmentActivity
 		startFragment(alYahooContact.get(position));
 		Log.e("ContactFragment", alYahooContact.get(position).getId());
 	}
