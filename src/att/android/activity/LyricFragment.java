@@ -35,6 +35,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import att.android.bean.Music_Song;
+import att.android.model.OnFragmentDataRecevier;
 import att.android.network.JSONProvider;
 import att.android.network.Music_LyricNetwork;
 import att.android.network.URLProvider;

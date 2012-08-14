@@ -18,8 +18,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import att.android.adapter.ContactListAdapter;
 import att.android.bean.Music_Song;
+import att.android.model.StartFragment;
 import att.android.network.ReadFullContactListNetwork;
-import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
 

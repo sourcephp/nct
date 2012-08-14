@@ -1,4 +1,4 @@
-package att.android.activity;
+package att.android.model;
 
 import java.util.ArrayList;
 

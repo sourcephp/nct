@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView.Tokenizer;
 import att.android.adapter.Music_MyPlaylistAdapter;
 import att.android.bean.Music_Song;
+import att.android.model.OnFragmentDataRecevier;
 
 public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		OnItemClickListener, OnFragmentDataRecevier {
