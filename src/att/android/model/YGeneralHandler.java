@@ -36,4 +36,10 @@ public class YGeneralHandler extends SessionAdapter {
 		return sessionListener;
 		
 	}
+	
+	@Override
+	public void messageReceived(SessionEvent event) {
+		// TODO Auto-generated method stub
+		super.messageReceived(event);
+	}
 }

@@ -2,24 +2,13 @@ package att.android.activity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import org.openymsg.network.FireEvent;
 import org.openymsg.network.Session;
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
-import org.openymsg.network.event.MySessionListener;
-import org.openymsg.network.event.SessionChatEvent;
-import org.openymsg.network.event.SessionConferenceEvent;
-import org.openymsg.network.event.SessionErrorEvent;
 import org.openymsg.network.event.SessionEvent;
-import org.openymsg.network.event.SessionExceptionEvent;
-import org.openymsg.network.event.SessionFileTransferEvent;
-import org.openymsg.network.event.SessionFriendEvent;
-import org.openymsg.network.event.SessionListener;
-import org.openymsg.network.event.SessionNewMailEvent;
-import org.openymsg.network.event.SessionNotifyEvent;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -35,17 +24,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-import att.android.bean.Music_Song;
-import att.android.model.Logger;
-import att.android.model.OnFragmentDataRecevier;
 import att.android.model.OnYahooFragmentDataReceiver;
-import att.android.model.StartFragment;
 import att.android.model.YGeneralHandler;
 
 import com.example.multiapp.R;
 
-public class ChatFragment extends Fragment implements OnClickListener, OnYahooFragmentDataReceiver, MySessionListener {
+public class ChatFragment extends Fragment implements OnClickListener, OnYahooFragmentDataReceiver {
 	private static final String TAG = "ChatFragment";
 	private ImageView icon_status;
 	private Button btn_back;
@@ -58,12 +42,10 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 	private LinearLayout formchat;
 	Session singletonSession = Session.getInstance();
 	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
-//	private Bundle bundle = this.getArguments();
-//	private YahooUser YMuser= (YahooUser) bundle.getSerializable("YahooUser");
-//	private String YMuserID = YMuser.getId();
 	private String YMuserID;
 	private YahooUser YMuser;
 	private static boolean isFirstMessage;
+	ArrayList<String> alMsg = new ArrayList<String>();
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
@@ -110,6 +92,7 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 		btn_back.setOnClickListener(this);
 		friends_name.setText("Somefriends here");
 		isFirstMessage = true;
+		alMsg.add("");
 	}
 
 	@Override
@@ -121,7 +104,9 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 	public void onClick(View v) {
 		if (v == btn_send) {
 			String msg = edt_message.getText().toString();
+			edt_message.setText("");
 			sendMessageProcess(msg);
+			
 		}
 		if (v == btn_back) {
 			((MessengerFragmentActivity) this.getActivity()).startFragment(1);
@@ -160,169 +145,41 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 				.findViewById(R.id.txt_chatbox_myfriend);
 		ImageView avt_friends = (ImageView) layout
 				.findViewById(R.id.real_avatar_friend);
-		
-		if (isFirstMessage) {
-			try {
-				YahooUser YMuser_Friends = new YahooUser(event.getFrom());
-				if (YMuser_Friends.getDrawable() != null) {
-					avt_friends.setBackgroundDrawable(YMuser_Friends
-							.getDrawable());
-				}
-			} catch (NullPointerException ne) {
-				Log.e(TAG, "NullPointerException");
-			};
+
+		if (YMuser.getDrawable() != null) {
+			avt_friends.setBackgroundDrawable(YMuser.getDrawable());
 		}
-		
 		friends.setText(event.getMessage());
 		formchat.addView(layout);
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 		scrollView.focusSearch(ScrollView.FOCUS_DOWN);
 		int distance = scrollView.getBottom();
 		scrollView.scrollBy(0, distance);
+		
+		if (alMsg.size() <= 2) alMsg.add(event.getMessage());
+		else alMsg.remove(0);
+//		keepReceivingMessage(event);
 	}
+
+//	private void keepReceivingMessage(SessionEvent event) {
+//		alMsg.add(event.getMessage());
+//		saveMessage();
+//		
+//	}
+//
+//	private String saveMessage() {
+//		// TODO Auto-generated method stub
+//		String msg =null;
+//		return alMsg.get(0);
+//	}
 
 	public void onDataParameterData(YahooUser yahooUsers) {
 		YMuser = yahooUsers;
+		SessionEvent event = new SessionEvent(new Object(), singletonSession
+				.getLoginID().getId(), YMuser.getId(), alMsg.get(0));
+		receiveMessageProcess(event);
 	}
-
-	public void dispatch(FireEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void fileTransferReceived(SessionFileTransferEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void connectionClosed(SessionEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void listReceived(SessionEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void messageReceived(SessionEvent ev) {
-		receiveMessageProcess(ev);
-		isFirstMessage = false;
-		Log.d(TAG, "Receive Message OK!");
-		Toast.makeText(getActivity(), "Receiving Message succesful!", Toast.LENGTH_LONG).show();
-		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-	}
-
-	public void buzzReceived(SessionEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void offlineMessageReceived(SessionEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void errorPacketReceived(SessionErrorEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void inputExceptionThrown(SessionExceptionEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void newMailReceived(SessionNewMailEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void notifyReceived(SessionNotifyEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void contactRequestReceived(SessionEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void contactRejectionReceived(SessionEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void conferenceInviteReceived(SessionConferenceEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void conferenceInviteDeclinedReceived(SessionConferenceEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void conferenceLogonReceived(SessionConferenceEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void conferenceLogoffReceived(SessionConferenceEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void conferenceMessageReceived(SessionConferenceEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void friendsUpdateReceived(SessionFriendEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void friendAddedReceived(SessionFriendEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void friendRemovedReceived(SessionFriendEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void chatLogonReceived(SessionChatEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void chatLogoffReceived(SessionChatEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void chatMessageReceived(SessionChatEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void chatUserUpdateReceived(SessionChatEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void chatConnectionClosed(SessionEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void chatCaptchaReceived(SessionChatEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 
 	
 }
