@@ -1,12 +1,13 @@
 package att.android.activity;
 
 import org.openymsg.network.YahooUser;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import att.android.adapter.MessViewPagerAdapter;
-import att.android.model.OnFragmentDataRecevier;
+import att.android.model.OnYahooFragmentDataReceiver;
 
 import com.example.multiapp.R;
 
@@ -14,7 +15,7 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 	private ViewPager mPager;
 	private MessViewPagerAdapter mPagerAdapter;
 	
-	private OnFragmentDataRecevier listener;
+	private OnYahooFragmentDataReceiver listener;
 	private boolean haveData;
 	private YahooUser data;
 
@@ -57,10 +58,11 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 		if (haveData) {
 			haveData = false;
 			listener.onDataParameterData(data);
+			Log.e("MessengerFragmentActivity", data.getId());
 		}
 	}
 
-	public void setDataListener(OnFragmentDataRecevier listener) {
+	public void setDataListener(OnYahooFragmentDataReceiver listener) {
 		this.listener = listener;
 	}
 

@@ -27,12 +27,13 @@ import android.widget.Toast;
 import att.android.bean.Music_Song;
 import att.android.model.Logger;
 import att.android.model.OnFragmentDataRecevier;
+import att.android.model.OnYahooFragmentDataReceiver;
 import att.android.model.StartFragment;
 import att.android.model.YGeneralHandler;
 
 import com.example.multiapp.R;
 
-public class ChatFragment extends Fragment implements OnClickListener, OnFragmentDataRecevier {
+public class ChatFragment extends Fragment implements OnClickListener, OnYahooFragmentDataReceiver {
 	private static final String TAG = "ChatFragment";
 	private ImageView icon_status;
 	private YahooUser malYahooUsers;
@@ -158,21 +159,12 @@ public class ChatFragment extends Fragment implements OnClickListener, OnFragmen
 		scrollView.scrollBy(0, distance);
 	}
 
-	public void onDataParameterData(int index) {
-
-	}
-
-	public void onDataParameterData(ArrayList<Music_Song> listSong,
-			int position, boolean bool) {
-		
-	}
-
 	public void onDataParameterData(YahooUser yahooUsers) {
 //		YMuser = yahooUsers;
 		YMuserID = yahooUsers.getId();
 		//ko in ra dong nay trong logcat
 		//doc rat ky logcat roi nhe
-		Log.i(TAG, YMuserID);
+		Log.e(TAG, YMuserID);
 	}
 
 	
