@@ -7,6 +7,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.util.Log;
 import att.android.bean.News;
 import att.android.network.ImageNetwork;
 
@@ -108,12 +109,8 @@ public class RssDataHandler extends DefaultHandler {
 				endSrcIma = strInfo.indexOf("\"", startSrcIma + 6);
 				news.setStrUrlImage(strInfo.substring(
 						startSrcIma + 5, endSrcIma));
-				
+				Log.e("link image ---", news.getStrUrlImage());
 			}
-//			startStrInfo = strInfo.indexOf(">(");
-//			endInfo = strInfo.indexOf("<", startStrInfo + 5);
-//			strTemp = strInfo.substring(startStrInfo, endInfo);
-			
 			
 			strInfoLength = strInfo.length();
 			for (int indexPlace = 0; indexPlace < strInfoLength;) {

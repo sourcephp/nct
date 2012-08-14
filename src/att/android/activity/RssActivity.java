@@ -1,38 +1,23 @@
 package att.android.activity;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-
-import org.openymsg.network.YahooUser;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import att.android.adapter.RssAdapter;
 import att.android.bean.News;
 import att.android.network.ReadRssNetwork;
-import att.android.util.ParseXMLRss;
 
 import com.example.multiapp.R;
 import com.quickaction.popup.ActionItem;
@@ -99,9 +84,9 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		btnBack.setOnClickListener(this);
 		btnBack.setVisibility(View.INVISIBLE);
 		btnWebName.setOnClickListener(this);
-		ActionItem actionTinhTe = new ActionItem();
-		actionTinhTe.setTitle("Tinhte.vn");
-		actionTinhTe.setIcon(getResources().getDrawable(R.drawable.logo_tinhte));
+		ActionItem action247= new ActionItem();
+		action247.setTitle("Tin24/7");
+		action247.setIcon(getResources().getDrawable(R.drawable.logo_tin247));
 		ActionItem actionVnEx = new ActionItem();
 		actionVnEx.setTitle("VnExpress.net");
 		actionVnEx.setIcon(getResources().getDrawable(R.drawable.logo_vnexpress));
@@ -111,10 +96,18 @@ public class RssActivity extends Activity implements OnItemClickListener,
 		ActionItem action24h = new ActionItem();
 		action24h.setTitle("24h.com.vn");
 		action24h.setIcon(getResources().getDrawable(R.drawable.logo_24h));
+		ActionItem actionBongDa = new ActionItem();
+		actionBongDa.setTitle("Thethao.net");
+		actionBongDa.setIcon(getResources().getDrawable(R.drawable.logo_thethao));
+		ActionItem actionIt = new ActionItem();
+		actionIt.setTitle("Congnghe.com");
+		actionIt.setIcon(getResources().getDrawable(R.drawable.logo_congnghe));
 		mQuickAction.addActionItem(actionGame);
 		mQuickAction.addActionItem(actionVnEx);
-		mQuickAction.addActionItem(actionTinhTe);
+		mQuickAction.addActionItem(action247);
 		mQuickAction.addActionItem(action24h);
+		mQuickAction.addActionItem(actionBongDa);
+		mQuickAction.addActionItem(actionIt);
 		mQuickAction
 				.setOnActionItemClickListener(new OnActionItemClickListener() {
 
@@ -128,10 +121,16 @@ public class RssActivity extends Activity implements OnItemClickListener,
 							strUrl = "http://vnexpress.net/rss/gl/trang-chu.rss";
 							break;
 						case 2:
-							strUrl = "http://www.tinhte.vn/rss/";
+							strUrl = "http://www.tin247.com/rss/0.rss";
 							break;
 						case 3:
 							strUrl = "http://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
+							break;
+						case 4:
+							strUrl = "http://thethao.vnexpress.net/rss/tin-moi-nhat.rss";
+							break;
+						case 5:
+							strUrl = "http://feeds.thongtincongnghe.com/ttcn?format=xml";
 							break;
 						}
 						Log.i("popup-----", pos + "-------" + actionId);
