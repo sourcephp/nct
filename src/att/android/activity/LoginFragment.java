@@ -25,8 +25,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import att.android.bean.Music_Song;
 import att.android.model.Logger;
+import att.android.model.StartFragment;
 import att.android.model.YGeneralHandler;
-import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
 

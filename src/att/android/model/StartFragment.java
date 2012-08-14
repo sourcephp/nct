@@ -1,4 +1,4 @@
-package att.android.util;
+package att.android.model;
 
 import java.util.ArrayList;
 
@@ -17,12 +17,11 @@ public void startFragment(int i);
 /**This method for Music function implements
  * @param item : an Array of Music_Song (att.android.bean.Music_Song)
  * @param position : destination fragment's position*/
-public void startFragment1(ArrayList<Music_Song> item, int position,
+public void startFragment(ArrayList<Music_Song> item, int position,
 		boolean flag);
 
 /**This method for YahooMessenger function implements
- * @param item : an Array of YahooUser (org.openymsg.network.YahooUser)
+ * @param yahooUser : a YahooUser object (org.openymsg.network.YahooUser)
  * @param position : destination fragment's position*/
-public void startFragment2(ArrayList<YahooUser> item, int position,
-		boolean flag);
+public void startFragment(YahooUser yahooUser, int position);
 }

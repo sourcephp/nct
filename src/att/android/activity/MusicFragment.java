@@ -22,9 +22,10 @@ import android.widget.ListView;
 import att.android.adapter.Music_HotSongAdapter;
 import att.android.adapter.Music_SearchSongAdapter;
 import att.android.bean.Music_Song;
+import att.android.model.OnFragmentDataRecevier;
+import att.android.model.StartFragment;
 import att.android.network.Music_SearchSongNetwork;
 import att.android.network.Music_SongListNetwork;
-import att.android.util.StartFragment;
 
 import com.example.multiapp.R;
 

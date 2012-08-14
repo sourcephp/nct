@@ -12,7 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import att.android.adapter.MusicViewPagerAdapter;
 import att.android.bean.Music_Song;
-import att.android.util.StartFragment;
+import att.android.model.OnFragmentDataRecevier;
+import att.android.model.StartFragment;
 
 public class MusicFragmentActivity extends FragmentActivity implements
 		ViewPager.OnPageChangeListener {

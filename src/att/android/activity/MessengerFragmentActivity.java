@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import att.android.adapter.MessViewPagerAdapter;
+import att.android.model.OnFragmentDataRecevier;
 
 import com.example.multiapp.R;
 
