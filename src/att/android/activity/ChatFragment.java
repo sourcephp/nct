@@ -3,9 +3,21 @@ package att.android.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.openymsg.network.FireEvent;
 import org.openymsg.network.Session;
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
+import org.openymsg.network.event.MySessionListener;
+import org.openymsg.network.event.SessionChatEvent;
+import org.openymsg.network.event.SessionConferenceEvent;
+import org.openymsg.network.event.SessionErrorEvent;
+import org.openymsg.network.event.SessionEvent;
+import org.openymsg.network.event.SessionExceptionEvent;
+import org.openymsg.network.event.SessionFileTransferEvent;
+import org.openymsg.network.event.SessionFriendEvent;
+import org.openymsg.network.event.SessionListener;
+import org.openymsg.network.event.SessionNewMailEvent;
+import org.openymsg.network.event.SessionNotifyEvent;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -33,10 +45,9 @@ import att.android.model.YGeneralHandler;
 
 import com.example.multiapp.R;
 
-public class ChatFragment extends Fragment implements OnClickListener, OnYahooFragmentDataReceiver {
+public class ChatFragment extends Fragment implements OnClickListener, OnYahooFragmentDataReceiver, MySessionListener {
 	private static final String TAG = "ChatFragment";
 	private ImageView icon_status;
-	private YahooUser malYahooUsers;
 	private Button btn_back;
 	private Button btn_send;
 	private EditText edt_message;
@@ -52,6 +63,7 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 //	private String YMuserID = YMuser.getId();
 	private String YMuserID;
 	private YahooUser YMuser;
+	private static boolean isFirstMessage;
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
@@ -76,9 +88,6 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		initComponent();
-		if (true) {
-			receiveMessageProcess();
-		}
 	}
 
 	private void initComponent() {
@@ -100,13 +109,7 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 		btn_send.setOnClickListener(this);
 		btn_back.setOnClickListener(this);
 		friends_name.setText("Somefriends here");
-		//Lay theo cach truc tiep:
-//		YMuser = (YahooUser) bundle.getSerializable("YahooUser");
-//		YMuserID = bundle.getString("YahooUser");;
-//		Bundle bundle = getActivity().getIntent().getExtras().getBundle("YahooUser");
-//		YMuser = (YahooUser) bundle.getSerializable("YahooUser");
-//		YMuserID = YMuser.getId();
-		//YMuserID  bi null
+		isFirstMessage = true;
 	}
 
 	@Override
@@ -121,15 +124,17 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 			sendMessageProcess(msg);
 		}
 		if (v == btn_back) {
-			((StartFragment) getActivity()).startFragment(1);
+			((MessengerFragmentActivity) this.getActivity()).startFragment(1);
 		}
 
 	}
 
 	private void sendMessageProcess(String msg) {
+		
+		YMuserID = YMuser.getId();
+		Log.i(TAG, YMuserID);
+		
 		try {
-			//YMuserID bi null
-			//vanx bi null
 			singletonSession.sendMessage(YMuserID, msg);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -139,19 +144,36 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 		View layout = inflater.inflate(R.layout.chatbox_me, null);
 		TextView me = (TextView) layout.findViewById(R.id.txt_chatbox_me);
 		ImageView avt_me = (ImageView) layout.findViewById(R.id.real_avatar_me);
+		YahooUser userMe = new YahooUser(singletonSession.getLoginID().getId());
+		if (userMe.getDrawable() != null) {
+			avt_me.setBackgroundDrawable(userMe.getDrawable());
+		}
 		me.setText(msg);
 		formchat.addView(layout);
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 		scrollView.focusSearch(ScrollView.FOCUS_DOWN);
 	}
 
-	private void receiveMessageProcess() {
+	private void receiveMessageProcess(SessionEvent event) {
 		View layout = inflater.inflate(R.layout.chatbox_myfriend, null);
 		TextView friends = (TextView) layout
 				.findViewById(R.id.txt_chatbox_myfriend);
 		ImageView avt_friends = (ImageView) layout
 				.findViewById(R.id.real_avatar_friend);
-		friends.setText("hello!");
+		
+		if (isFirstMessage) {
+			try {
+				YahooUser YMuser_Friends = new YahooUser(event.getFrom());
+				if (YMuser_Friends.getDrawable() != null) {
+					avt_friends.setBackgroundDrawable(YMuser_Friends
+							.getDrawable());
+				}
+			} catch (NullPointerException ne) {
+				Log.e(TAG, "NullPointerException");
+			};
+		}
+		
+		friends.setText(event.getMessage());
 		formchat.addView(layout);
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 		scrollView.focusSearch(ScrollView.FOCUS_DOWN);
@@ -160,12 +182,147 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 	}
 
 	public void onDataParameterData(YahooUser yahooUsers) {
-//		YMuser = yahooUsers;
-		YMuserID = yahooUsers.getId();
-		//ko in ra dong nay trong logcat
-		//doc rat ky logcat roi nhe
-		Log.e(TAG, YMuserID);
+		YMuser = yahooUsers;
 	}
+
+	public void dispatch(FireEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void fileTransferReceived(SessionFileTransferEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void connectionClosed(SessionEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void listReceived(SessionEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void messageReceived(SessionEvent ev) {
+		receiveMessageProcess(ev);
+		isFirstMessage = false;
+		Log.d(TAG, "Receive Message OK!");
+		Toast.makeText(getActivity(), "Receiving Message succesful!", Toast.LENGTH_LONG).show();
+		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+	}
+
+	public void buzzReceived(SessionEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void offlineMessageReceived(SessionEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void errorPacketReceived(SessionErrorEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void inputExceptionThrown(SessionExceptionEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void newMailReceived(SessionNewMailEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void notifyReceived(SessionNotifyEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void contactRequestReceived(SessionEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void contactRejectionReceived(SessionEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void conferenceInviteReceived(SessionConferenceEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void conferenceInviteDeclinedReceived(SessionConferenceEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void conferenceLogonReceived(SessionConferenceEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void conferenceLogoffReceived(SessionConferenceEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void conferenceMessageReceived(SessionConferenceEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void friendsUpdateReceived(SessionFriendEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void friendAddedReceived(SessionFriendEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void friendRemovedReceived(SessionFriendEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void chatLogonReceived(SessionChatEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void chatLogoffReceived(SessionChatEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void chatMessageReceived(SessionChatEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void chatUserUpdateReceived(SessionChatEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void chatConnectionClosed(SessionEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void chatCaptchaReceived(SessionChatEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 }
