@@ -61,6 +61,7 @@ public class MusicFragmentActivity extends FragmentActivity implements
 	}
 
 	public void onPageSelected(int arg0) {
+		Log.e("MusicFragmentActivity", "Fragment " + arg0);
 		if (arg0 == 2) {
 			listener1.onDataParameterData(0);
 		}
