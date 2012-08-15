@@ -20,6 +20,7 @@ package org.openymsg.network.event;
 
 import org.openymsg.network.FireEvent;
 
+import android.util.Log;
 import att.android.model.Logger;
 
 /**
@@ -30,6 +31,8 @@ import att.android.model.Logger;
  * @author S.E. Morris
  */
 public class SessionAdapter implements SessionListener {
+	
+	private static final String TAG = "SessionAdapter";
     
     public void fileTransferReceived(SessionFileTransferEvent event) {
         // override this function if you want to do something with it.
@@ -45,6 +48,7 @@ public class SessionAdapter implements SessionListener {
 
     public void messageReceived(SessionEvent event) {
         // override this function if you want to do something with it.
+    	Logger.e(TAG, event.getFrom()+": "+event.getMessage());
     }
 
     public void buzzReceived(SessionEvent event) {
