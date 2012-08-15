@@ -17,10 +17,12 @@ import org.openymsg.roster.Roster;
 import android.content.Context;
 import android.os.Message;
 import android.os.Vibrator;
+import android.util.Log;
 
 import att.android.model.Logger;
 
 public class YGeneralHandler extends SessionAdapter {
+	
 	
 	
 	public static YGeneralHandler sessionListener = null;
@@ -37,9 +39,4 @@ public class YGeneralHandler extends SessionAdapter {
 		
 	}
 	
-	@Override
-	public void messageReceived(SessionEvent event) {
-		// TODO Auto-generated method stub
-		super.messageReceived(event);
-	}
 }
