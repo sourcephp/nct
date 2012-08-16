@@ -25,7 +25,9 @@ public class YGeneralHandler extends SessionAdapter {
 	
 	
 	
-//	public static YGeneralHandler sessionListener = null;
+private static final String TAG = "YGeneralHandler";
+
+	//	public static YGeneralHandler sessionListener = null;
 //	
 //	protected YGeneralHandler(){
 //		
@@ -38,5 +40,4 @@ public class YGeneralHandler extends SessionAdapter {
 //		return sessionListener;
 //		
 //	}
-	
 }

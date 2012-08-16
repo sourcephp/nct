@@ -2,9 +2,9 @@ package att.android.activity;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.openymsg.network.FireEvent;
+import org.openymsg.network.ServiceType;
 import org.openymsg.network.Session;
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
@@ -27,12 +27,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import att.android.bean.IncomingMessage;
+import att.android.model.Logger;
 import att.android.model.OnYahooFragmentDataReceiver;
 import att.android.model.YGeneralHandler;
 
 import com.example.multiapp.R;
 
-public class ChatFragment extends Fragment implements OnClickListener, OnYahooFragmentDataReceiver, SessionListener {
+public class ChatFragment extends Fragment implements OnClickListener, OnYahooFragmentDataReceiver {
 	private static final String TAG = "ChatFragment";
 	private ImageView icon_status;
 	private Button btn_back;
@@ -51,6 +53,7 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 	private static boolean isFirstMessage;
 	ArrayList<String> alMsg = new ArrayList<String>();
 	private SessionEvent ev;
+	private IncomingMessage incomingMessage;
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
@@ -110,7 +113,7 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 			String msg = edt_message.getText().toString();
 			edt_message.setText("");
 			sendMessageProcess(msg);
-			receiveMessageProcess(ev);
+//			receiveMessageProcess(ev);
 		}
 		if (v == btn_back) {
 			((MessengerFragmentActivity) this.getActivity()).startFragment(1);
@@ -144,6 +147,9 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 	}
 
 	public void receiveMessageProcess(SessionEvent event) {
+		
+		Logger.e(TAG, event.getFrom()+": "+event.getMessage());
+		
 		View layout = inflater.inflate(R.layout.chatbox_myfriend, null);
 		TextView friends = (TextView) layout
 				.findViewById(R.id.txt_chatbox_myfriend);
@@ -160,8 +166,8 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 		int distance = scrollView.getBottom();
 		scrollView.scrollBy(0, distance);
 		
-		alMsg.add(0, event.getMessage());
-		Log.i(TAG, alMsg.get(0));
+//		alMsg.add(0, event.getMessage());
+//		Log.i(TAG, alMsg.get(0));
 //		keepReceivingMessage(event);
 	}
 
@@ -180,15 +186,18 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 	public void onDataParameterData(YahooUser yahooUsers) {
 		YMuser = yahooUsers;
 		friends_name.setText(YMuser.getId());
-		SessionEvent event = new SessionEvent(new Object(), singletonSession
-				.getLoginID().getId(), YMuser.getId(), alMsg.get(0));
-		ev = event;
+//		SessionEvent event = new SessionEvent(new Object(), singletonSession
+//				.getLoginID().getId(), YMuser.getId(), alMsg.get(0));
+//		ev = event;
 		
 	}
 
-	public void dispatch(FireEvent event) {
-		Toast.makeText(getActivity(), event.getEvent().getMessage(), Toast.LENGTH_LONG).show();
-	}
+//	public void dispatch(FireEvent event) {
+//		final SessionEvent ev = event.getEvent();
+//		if (event.getType()== ServiceType.MESSAGE){
+//			receiveMessageProcess(ev);
+//		}
+//	}
 	
 
 	
