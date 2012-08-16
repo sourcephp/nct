@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import org.openymsg.network.AccountLockedException;
 import org.openymsg.network.FailedLoginException;
+import org.openymsg.network.FireEvent;
 import org.openymsg.network.LoginRefusedException;
 import org.openymsg.network.Session;
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
+import org.openymsg.network.event.SessionListener;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 import att.android.bean.Music_Song;
 import att.android.model.Logger;
 import att.android.model.StartFragment;
@@ -31,7 +34,7 @@ import att.android.model.YGeneralHandler;
 import com.example.multiapp.R;
 
 public class LoginFragment extends Fragment implements OnItemClickListener,
-		OnClickListener, Runnable {
+		OnClickListener, Runnable{
 	private static final String TAG = "LoginFragment";
 	//ko hieu tai sao phai static moi chay duoc???
 	private static EditText edtxtUserName;
@@ -40,7 +43,8 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 	private CheckBox chBoxHide;
 	private Button btnLogin;
 	Session singletonSession = Session.getInstance();
-	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
+//	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
+	YGeneralHandler singletonSessionListener = new YGeneralHandler();
 //	WindowManager.LayoutParams lpWindow;
 //	public ProgressDialog waitDialog;
 //	public Context context;
@@ -146,7 +150,7 @@ public class LoginFragment extends Fragment implements OnItemClickListener,
 	@Override
 	public void onPause() {
 		super.onPause();
-		singletonSession.removeSessionListener(singletonSessionListener);
+//		singletonSession.removeSessionListener(singletonSessionListener);
 		Logger.e(TAG, "onPause");
 	}
 
