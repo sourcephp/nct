@@ -25,18 +25,18 @@ public class YGeneralHandler extends SessionAdapter {
 	
 	
 	
-	public static YGeneralHandler sessionListener = null;
-	
-	protected YGeneralHandler(){
-		
-	}
-	
-	public synchronized static YGeneralHandler getInstance(){
-		if(sessionListener == null) {
-			sessionListener = new YGeneralHandler();
-	      }
-		return sessionListener;
-		
-	}
+//	public static YGeneralHandler sessionListener = null;
+//	
+//	protected YGeneralHandler(){
+//		
+//	}
+//	
+//	public synchronized static YGeneralHandler getInstance(){
+//		if(sessionListener == null) {
+//			sessionListener = new YGeneralHandler();
+//	      }
+//		return sessionListener;
+//		
+//	}
 	
 }

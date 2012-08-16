@@ -14,7 +14,8 @@ import att.android.model.YGeneralHandler;
 public class ReadFullContactListNetwork implements Runnable{
 	private Handler mHandler;
 	Session singletonSession = Session.getInstance();
-	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
+//	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
+	YGeneralHandler singletonSessionListener = new YGeneralHandler();
 public ReadFullContactListNetwork(Handler mHandler) {
 	this.mHandler = mHandler;
 }

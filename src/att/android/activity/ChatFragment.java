@@ -44,7 +44,8 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 	private LayoutInflater inflater;
 	private LinearLayout formchat;
 	Session singletonSession = Session.getInstance();
-	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
+//	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
+	YGeneralHandler singletonSessionListener = new YGeneralHandler();
 	private String YMuserID;
 	private YahooUser YMuser;
 	private static boolean isFirstMessage;
