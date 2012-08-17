@@ -6,17 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.openymsg.network.YahooUser;
 
-import com.example.multiapp.R;
-
-import android.R.bool;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,17 +26,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.MultiAutoCompleteTextView.Tokenizer;
 import att.android.adapter.Music_MyPlaylistAdapter;
 import att.android.bean.Music_Song;
 import att.android.model.OnFragmentDataRecevier;
+
+import com.example.multiapp.R;
 
 public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		OnItemClickListener, OnFragmentDataRecevier {
 
 	private ListView mListView;
 	private Music_MyPlaylistAdapter playlistAdapter;
-	ArrayList<Music_Song> mPlaylist;
+	private ArrayList<Music_Song> mPlaylist;
+	private ArrayList<Integer> arr;
 	private View mBtnDelete;
 	private final static String NOTES = "notes.txt";
 	private ReadingSongInfo mReadingSongInfo;
@@ -54,6 +53,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			mListView.setOnItemClickListener(PlaylistFragment.this);
 		};
 	};
+	private int requestCode;
 
 	public static Fragment newInstance(Context context) {
 		PlaylistFragment f = new PlaylistFragment();
@@ -78,6 +78,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	@Override
 	public void initVariables() {
+		arr = new ArrayList<Integer>();
 		file = getActivity().getFileStreamPath(NOTES);
 		mPlaylist = new ArrayList<Music_Song>();
 		playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
@@ -98,12 +99,14 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	public void onClick(View v) {
 		if (v == mBtnDelete) {
-			if (file.exists()) {
-				mPlaylist.clear();
-				file.delete();
-				mListView.clearAnimation();
-				mListView.setAdapter(playlistAdapter);
-			}
+//			if (file.exists()) {
+//				mPlaylist.clear();
+//				file.delete();
+//				mListView.clearAnimation();
+//				mListView.setAdapter(playlistAdapter);
+//			}
+			Intent i = new Intent(this.getActivity(),DelActivity.class);
+			startActivityForResult(i, requestCode);
 		}
 
 	}
@@ -116,7 +119,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	private void getList() {
 		mPlaylist.clear();
-		mReadingSongInfo = new ReadingSongInfo(mHandler);
+		mReadingSongInfo = new ReadingSongInfo(mHandler, arr);
 		Thread t = new Thread(mReadingSongInfo);
 		t.start();
 	}
@@ -132,9 +135,11 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 		private Handler mHandler;
 		private ArrayList<Music_Song> list;
+		private ArrayList<Integer> arr;
 
-		public ReadingSongInfo(Handler h) {
+		public ReadingSongInfo(Handler h, ArrayList<Integer> arr) {
 			mHandler = h;
+			this.arr = arr;
 		}
 
 		public void run() {
@@ -150,6 +155,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 						BufferedReader reader = new BufferedReader(tmp);
 						String str1;
 						String str[] = new String[4];
+						int k = 0;
 
 						while ((str1 = reader.readLine()) != null) {
 							int i = 0;
@@ -164,7 +170,8 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 							song.singer = str[1];
 							song.songKey = str[2];
 							song.streamURL = str[3];
-
+							arr.set(k, 1);
+							k++;
 							list.add(song);
 						}
 
@@ -199,8 +206,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	}
 
 	public void onDataParameterData(YahooUser yahooUsers) {
-		
-	}
 
+	}
 
 }
