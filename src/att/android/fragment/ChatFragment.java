@@ -39,7 +39,6 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 	private Status actionSttFriends;
 	private LayoutInflater inflater;
 	private LinearLayout formchat;
-	Session singletonSession = Session.getInstance();
 	private String YMuserID;
 	private YahooUser YMuser;
 

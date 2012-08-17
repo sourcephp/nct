@@ -34,7 +34,6 @@ public class LoginFragment extends BaseMessengerFragment implements OnClickListe
 	private CheckBox chBoxSave;
 	private CheckBox chBoxHide;
 	private Button btnLogin;
-	Session singletonSession = Session.getInstance();
 
 
 	public static Fragment newInstance(Context context) {
