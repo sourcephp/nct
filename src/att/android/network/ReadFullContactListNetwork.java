@@ -3,7 +3,6 @@ package att.android.network;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.openymsg.network.Session;
 import org.openymsg.network.YahooUser;
 import org.openymsg.roster.Roster;
 
@@ -13,8 +12,6 @@ import att.android.fragment.BaseMessengerFragment;
 
 public class ReadFullContactListNetwork extends BaseMessengerFragment implements Runnable {
 	private Handler mHandler;
-	Session singletonSession = Session.getInstance();
-	YMEventHandler sessionListener;
 
 	public ReadFullContactListNetwork(Handler mHandler) {
 		this.mHandler = mHandler;

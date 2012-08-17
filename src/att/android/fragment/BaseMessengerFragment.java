@@ -1,5 +1,6 @@
 package att.android.fragment;
 
+import org.openymsg.network.Session;
 import org.openymsg.network.event.SessionAdapter;
 import org.openymsg.network.event.SessionEvent;
 
@@ -16,6 +17,7 @@ import att.android.model.YHandlerConstant;
 public abstract class BaseMessengerFragment extends Fragment implements YHandlerConstant {
 	private boolean didInit = false;
 	public YMEventHandler sessionListener;
+	public Session singletonSession = Session.getInstance();
 	private static final String TAG = "BaseMessengerFragment";
 	
 	@Override
