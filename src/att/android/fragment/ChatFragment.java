@@ -1,15 +1,11 @@
-package att.android.activity;
+package att.android.fragment;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import org.openymsg.network.FireEvent;
-import org.openymsg.network.ServiceType;
 import org.openymsg.network.Session;
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
 import org.openymsg.network.event.SessionEvent;
-import org.openymsg.network.event.SessionListener;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,15 +22,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-import att.android.bean.IncomingMessage;
+import att.android.activity.MessengerFragmentActivity;
 import att.android.model.Logger;
 import att.android.model.OnYahooFragmentDataReceiver;
-import att.android.model.YGeneralHandler;
 
 import com.example.multiapp.R;
 
-public class ChatFragment extends Fragment implements OnClickListener, OnYahooFragmentDataReceiver {
+public class ChatFragment extends BaseMessengerFragment implements OnClickListener, OnYahooFragmentDataReceiver {
 	private static final String TAG = "ChatFragment";
 	private ImageView icon_status;
 	private Button btn_back;
@@ -46,14 +40,8 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 	private LayoutInflater inflater;
 	private LinearLayout formchat;
 	Session singletonSession = Session.getInstance();
-//	YGeneralHandler singletonSessionListener = YGeneralHandler.getInstance();
-	YGeneralHandler singletonSessionListener = new YGeneralHandler();
 	private String YMuserID;
 	private YahooUser YMuser;
-	private static boolean isFirstMessage;
-	ArrayList<String> alMsg = new ArrayList<String>();
-	private SessionEvent ev;
-	private IncomingMessage incomingMessage;
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
@@ -73,14 +61,14 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.formchat, null);
 		return root;
 	}
-
+	
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		initComponent();
+	public void initVariables() {
+		sessionListener = new YMEventHandler();
 	}
 
-	private void initComponent() {
+	@Override
+	public void initViews() {
 		inflater = this.getLayoutInflater(getArguments());
 		// sttFriends = user.getStatus();
 		formchat = (LinearLayout) this.getView().findViewById(
@@ -95,17 +83,19 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 				R.id.txt_formchat_message);
 		scrollView = (ScrollView) this.getView().findViewById(
 				R.id.formchat_scrollbar);
-		scrollView.setVerticalScrollBarEnabled(false);
+	}
+
+	@Override
+	public void initActions() {
 		btn_send.setOnClickListener(this);
 		btn_back.setOnClickListener(this);
-		isFirstMessage = true;
-		alMsg.add("hello!");
+		scrollView.setVerticalScrollBarEnabled(false);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		singletonSession.addSessionListener(singletonSessionListener);
+		singletonSession.addSessionListener(sessionListener);
 	}
 
 	public void onClick(View v) {
@@ -145,8 +135,10 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 		scrollView.focusSearch(ScrollView.FOCUS_DOWN);
 	}
-
-	public void receiveMessageProcess(SessionEvent event) {
+	
+	@Override
+	public void onMessageReceived(SessionEvent event) {
+		super.onMessageReceived(event);
 		
 		Logger.e(TAG, event.getFrom()+": "+event.getMessage());
 		
@@ -165,61 +157,12 @@ public class ChatFragment extends Fragment implements OnClickListener, OnYahooFr
 		scrollView.focusSearch(ScrollView.FOCUS_DOWN);
 		int distance = scrollView.getBottom();
 		scrollView.scrollBy(0, distance);
-		
-//		alMsg.add(0, event.getMessage());
-//		Log.i(TAG, alMsg.get(0));
-//		keepReceivingMessage(event);
 	}
-
-//	private void keepReceivingMessage(SessionEvent event) {
-//		alMsg.add(event.getMessage());
-//		saveMessage();
-//		
-//	}
-//
-//	private String saveMessage() {
-//		// TODO Auto-generated method stub
-//		String msg =null;
-//		return alMsg.get(0);
-//	}
 
 	public void onDataParameterData(YahooUser yahooUsers) {
 		YMuser = yahooUsers;
 		friends_name.setText(YMuser.getId());
-//		SessionEvent event = new SessionEvent(new Object(), singletonSession
-//				.getLoginID().getId(), YMuser.getId(), alMsg.get(0));
-//		ev = event;
-		
 	}
-
-//	public void dispatch(FireEvent event) {
-//		final SessionEvent ev = event.getEvent();
-//		if (event.getType()== ServiceType.MESSAGE){
-//			receiveMessageProcess(ev);
-//		}
-//	}
-	
-
 	
 }
-
-// chatJointTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
-// arlTabspace = new ArrayList<TabHost.TabSpec>();
-
-// @Override
-// public void onResume() {
-// super.onResume();
-// newChatTab("test");
-// }
-//
-// private void newChatTab(String nameFriend) {
-// TabSpec tabspec = chatJointTabHost.newTabSpec(nameFriend);
-// tabspec.setIndicator(nameFriend);
-// Intent i = new Intent(this, ChatTabFragment.class);
-// tabspec.setContent(i);
-//
-// chatJointTabHost.addTab(tabspec);
-//
-// arlTabspace.add(tabspec);
-// }
 

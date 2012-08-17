@@ -1,4 +1,4 @@
-package att.android.activity;
+package att.android.fragment;
 
 import java.util.ArrayList;
 
@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import att.android.activity.MessengerFragmentActivity;
 import att.android.adapter.ContactListAdapter;
 import att.android.bean.Music_Song;
 import att.android.model.StartFragment;

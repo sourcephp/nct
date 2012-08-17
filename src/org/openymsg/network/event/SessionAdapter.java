@@ -20,8 +20,6 @@ package org.openymsg.network.event;
 
 import org.openymsg.network.FireEvent;
 
-import android.util.Log;
-import att.android.bean.IncomingMessage;
 import att.android.model.Logger;
 
 /**
@@ -34,7 +32,6 @@ import att.android.model.Logger;
 public class SessionAdapter implements SessionListener {
 	
 	private static final String TAG = "SessionAdapter";
-	public IncomingMessage conversation;
     
     public void fileTransferReceived(SessionFileTransferEvent event) {
         // override this function if you want to do something with it.
