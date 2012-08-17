@@ -38,7 +38,6 @@ public class ContactFragment extends Fragment implements OnItemClickListener {
 				mContactAdapter.add(itm);
 			}
 			mContactAdapter.notifyDataSetChanged();
-			listContact.setOnItemClickListener(ContactFragment.this);
 		};
 	};
 
@@ -89,5 +88,9 @@ public class ContactFragment extends Fragment implements OnItemClickListener {
 		((MessengerFragmentActivity) this.getActivity()).sendData(item);
 		((MessengerFragmentActivity) this.getActivity()).startFragment(2);
 	}
-
+	@Override
+	public void onPause() {
+		super.onPause();
+		mContactAdapter.clear();
+	}
 }

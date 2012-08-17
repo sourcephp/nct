@@ -64,9 +64,6 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 				mHolder.strUsername.setText(firstName + lastName);
 			}
 		
-		mHolder.imgAccount.setImageUrl("https://docs.google.com/open?id=0BxqXERuaU046SGxCN1lPanZFa2s");
-//		mHolder.strUsername.setText(acc.getStrName());
-//		mHolder.strStatus.setText(acc.getStrStatus());
 		return convertView;
 	}
 	
