@@ -102,8 +102,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 		if (v == btn_send) {
 			String msg = edt_message.getText().toString();
 			edt_message.setText("");
-			sendMessageProcess(msg);
-//			receiveMessageProcess(ev);
+			sendMessage(msg);
 		}
 		if (v == btn_back) {
 			((MessengerFragmentActivity) this.getActivity()).startFragment(1);
@@ -111,7 +110,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 
 	}
 
-	private void sendMessageProcess(String msg) {
+	private void sendMessage(String msg) {
 		
 		YMuserID = YMuser.getId();
 		Log.i(TAG, YMuserID);
