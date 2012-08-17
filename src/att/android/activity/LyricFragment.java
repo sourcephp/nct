@@ -212,9 +212,9 @@ public class LyricFragment extends BaseFragment implements
 
 				OutputStreamWriter out = new OutputStreamWriter(getActivity()
 						.openFileOutput(NOTES, 0));
-				String str2 = buf + mSongList.get(instanceIndex).name + "Ã¢â€¢Â¥"
-						+ mSongList.get(instanceIndex).singer + "Ã¢â€¢Â¥"
-						+ mSongList.get(instanceIndex).songKey + "Ã¢â€¢Â¥"
+				String str2 = buf + mSongList.get(instanceIndex).name + "╥"
+						+ mSongList.get(instanceIndex).singer + "╥"
+						+ mSongList.get(instanceIndex).songKey + "╥"
 						+ mSongList.get(instanceIndex).streamURL;
 
 				out.write(str2);
@@ -327,7 +327,7 @@ public class LyricFragment extends BaseFragment implements
 			}
 			mSeekBar.setProgress(currentTime);
 			if (mLyric.equals("")) {
-				txtLyric.setText("Hiá»‡n chÆ°a cÃ³ lá»�i cho bÃ i hÃ¡t nÃ y");
+				txtLyric.setText("HiÃ¡Â»â€¡n chÃ†Â°a cÃƒÂ³ lÃ¡Â»ï¿½i cho bÃƒÂ i hÃƒÂ¡t nÃƒÂ y");
 			} else {
 				txtLyric.setText(mLyric);
 			}

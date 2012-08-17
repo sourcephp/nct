@@ -31,6 +31,7 @@
         <activity android:name="att.android.activity.MessengerFragmentActivity"></activity>
         <activity android:name="att.android.activity.MusicFragmentActivity"></activity>
         <activity android:name="att.android.activity.RssActivity"></activity>
+        <activity android:name="att.android.activity.DelActivity"></activity>
     </application>
 
 </manifest>
