@@ -2,6 +2,7 @@ package att.android.adapter;
 
 import java.util.ArrayList;
 
+import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
 
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.multiapp.R;
@@ -35,22 +37,50 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 			convertView = mInflater.inflate(R.layout.contact_layout_listview,
 					null);
 			mHolder = new viewHolder();
-			mHolder.imgAccount = (SmartImageView) convertView
-					.findViewById(R.id.imgView_account);
-			mHolder.strUsername = (TextView) convertView
+			mHolder.realAvatar = (ImageView) convertView
+					.findViewById(R.id.imgView_RealAvatar);
+			mHolder.userID = (TextView) convertView
 					.findViewById(R.id.txtView_username);
-			mHolder.strStatus = (TextView) convertView
-					.findViewById(R.id.txtView_status);
+			mHolder.statusMessage = (TextView) convertView
+					.findViewById(R.id.txtView_StatusMessage);
+			mHolder.YMstatus_icon = (ImageView) convertView
+					.findViewById(R.id.imgView_ActionStatus);
+			mHolder.imgView_Arrow = (ImageView) convertView
+					.findViewById(R.id.imgView_arrow);
+			mHolder.view_separate = convertView.findViewById(R.id.view_separate);
+			
 			convertView.setTag(mHolder);
 		} else {
 			mHolder = (viewHolder) convertView.getTag();
+			mHolder.realAvatar.setBackgroundResource(R.drawable.friendlist_avatar);
 		}
 		YahooUser item = this.getItem(position);
-			String customStatus = item.getCustomStatus();
-			String customStatusMsg = item.getCustomStatusMessage();
-			mHolder.strStatus.setText(customStatusMsg);
-			//TODO: Get Avatar later
-			//TODO: change display follow status later
+			String customActionStatus = item.getCustomStatus();
+			String customStatusMessage = item.getCustomStatusMessage();
+			
+			//TODO: set latest chat if users have incoming messages
+			//TODO: set VISIBLE or GONE for view_saparate and imgView_Arrow if users have incoming messages
+			if(item.getStatus().compareTo(Status.AVAILABLE)==0){
+				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_online);
+				mHolder.statusMessage.setText("");
+			}
+			else if(item.getStatus().compareTo(Status.BUSY)==0){
+				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_busy);
+				mHolder.statusMessage.setText("");
+			}
+			else if(item.getStatus().compareTo(Status.INVISIBLE)==0){
+				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_offline);
+				mHolder.statusMessage.setText("");
+			}
+			else if(item.getStatus().compareTo(Status.CUSTOM)==0 && "1".equalsIgnoreCase(customActionStatus)){
+				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_busy);
+				mHolder.statusMessage.setText(customStatusMessage);
+			}
+			else if(item.getStatus().compareTo(Status.CUSTOM)==0 && "0".equalsIgnoreCase(customActionStatus)){
+				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_online);
+				mHolder.statusMessage.setText(customStatusMessage);
+			}
+			
 			lastName = item.getLastName();
 			firstName = item.getFirstName();
 			if ("null".equalsIgnoreCase(lastName) || lastName == null)
@@ -59,10 +89,15 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 				firstName = "";
 			String YMid = item.getId();
 			if ("".equalsIgnoreCase(firstName+lastName)) {
-				mHolder.strUsername.setText(YMid);
+				mHolder.userID.setText(YMid);
 			} else {
-				mHolder.strUsername.setText(firstName + lastName);
+				mHolder.userID.setText(firstName + lastName);
 			}
+			
+			if (item.getDrawable() != null) {
+				mHolder.realAvatar.setBackgroundDrawable(item.getDrawable());
+			}
+			
 		
 		return convertView;
 	}
@@ -74,8 +109,9 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 	}
 
 	private class viewHolder {
-		private SmartImageView imgAccount;
-		private TextView strUsername, strStatus;
+		private ImageView realAvatar, YMstatus_icon, imgView_Arrow;
+		private View view_separate;
+		private TextView userID, statusMessage;
 
 	}
 }
