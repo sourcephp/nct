@@ -10,16 +10,15 @@ import android.os.Handler;
 import android.os.Message;
 import att.android.fragment.BaseMessengerFragment;
 
-public class ReadFullContactListNetwork extends BaseMessengerFragment implements Runnable {
+public class LoadFullContactListNetwork extends BaseMessengerFragment implements Runnable {
 	private Handler mHandler;
 
-	public ReadFullContactListNetwork(Handler mHandler) {
+	public LoadFullContactListNetwork(Handler mHandler) {
 		this.mHandler = mHandler;
-		sessionListener = new YMEventHandler();
 	}
 
 	public void run() {
-
+		sessionListener = new YMEventHandler();
 		singletonSession.addSessionListener(sessionListener);
 
 		Roster roster = singletonSession.getRoster();
