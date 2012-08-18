@@ -37,9 +37,10 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 	private LoadFullContactListNetwork mLoadContact; 
 	private QuickAction mQAction;
 	private Button btnSettting;
-	private Animation amTranslate;
-	private RelativeLayout mLayout,mPanel;
-	private Button btnSearch, btnChangeStatus;
+	private Animation amTranslateDown;
+	private Animation amTranslateUp;
+	private RelativeLayout mLayout;
+	private Button btnEnter;
 	private ActionItem acShowOff, acInfo, acOnlyOn, acSearch;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -80,7 +81,7 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		acInfo = new ActionItem();
 		acOnlyOn = new ActionItem();
 		acSearch = new ActionItem();
-		
+		amTranslateUp = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_move_up);
 	}
 
 	@Override
@@ -89,29 +90,24 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		btnSettting.setOnClickListener(this);
 		listContact = (ListView) this.getView().findViewById(
 				R.id.listView_contactList);
-		btnChangeStatus = (Button) this.getView().findViewById(R.id.btn_changestatus);
-		btnSearch = (Button) this.getView().findViewById(R.id.btn_search);
-		mPanel =  (RelativeLayout) this.getView().findViewById(R.id.button_panel);
+		btnEnter = (Button) this.getView().findViewById(R.id.btn_search);
 		mLayout =  (RelativeLayout) this.getView().findViewById(R.id.layout_panel);
 	}
 
 	@Override
 	public void initActions() {
 		listContact.setAdapter(mContactAdapter);
-		btnChangeStatus.setOnClickListener(this);
-		btnSearch.setOnClickListener(this);
-		amTranslate = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_top);
-		mPanel.setVisibility(View.INVISIBLE);
+		btnEnter.setOnClickListener(this);
+		amTranslateDown = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_move_down);
 		mLayout.setVisibility(View.INVISIBLE);
-		acShowOff.setTitle("Hiện Offline");
-		acInfo.setTitle("Đổi status");
-		acOnlyOn.setTitle("Hiện Online");
-		acSearch.setTitle("Tìm kiếm");
+		acShowOff.setTitle("Hiá»‡n Offline");
+		acInfo.setTitle("Ä�á»•i status");
+		acOnlyOn.setTitle("Hiá»‡n Online");
+		acSearch.setTitle("TÃ¬m kiáº¿m");
 		mQAction.addActionItem(acShowOff);
 		mQAction.addActionItem(acOnlyOn);
 		mQAction.addActionItem(acInfo);
 		mQAction.addActionItem(acSearch);
-		
 		mQAction.setOnActionItemClickListener(new OnActionItemClickListener() {
 			
 			public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -123,18 +119,12 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 					//bat su kien khi chon nut hien online o day
 					break;
 				case 2:
-					mLayout.startAnimation(amTranslate);
+					mLayout.startAnimation(amTranslateDown);
 					mLayout.setVisibility(View.VISIBLE);
-					mPanel.setVisibility(View.VISIBLE);
-					btnChangeStatus.setVisibility(View.VISIBLE);
-					btnSearch.setVisibility(View.GONE);
 					break;
 				case 3:
-					mLayout.startAnimation(amTranslate);
+					mLayout.startAnimation(amTranslateDown);
 					mLayout.setVisibility(View.VISIBLE);
-					mPanel.setVisibility(View.VISIBLE);
-					btnChangeStatus.setVisibility(View.GONE);
-					btnSearch.setVisibility(View.VISIBLE);
 					break;
 				}
 			}
@@ -169,12 +159,8 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		if(v == btnSettting){
 			mQAction.show(v);
 		}
-		if(v == btnSearch){
-			//TODO: bat su kien
-			mLayout.setVisibility(View.INVISIBLE);
-		}
-		if(v == btnChangeStatus){
-			//TODO: bat su kien
+		if(v == btnEnter){
+			mLayout.startAnimation(amTranslateUp);
 			mLayout.setVisibility(View.INVISIBLE);
 		}
 	}
