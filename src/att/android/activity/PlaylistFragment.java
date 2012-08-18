@@ -38,7 +38,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	private ListView mListView;
 	private Music_MyPlaylistAdapter playlistAdapter;
 	private ArrayList<Music_Song> mPlaylist;
-	private ArrayList<Integer> arr;
 	private View mBtnDelete;
 	private final static String NOTES = "notes.txt";
 	private ReadingSongInfo mReadingSongInfo;
@@ -53,7 +52,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			mListView.setOnItemClickListener(PlaylistFragment.this);
 		};
 	};
-	private int requestCode;
 
 	public static Fragment newInstance(Context context) {
 		PlaylistFragment f = new PlaylistFragment();
@@ -78,7 +76,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	@Override
 	public void initVariables() {
-		arr = new ArrayList<Integer>();
 		file = getActivity().getFileStreamPath(NOTES);
 		mPlaylist = new ArrayList<Music_Song>();
 		playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
@@ -90,7 +87,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		mListView = (ListView) this.getView().findViewById(R.id.listView1);
 		mBtnDelete = this.getView().findViewById(R.id.btn_del);
 	}
-
 	@Override
 	public void initActions() {
 		mBtnDelete.setOnClickListener(this);
@@ -99,16 +95,22 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	public void onClick(View v) {
 		if (v == mBtnDelete) {
-//			if (file.exists()) {
-//				mPlaylist.clear();
-//				file.delete();
-//				mListView.clearAnimation();
-//				mListView.setAdapter(playlistAdapter);
-//			}
-			Intent i = new Intent(this.getActivity(),DelActivity.class);
-			startActivityForResult(i, requestCode);
+			if (file.exists()) {
+				mPlaylist.clear();
+				file.delete();
+				mListView.clearAnimation();
+				mListView.setAdapter(playlistAdapter);
+				// Intent i = new Intent(this.getActivity(), DelActivity.class);
+				// startActivityForResult(i, requestCode);
+			}
+
 		}
 
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
@@ -119,7 +121,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	private void getList() {
 		mPlaylist.clear();
-		mReadingSongInfo = new ReadingSongInfo(mHandler, arr);
+		mReadingSongInfo = new ReadingSongInfo(mHandler);
 		Thread t = new Thread(mReadingSongInfo);
 		t.start();
 	}
@@ -135,11 +137,9 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 		private Handler mHandler;
 		private ArrayList<Music_Song> list;
-		private ArrayList<Integer> arr;
 
-		public ReadingSongInfo(Handler h, ArrayList<Integer> arr) {
+		public ReadingSongInfo(Handler h) {
 			mHandler = h;
-			this.arr = arr;
 		}
 
 		public void run() {
@@ -155,7 +155,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 						BufferedReader reader = new BufferedReader(tmp);
 						String str1;
 						String str[] = new String[4];
-						int k = 0;
 
 						while ((str1 = reader.readLine()) != null) {
 							int i = 0;
@@ -170,8 +169,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 							song.singer = str[1];
 							song.songKey = str[2];
 							song.streamURL = str[3];
-							arr.set(k, 1);
-							k++;
 							list.add(song);
 						}
 
