@@ -95,6 +95,7 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 				mHolder.userID.setText(firstName + lastName);
 			}
 			
+			//TODO: Load background
 			if (item.getDrawable() != null) {
 				mHolder.realAvatar.setBackgroundDrawable(item.getDrawable());
 			}

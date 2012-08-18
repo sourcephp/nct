@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.openymsg.network.YahooUser;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,12 +19,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import att.android.activity.MessengerFragmentActivity;
 import att.android.adapter.ContactListAdapter;
-import att.android.network.ReadFullContactListNetwork;
+import att.android.network.LoadFullContactListNetwork;
 
 import com.example.multiapp.R;
 import com.quickaction.popup.ActionItem;
@@ -34,12 +34,12 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 	private ListView listContact;
 	private ContactListAdapter mContactAdapter;
 	private ArrayList<YahooUser> alYahooContact;
+	private LoadFullContactListNetwork mLoadContact; 
 	private QuickAction mQAction;
 	private Button btnSettting;
 	private Animation amTranslate;
 	private RelativeLayout mLayout,mPanel;
 	private Button btnSearch, btnChangeStatus;
-	private boolean isStatus = false;
 	private ActionItem acShowOff, acInfo, acOnlyOn, acSearch;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -50,6 +50,7 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 				mContactAdapter.add(itm);
 			}
 			mContactAdapter.notifyDataSetChanged();
+			listContact.setOnItemClickListener(ContactFragment.this);
 		};
 	};
 
@@ -67,11 +68,13 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		return root;
 	}
 	
+	@SuppressLint("HandlerLeak")
 	@Override
 	public void initVariables() {
 		alYahooContact = new ArrayList<YahooUser>();
 		mContactAdapter = new ContactListAdapter(this.getActivity(), 1,
 				alYahooContact);
+		mLoadContact = new LoadFullContactListNetwork(mHandler);
 		mQAction = new QuickAction(this.getActivity());
 		acShowOff = new ActionItem();
 		acInfo = new ActionItem();
@@ -94,7 +97,6 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 
 	@Override
 	public void initActions() {
-		listContact.setOnItemClickListener(this);
 		listContact.setAdapter(mContactAdapter);
 		btnChangeStatus.setOnClickListener(this);
 		btnSearch.setOnClickListener(this);
@@ -149,9 +151,7 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 	@Override
 	public void onResume() {
 		super.onResume();
-		ReadFullContactListNetwork readThread = new ReadFullContactListNetwork(
-				mHandler);
-		Thread thread = new Thread(readThread);
+		Thread thread = new Thread(mLoadContact);
 		thread.start();
 	}
 
@@ -174,7 +174,7 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 			mLayout.setVisibility(View.INVISIBLE);
 		}
 		if(v == btnChangeStatus){
-			
+			//TODO: bat su kien
 			mLayout.setVisibility(View.INVISIBLE);
 		}
 	}
