@@ -26,10 +26,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/btn_del"
+        android:layout_toLeftOf="@id/btn_cancel_del"
         android:text="Delete All" />
-	<ListView android:id="@+id/list_song_del"
-	    android:layout_width="fill_parent"
-	    android:layout_height="match_parent"
-	    android:layout_alignParentTop="true"
-	    android:layout_above="@id/btn_del"/>
+
+    <ListView
+        android:id="@+id/list_song_del"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_del"
+        android:layout_alignParentTop="true" />
+
 </RelativeLayout>
