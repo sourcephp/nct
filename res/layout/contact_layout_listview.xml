@@ -4,41 +4,70 @@
     android:layout_height="wrap_content"
     android:background="@drawable/background_listview_hotsong" >
 
-    <com.loopj.android.image.SmartImageView
-        android:id="@+id/imgView_account"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="#876959" />
+    <RelativeLayout
+        android:id="@+id/main_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/txtView_username"
+        <ImageView
+            android:id="@+id/imgView_RealAvatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/friendlist_avatar" />
+
+        <TextView
+            android:id="@+id/txtView_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imgView_RealAvatar"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="Username"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/txtView_StatusMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtView_username"
+            android:layout_toRightOf="@id/imgView_RealAvatar"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:text="Status"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgView_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imgView_account"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:text="Username"
-        android:textColor="#ffffff" />
+        android:layout_alignBaseline="@+id/view_separate"
+        android:layout_below="@id/main_panel"
+        android:layout_marginLeft="70dp"
+        android:src="@drawable/currentlist_table_arrow" >
+    </ImageView>
+
+    <View
+        android:id="@+id/view_separate"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@id/main_panel"
+        android:layout_marginTop="5dip"
+        android:background="@drawable/currentlist_table_sepe" >
+    </View>
 
     <TextView
-        android:id="@+id/txtView_status"
-        android:layout_width="wrap_content"
+        android:id="@+id/notification"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtView_username"
-        android:layout_toRightOf="@id/imgView_account"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:text="Status"
-        android:textColor="#ffffff" />
-    <ImageView android:id="@+id/img_status"
+        android:layout_below="@id/view_separate" />
+
+    <ImageView
+        android:id="@+id/imgView_ActionStatus"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="#f7f6ff"
-        android:layout_centerVertical="true"
+        android:layout_above="@+id/txtView_StatusMessage"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"/>
-<TextView android:id="@+id/notification"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/imgView_account"/>
+        android:background="@drawable/ic_yahoo_offline" />
+
 </RelativeLayout>
