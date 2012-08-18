@@ -3,12 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
- <LinearLayout
-     android:id="@+id/layout_panel"
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <ListView
+        android:id="@+id/listView_contactList"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true" >
+    </ListView>
+
+    <Button
+        android:id="@+id/btn_options"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/custom_btn_options" />
+
+    <LinearLayout
+        android:id="@+id/layout_panel"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
+        android:layout_alignParentTop="true"
         android:background="@drawable/tab_background"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal" >
 
         <Button
@@ -22,31 +43,10 @@
             android:layout_width="220dp"
             android:layout_height="35dp"
             android:background="@drawable/custom_edittext_white"
-            android:hint="@string/status"
             android:lines="1"
             android:paddingLeft="11sp"
             android:textColor="#000000"
             android:textColorHint="#000000" />
-
-        <Button
-            android:id="@+id/btn_options"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/custom_btn_options" />
     </LinearLayout>
-    <ProgressBar 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"/>
-    <ListView
-        android:id="@+id/listView_contactList"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/layout_panel"
-        android:layout_alignParentTop="true"
-         >
-    </ListView>
-
-   
 
 </RelativeLayout>
