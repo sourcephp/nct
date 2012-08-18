@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.multiapp.R;
@@ -59,7 +60,7 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 			String customStatusMessage = item.getCustomStatusMessage();
 			
 			//TODO: set latest chat if users have incoming messages
-			//TODO: set VISIBLE or GONE for view_saparate and imgView_Arrow if users have incoming messages
+			//TODO: set VISIBLE for view_saparate and imgView_Arrow if users have incoming messages or GONE if not
 			if(item.getStatus().compareTo(Status.AVAILABLE)==0){
 				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_online);
 				mHolder.statusMessage.setText("");
@@ -87,9 +88,9 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 				lastName = "";
 			if ("null".equalsIgnoreCase(firstName) || firstName == null)
 				firstName = "";
-			String YMid = item.getId();
+			String YMuserid = item.getId();
 			if ("".equalsIgnoreCase(firstName+lastName)) {
-				mHolder.userID.setText(YMid);
+				mHolder.userID.setText(YMuserid);
 			} else {
 				mHolder.userID.setText(firstName + lastName);
 			}
