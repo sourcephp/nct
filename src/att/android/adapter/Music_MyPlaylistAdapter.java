@@ -27,8 +27,8 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 		ViewHolder mHolder;
 		Music_Song mSong = this.getItem(position);
 		if (null == convertView) {
-			convertView = mInflater
-					.inflate(R.layout.music_hotsong_layout, null);
+			convertView = mInflater.inflate(R.layout.music_playlist_layout,
+					null);
 			mHolder = new ViewHolder();
 			mHolder.songName = (TextView) convertView
 					.findViewById(R.id.tv_songName);
