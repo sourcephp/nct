@@ -35,6 +35,14 @@
             android:paddingLeft="5dp"
             android:text="Status"
             android:textColor="#ffffff" />
+
+        <ImageView
+            android:id="@+id/imgView_ActionStatus"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_above="@+id/txtView_StatusMessage"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_yahoo_offline" />
     </RelativeLayout>
 
     <ImageView
@@ -61,13 +69,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/view_separate" />
-
-    <ImageView
-        android:id="@+id/imgView_ActionStatus"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_above="@+id/txtView_StatusMessage"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/ic_yahoo_offline" />
 
 </RelativeLayout>

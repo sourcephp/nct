@@ -20,33 +20,46 @@
         android:id="@+id/btn_options"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/custom_btn_options" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layout_panel"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/tab_background"
         android:orientation="horizontal" >
-
-        <Button
+	<RelativeLayout android:id="@+id/button_panel" 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content">
+	     <Button
             android:id="@+id/btn_search"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_centerVertical="true"
             android:background="@drawable/custom_btn_search" />
-
+        <Button
+            android:id="@+id/btn_changestatus"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_add" />
+        </RelativeLayout>
+        
         <EditText
             android:id="@+id/edtxt_stt_search"
             android:layout_width="220dp"
             android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/button_panel"
             android:background="@drawable/custom_edittext_white"
             android:lines="1"
             android:paddingLeft="11sp"
             android:textColor="#000000"
             android:textColorHint="#000000" />
-    </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>
