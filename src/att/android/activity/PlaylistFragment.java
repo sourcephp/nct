@@ -9,8 +9,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.openymsg.network.YahooUser;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +21,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import att.android.adapter.Music_MyPlaylistAdapter;
 import att.android.bean.Music_Song;
@@ -38,10 +40,16 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	private ListView mListView;
 	private Music_MyPlaylistAdapter playlistAdapter;
 	private ArrayList<Music_Song> mPlaylist;
-	private View mBtnDelete;
+	private Button mBtnTrash;
 	private final static String NOTES = "notes.txt";
 	private ReadingSongInfo mReadingSongInfo;
 	private File file;
+	private LinearLayout mLayoutDel;
+	private Button btnDel;
+	private Button btnDelAll;
+	private Button btnCancel;
+	private Animation amRightToLeft;
+	private Animation amLeftToRight;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			ArrayList<Music_Song> rs = (ArrayList<Music_Song>) msg.obj;
@@ -52,7 +60,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			mListView.setOnItemClickListener(PlaylistFragment.this);
 		};
 	};
-	private View mBtnCheck;
 
 	public static Fragment newInstance(Context context) {
 		PlaylistFragment f = new PlaylistFragment();
@@ -81,34 +88,57 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		mPlaylist = new ArrayList<Music_Song>();
 		playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
 				mPlaylist);
+		amLeftToRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_left_to_right);
+		amRightToLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_right_to_left);
 	}
 
 	@Override
 	public void initViews() {
 		mListView = (ListView) this.getView().findViewById(R.id.listView1);
-		mBtnDelete = this.getView().findViewById(R.id.btn_del);
-		mBtnCheck = this.getView().findViewById(R.id.btn_checked);
+		mBtnTrash = (Button) this.getView().findViewById(R.id.btn_trash);
+		mLayoutDel = (LinearLayout) this.getView().findViewById(R.id.layout_delete);
+		btnDelAll = (Button) this.getView().findViewById(R.id.btn_del_all);
+		btnDel = (Button) this.getView().findViewById(R.id.btn_del);
+		btnCancel = (Button) this.getView().findViewById(R.id.btn_cancel);
 	}
 	@Override
 	public void initActions() {
-		mBtnDelete.setOnClickListener(this);
+		mBtnTrash.setOnClickListener(this);
 		mListView.setOnItemClickListener(this);
+		mLayoutDel.setVisibility(View.INVISIBLE);
+		btnDel.setOnClickListener(this);
+		btnDelAll.setOnClickListener(this);
+		btnCancel.setOnClickListener(this);
 	}
 
 	public void onClick(View v) {
-		if (v == mBtnDelete) {
-			if (file.exists()) {
-				mPlaylist.clear();
-				file.delete();
-				mListView.clearAnimation();
-				mListView.setAdapter(playlistAdapter);
+		if (v == mBtnTrash) {
+//			if (file.exists()) {
+				mLayoutDel.startAnimation(amRightToLeft);
+				mLayoutDel.setVisibility(View.VISIBLE);
+//				mPlaylist.clear();
+//				file.delete();
+//				mListView.clearAnimation();
+//				mListView.setAdapter(playlistAdapter);
 				// Intent i = new Intent(this.getActivity(), DelActivity.class);
 				// startActivityForResult(i, requestCode);
+			}
+			if(v == btnCancel){
+				mLayoutDel.startAnimation(amLeftToRight);
+				mLayoutDel.setVisibility(View.INVISIBLE);
+			}
+			if(v == btnDel){
+				mLayoutDel.startAnimation(amLeftToRight);
+				mLayoutDel.setVisibility(View.INVISIBLE);
+			}
+			if(v == btnDelAll){
+				mLayoutDel.startAnimation(amLeftToRight);
+				mLayoutDel.setVisibility(View.INVISIBLE);
 			}
 
 		}
 
-	}
+	
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
