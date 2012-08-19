@@ -17,16 +17,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.multiapp.R;
-import com.loopj.android.image.SmartImageView;
 
-public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filterable{
+public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements Filterable{
 	private LayoutInflater mInflater;
 	private String lastName;
 	private String firstName;
+	private YahooUser item;
+	private int size;
 
-	public ContactListAdapter(Context context, int textViewResourceId,
+	public FullContactListAdapter(Context context, int textViewResourceId,
 			ArrayList<YahooUser> yahooUsers) {
 		super(context, textViewResourceId, yahooUsers);
+		size = yahooUsers.size();
 		mInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -38,6 +40,7 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 			convertView = mInflater.inflate(R.layout.contact_layout_listview,
 					null);
 			mHolder = new viewHolder();
+			mHolder.sub_panel = (RelativeLayout) convertView.findViewById(R.id.sub_panel);
 			mHolder.realAvatar = (ImageView) convertView
 					.findViewById(R.id.imgView_RealAvatar);
 			mHolder.userID = (TextView) convertView
@@ -49,17 +52,21 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 			mHolder.imgView_Arrow = (ImageView) convertView
 					.findViewById(R.id.imgView_arrow);
 			mHolder.view_separate = convertView.findViewById(R.id.view_separate);
+			mHolder.incomingMsg = (TextView) convertView.findViewById(R.id.notification);
 			
 			convertView.setTag(mHolder);
 		} else {
 			mHolder = (viewHolder) convertView.getTag();
-			mHolder.realAvatar.setBackgroundResource(R.drawable.friendlist_avatar);
 		}
-		YahooUser item = this.getItem(position);
+			item = this.getItem(position);
 			String customActionStatus = item.getCustomStatus();
 			String customStatusMessage = item.getCustomStatusMessage();
-			
 			//TODO: set latest chat if users have incoming messages
+			if(item.isOnChat()==true){
+				mHolder.sub_panel.setVisibility(View.VISIBLE);
+			} else{
+				mHolder.sub_panel.setVisibility(View.GONE);
+			}
 			//TODO: set VISIBLE for view_saparate and imgView_Arrow if users have incoming messages or GONE if not
 			if(item.getStatus().compareTo(Status.AVAILABLE)==0){
 				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_online);
@@ -95,9 +102,11 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 				mHolder.userID.setText(firstName + lastName);
 			}
 			
-			//TODO: Load background
+			//TODO: Load Avatar
 			if (item.getDrawable() != null) {
 				mHolder.realAvatar.setBackgroundDrawable(item.getDrawable());
+			} else{
+				mHolder.realAvatar.setBackgroundResource(R.drawable.friendlist_avatar);
 			}
 			
 		
@@ -109,11 +118,20 @@ public class ContactListAdapter extends ArrayAdapter<YahooUser> implements Filte
 		// TODO Auto-generated method stub
 		return super.getFilter();
 	}
+	
+	
+	
+	@Override
+	public void setNotifyOnChange(boolean notifyOnChange) {
+		super.setNotifyOnChange(notifyOnChange);
+		item.update(true);
+	}
 
 	private class viewHolder {
 		private ImageView realAvatar, YMstatus_icon, imgView_Arrow;
 		private View view_separate;
-		private TextView userID, statusMessage;
+		private TextView userID, statusMessage, incomingMsg;
+		private RelativeLayout sub_panel;
 
 	}
 }

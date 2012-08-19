@@ -145,9 +145,9 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 				.findViewById(R.id.txt_chatbox_myfriend);
 		ImageView avt_friends = (ImageView) layout
 				.findViewById(R.id.real_avatar_friend);
-
-		if (YMuser.getDrawable() != null) {
-			avt_friends.setBackgroundDrawable(YMuser.getDrawable());
+		YahooUser user = new YahooUser(event.getFrom());
+		if (null != user.getDrawable()) {
+			avt_friends.setBackgroundDrawable(user.getDrawable());
 		}
 		friends.setText(event.getMessage());
 		formchat.addView(layout);

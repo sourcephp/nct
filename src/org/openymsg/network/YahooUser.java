@@ -460,6 +460,13 @@ public class YahooUser implements Serializable{
             customStatus = null;
         }
     }
+    /**
+     * Updates the YahooUser with the new value. This method should be called in cases if you want to handle conversation status
+     * @param newOnChat
+     */
+    public void update(boolean newOnChat){
+    	this.onChat = newOnChat;
+    }
 
     public String getFirstName() {
         return this.addressBookEntry.getFirstName();

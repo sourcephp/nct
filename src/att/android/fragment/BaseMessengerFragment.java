@@ -19,6 +19,7 @@ public abstract class BaseMessengerFragment extends Fragment implements YHandler
 	public YMEventHandler sessionListener;
 	public Session singletonSession = Session.getInstance();
 	private static final String TAG = "BaseMessengerFragment";
+	private Class a;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -74,6 +75,7 @@ public abstract class BaseMessengerFragment extends Fragment implements YHandler
 			handler.sendMessage(message);
 			Logger.e(TAG+"(YMEventHandler)", "messageReceived " + event.getFrom()
 				    +": "+ event.getMessage());
+			a = getClass();
 		    }
 	}
 

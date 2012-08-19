@@ -3,6 +3,7 @@ package att.android.fragment;
 import java.util.ArrayList;
 
 import org.openymsg.network.YahooUser;
+import org.openymsg.network.event.SessionEvent;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,7 +23,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import att.android.activity.MessengerFragmentActivity;
-import att.android.adapter.ContactListAdapter;
+import att.android.adapter.FullContactListAdapter;
 import att.android.network.LoadFullContactListNetwork;
 
 import com.example.multiapp.R;
@@ -32,7 +33,7 @@ import com.quickaction.popup.QuickAction.OnActionItemClickListener;
 
 public class ContactFragment extends BaseMessengerFragment implements OnItemClickListener, OnClickListener {
 	private ListView listContact;
-	private ContactListAdapter mContactAdapter;
+	private FullContactListAdapter mContactAdapter;
 	private ArrayList<YahooUser> alYahooContact;
 	private LoadFullContactListNetwork mLoadContact; 
 	private QuickAction mQAction;
@@ -41,7 +42,7 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 	private Animation amTranslateUp;
 	private RelativeLayout mLayout;
 	private Button btnEnter;
-	private ActionItem acShowOff, acInfo, acOnlyOn, acSearch;
+	private ActionItem acShowOff, acInfo, acOnlyOn, acSearch, acAdd;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			super.handleMessage(msg);
@@ -73,7 +74,7 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 	@Override
 	public void initVariables() {
 		alYahooContact = new ArrayList<YahooUser>();
-		mContactAdapter = new ContactListAdapter(this.getActivity(), 1,
+		mContactAdapter = new FullContactListAdapter(this.getActivity(), 1,
 				alYahooContact);
 		mLoadContact = new LoadFullContactListNetwork(mHandler);
 		mQAction = new QuickAction(this.getActivity());
@@ -81,6 +82,7 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		acInfo = new ActionItem();
 		acOnlyOn = new ActionItem();
 		acSearch = new ActionItem();
+		acAdd = new ActionItem();
 		amTranslateUp = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_move_up);
 	}
 
@@ -99,24 +101,25 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		listContact.setAdapter(mContactAdapter);
 		btnEnter.setOnClickListener(this);
 		amTranslateDown = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_move_down);
-		mLayout.setVisibility(View.INVISIBLE);
-		acShowOff.setTitle("Hiá»‡n Offline");
-		acInfo.setTitle("Ä�á»•i status");
-		acOnlyOn.setTitle("Hiá»‡n Online");
-		acSearch.setTitle("TÃ¬m kiáº¿m");
+		acShowOff.setTitle("Hiện Offline");
+		acInfo.setTitle("Đổi status");
+		acOnlyOn.setTitle("Hiện Online");
+		acSearch.setTitle("Tìm kiếm bạn bè");
+		acAdd.setTitle("Thêm bạn");
 		mQAction.addActionItem(acShowOff);
 		mQAction.addActionItem(acOnlyOn);
 		mQAction.addActionItem(acInfo);
 		mQAction.addActionItem(acSearch);
+		mQAction.addActionItem(acAdd);
 		mQAction.setOnActionItemClickListener(new OnActionItemClickListener() {
 			
 			public void onItemClick(QuickAction source, int pos, int actionId) {
 				switch (pos) {
 				case 0:
-					// bat su kien khi ch onnut hien offline o day
+					//TODO: bat su kien cho nut hien offline
 					break;
 				case 1:
-					//bat su kien khi chon nut hien online o day
+					//TODO: bat su kien cho nut hien online
 					break;
 				case 2:
 					mLayout.startAnimation(amTranslateDown);
@@ -141,8 +144,20 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 	@Override
 	public void onResume() {
 		super.onResume();
+		mLayout.setVisibility(View.INVISIBLE);
 		Thread thread = new Thread(mLoadContact);
 		thread.start();
+	}
+	
+	public void onClick(View v) {
+		if(v == btnSettting){
+			mQAction.show(v);
+		}
+		if(v == btnEnter){
+			//TODO: bat su kien cho nut doi status hoac search
+			mLayout.startAnimation(amTranslateUp);
+			mLayout.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	public void startFragment(YahooUser item) {
@@ -155,14 +170,10 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		mContactAdapter.clear();
 	}
 
-	public void onClick(View v) {
-		if(v == btnSettting){
-			mQAction.show(v);
-		}
-		if(v == btnEnter){
-			mLayout.startAnimation(amTranslateUp);
-			mLayout.setVisibility(View.INVISIBLE);
-		}
+	@Override
+	public void onMessageReceived(SessionEvent event) {
+		super.onMessageReceived(event);
+	
 	}
 
 }
