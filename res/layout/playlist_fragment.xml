@@ -8,24 +8,54 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
-        android:textColor="#ffffff"
-        android:text="hiện chưa có danh sách" />
+        android:text="hiện chưa có danh sách"
+        android:textColor="#ffffff" />
 
     <ListView
         android:id="@+id/listView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
         android:choiceMode="multipleChoice"
-        android:drawSelectorOnTop="false"
-        android:layout_alignParentTop="true" >
+        android:drawSelectorOnTop="false" >
     </ListView>
 
     <Button
-        android:id="@+id/btn_del"
+        android:id="@+id/btn_trash"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/btn_recycle" />
+
+    <LinearLayout
+        android:id="@+id/layout_delete"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/layout_del"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_del_all"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_del_all" />
+
+        <Button
+            android:id="@+id/btn_del"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_del" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_cancel" />
+    </LinearLayout>
 
 </RelativeLayout>
