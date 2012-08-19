@@ -11,6 +11,7 @@ public class Music_Song extends BaseModel implements Serializable {
 	public String songID;
 	public String songKey;
 	public String streamURL = "";
+	public int check;
 
 	public Music_Song() {
 		// TODO Auto-generated constructor stub
