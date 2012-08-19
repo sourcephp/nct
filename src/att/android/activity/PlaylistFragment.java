@@ -52,6 +52,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			mListView.setOnItemClickListener(PlaylistFragment.this);
 		};
 	};
+	private View mBtnCheck;
 
 	public static Fragment newInstance(Context context) {
 		PlaylistFragment f = new PlaylistFragment();
@@ -86,6 +87,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	public void initViews() {
 		mListView = (ListView) this.getView().findViewById(R.id.listView1);
 		mBtnDelete = this.getView().findViewById(R.id.btn_del);
+		mBtnCheck = this.getView().findViewById(R.id.btn_checked);
 	}
 	@Override
 	public void initActions() {
@@ -199,10 +201,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	public void onDataParameterData(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
-
-	}
-
-	public void onDataParameterData(YahooUser yahooUsers) {
 
 	}
 
