@@ -96,9 +96,6 @@ public class LoginFragment extends BaseMessengerFragment implements OnClickListe
 		
 //		boolean bSave = chBoxSave.hasSelection();
 //		boolean bHide = chBoxHide.hasSelection();
-
-//		String strUserName="justslim91";
-//		String strPass="qwerty";
 		
 		if ("".equals(strUserName) || "".equals(strPass)) {
 		} else {
