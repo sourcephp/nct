@@ -20,6 +20,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import att.android.fragment.BaseMessengerFragment;
 import att.android.model.Logger;
 
 public class BuddyListImport {
@@ -98,11 +99,10 @@ public class BuddyListImport {
                 log.warn("responseCode from http is: " + responseCode);
             }
         }
-        //TODO: update to controller later
-//        synchronized (GeneralForm.lockRoster) {
-//        	GeneralForm.isCompletedRoster = true;
-//        	GeneralForm.lockRoster.notifyAll();
-//		}
+        synchronized (BaseMessengerFragment.LoadCompleteRosterLock) {
+        	BaseMessengerFragment.isCompletedRoster = true;
+        	BaseMessengerFragment.LoadCompleteRosterLock.notifyAll();
+		}
         
         Logger.e("BuddyListImport", "public void finish process");
         

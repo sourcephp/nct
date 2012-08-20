@@ -1,8 +1,13 @@
 package att.android.fragment;
 
+import java.util.ArrayList;
+
 import org.openymsg.network.Session;
+import org.openymsg.network.YahooGroup;
+import org.openymsg.network.YahooUser;
 import org.openymsg.network.event.SessionAdapter;
 import org.openymsg.network.event.SessionEvent;
+import org.openymsg.network.event.SessionListEvent;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,8 +23,17 @@ public abstract class BaseMessengerFragment extends Fragment implements YHandler
 	private boolean didInit = false;
 	public YMEventHandler sessionListener;
 	public Session singletonSession = Session.getInstance();
+	public static boolean isNeedUpdateFromRoster = false;
 	private static final String TAG = "BaseMessengerFragment";
-	private Class a;
+	public static Object LoadCompleteRosterLock = new Object();
+	public static boolean isCompletedRoster = false;
+	public static boolean isCompletedLoadData = false;
+	public static Object LoadDataLock = new Object();
+	public static Object LoadingData;
+	public static Class currentClass;
+	public static ArrayList<YahooUser> alYahooUser = new ArrayList<YahooUser>();
+	protected static Object UpdateUILock = new Object();
+	public static boolean settings_show_offlines = true;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -49,6 +63,11 @@ public abstract class BaseMessengerFragment extends Fragment implements YHandler
 		
 	}
 	
+	/**Override if you need to load ContactList from Roster*/
+	public void updateFullContactList() {
+		
+	}
+	
 	public Handler handler = new Handler(){
 		public void handleMessage(Message msg) {
 			switch(msg.what){
@@ -57,6 +76,21 @@ public abstract class BaseMessengerFragment extends Fragment implements YHandler
 				onMessageReceived(eventMESSAGE_RECEVICE);
 				break;
 			case RECEVICE_BUZZ:
+				//TODO: Xu ly Buzz
+				break;
+			case UPDATE_YAHOO_USER_FROM_ROSTER:
+				if (currentClass.equals(ContactFragment.class)) {
+				    isNeedUpdateFromRoster  = false;
+				    updateFullContactList();
+				} else {
+				    isNeedUpdateFromRoster = true;
+				}
+				break;
+			case UPDATE_AVATAR:
+				//TODO: xu ly Avatar
+				break;
+			case FRIEND_UPDATE_RECEVICE:
+				//TODO: xu ly khi friend thay doi can cap nhat thay doi len UI
 				break;
 			}
 		};
@@ -75,8 +109,19 @@ public abstract class BaseMessengerFragment extends Fragment implements YHandler
 			handler.sendMessage(message);
 			Logger.e(TAG+"(YMEventHandler)", "messageReceived " + event.getFrom()
 				    +": "+ event.getMessage());
-			a = getClass();
 		    }
+		@Override
+		public void listReceived(SessionListEvent event) {
+			super.listReceived(event);
+			Logger.e(TAG, "isCompletedLoadData = " + isCompletedLoadData);
+		    if (!isCompletedLoadData) {
+		    	 synchronized (LoadDataLock ) {
+		    			isCompletedLoadData = true;
+		    			LoadDataLock.notifyAll();
+		    		    }
+		    }
+		}
+		
 	}
 
 	

@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.openymsg.network.AccountLockedException;
 import org.openymsg.network.FailedLoginException;
 import org.openymsg.network.LoginRefusedException;
-import org.openymsg.network.Session;
+import org.openymsg.network.SessionState;
 import org.openymsg.network.Status;
 
 import android.content.Context;
@@ -16,8 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -26,15 +24,15 @@ import att.android.model.Logger;
 
 import com.example.multiapp.R;
 
-public class LoginFragment extends BaseMessengerFragment implements OnClickListener, Runnable{
+public class LoginFragment extends BaseMessengerFragment implements
+		OnClickListener, Runnable {
 	private static final String TAG = "LoginFragment";
-	//ko hieu tai sao phai static moi chay duoc???
+	// ko hieu tai sao phai static moi chay duoc???
 	private static EditText edtxtUserName;
 	private static EditText edtxtPass;
 	private CheckBox chBoxSave;
 	private CheckBox chBoxHide;
 	private Button btnLogin;
-
 
 	public static Fragment newInstance(Context context) {
 		LoginFragment f = new LoginFragment();
@@ -49,7 +47,7 @@ public class LoginFragment extends BaseMessengerFragment implements OnClickListe
 				null);
 		return root;
 	}
-	
+
 	@Override
 	public void initVariables() {
 		sessionListener = new YMEventHandler();
@@ -57,7 +55,8 @@ public class LoginFragment extends BaseMessengerFragment implements OnClickListe
 
 	@Override
 	public void initViews() {
-		edtxtUserName = (EditText) this.getView().findViewById(R.id.edtxt_username);
+		edtxtUserName = (EditText) this.getView().findViewById(
+				R.id.edtxt_username);
 		edtxtPass = (EditText) this.getView().findViewById(R.id.edtxt_pass);
 		chBoxSave = (CheckBox) this.getView().findViewById(R.id.chbox_save);
 		chBoxHide = (CheckBox) this.getView().findViewById(R.id.chbox_hide);
@@ -66,15 +65,16 @@ public class LoginFragment extends BaseMessengerFragment implements OnClickListe
 
 	@Override
 	public void initActions() {
-		btnLogin.setOnClickListener(this);		
+		btnLogin.setOnClickListener(this);
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
-//		singletonSession.removeSessionListener(singletonSessionListener);
+		singletonSession.removeSessionListener(sessionListener);
 		Logger.e(TAG, "onPause");
 	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -82,21 +82,22 @@ public class LoginFragment extends BaseMessengerFragment implements OnClickListe
 	}
 
 	public void onClick(View v) {
-		if (v == btnLogin) {			
+		if (v == btnLogin) {
 			new Thread(new LoginFragment()).start();
+			//
 			((MessengerFragmentActivity) this.getActivity()).startFragment(1);
 		}
-					
+
 	}
 
 	public void run() {
-		
+
 		String strUserName = edtxtUserName.getText().toString().trim();
 		String strPass = edtxtPass.getText().toString().trim();
-		
-//		boolean bSave = chBoxSave.hasSelection();
-//		boolean bHide = chBoxHide.hasSelection();
-		
+
+		// boolean bSave = chBoxSave.hasSelection();
+		// boolean bHide = chBoxHide.hasSelection();
+
 		if ("".equals(strUserName) || "".equals(strPass)) {
 		} else {
 			Log.i(TAG, "Login start");
@@ -119,8 +120,22 @@ public class LoginFragment extends BaseMessengerFragment implements OnClickListe
 				Log.d(TAG, "IO error");
 				e.printStackTrace();
 			}
-			Log.i("TAG", "Data is loading...");
+			if (singletonSession.getSessionStatus().compareTo(
+					SessionState.LOGGED_ON) == 0) {
+				// checkSession();
+				if (!isCompletedLoadData) {
+					Logger.e(TAG, "Login loading data....");
+					synchronized (LoadDataLock) {
+						try {
+							LoadDataLock.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					Logger.e(TAG, "Login data loaded");
+				}
+			}
 		}
 	}
-	
+
 }
