@@ -11,15 +11,6 @@
         android:text="hiện chưa có danh sách"
         android:textColor="#ffffff" />
 
-    <ListView
-        android:id="@+id/listView1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
-        android:choiceMode="multipleChoice"
-        android:drawSelectorOnTop="false" >
-    </ListView>
-
     <Button
         android:id="@+id/btn_trash"
         android:layout_width="50dp"
@@ -27,6 +18,16 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/btn_recycle" />
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/btn_trash"
+        android:layout_alignParentTop="true"
+        android:choiceMode="multipleChoice"
+        android:drawSelectorOnTop="false" >
+    </ListView>
 
     <LinearLayout
         android:id="@+id/layout_delete"
