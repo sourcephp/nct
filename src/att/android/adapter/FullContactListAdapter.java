@@ -15,6 +15,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import att.android.bean.IncomingMessage;
 
 import com.example.multiapp.R;
 
@@ -22,13 +23,11 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 	private LayoutInflater mInflater;
 	private String lastName;
 	private String firstName;
-	private YahooUser item;
-	private int size;
+	IncomingMessage singletonCon = IncomingMessage.getInstance();
 
 	public FullContactListAdapter(Context context, int textViewResourceId,
 			ArrayList<YahooUser> yahooUsers) {
 		super(context, textViewResourceId, yahooUsers);
-		size = yahooUsers.size();
 		mInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -58,11 +57,12 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 		} else {
 			mHolder = (viewHolder) convertView.getTag();
 		}
-			item = this.getItem(position);
+		YahooUser item = this.getItem(position);
 			String customActionStatus = item.getCustomStatus();
 			String customStatusMessage = item.getCustomStatusMessage();
 			//TODO: set latest chat if users have incoming messages
-			if(item.isOnChat()==true){
+			
+			if(item.getId()==singletonCon.getFrom() && singletonCon.isOnChat()==true){
 				mHolder.sub_panel.setVisibility(View.VISIBLE);
 			} else{
 				mHolder.sub_panel.setVisibility(View.GONE);
@@ -117,14 +117,6 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 	public Filter getFilter() {
 		// TODO Auto-generated method stub
 		return super.getFilter();
-	}
-	
-	
-	
-	@Override
-	public void setNotifyOnChange(boolean notifyOnChange) {
-		super.setNotifyOnChange(notifyOnChange);
-		item.update(true);
 	}
 
 	private class viewHolder {

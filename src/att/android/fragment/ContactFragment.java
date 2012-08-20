@@ -2,13 +2,14 @@ package att.android.fragment;
 
 import java.util.ArrayList;
 
+import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
 import org.openymsg.network.event.SessionEvent;
+import org.openymsg.roster.Roster;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,18 +25,18 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import att.android.activity.MessengerFragmentActivity;
 import att.android.adapter.FullContactListAdapter;
-import att.android.network.LoadFullContactListNetwork;
+import att.android.network.ManageYMUserHasAvatarNetwork;
+import att.android.network.RosterHandler;
 
 import com.example.multiapp.R;
 import com.quickaction.popup.ActionItem;
 import com.quickaction.popup.QuickAction;
 import com.quickaction.popup.QuickAction.OnActionItemClickListener;
 
-public class ContactFragment extends BaseMessengerFragment implements OnItemClickListener, OnClickListener {
+public class ContactFragment extends BaseMessengerFragment implements
+		OnItemClickListener, OnClickListener {
 	private ListView listContact;
 	private FullContactListAdapter mContactAdapter;
-	private ArrayList<YahooUser> alYahooContact;
-	private LoadFullContactListNetwork mLoadContact; 
 	private QuickAction mQAction;
 	private Button btnSettting;
 	private Animation amTranslateDown;
@@ -43,18 +44,6 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 	private RelativeLayout mLayout;
 	private Button btnEnter;
 	private ActionItem acShowOff, acInfo, acOnlyOn, acSearch, acAdd;
-	private Handler mHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			super.handleMessage(msg);
-			@SuppressWarnings("unchecked")
-			ArrayList<YahooUser> rs = (ArrayList<YahooUser>) msg.obj;
-			for (YahooUser itm : rs) {
-				mContactAdapter.add(itm);
-			}
-			mContactAdapter.notifyDataSetChanged();
-			listContact.setOnItemClickListener(ContactFragment.this);
-		};
-	};
 
 	public static Fragment newInstance(Context context) {
 		ContactFragment f = new ContactFragment();
@@ -69,21 +58,21 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 				R.layout.activity_contact_list, null);
 		return root;
 	}
-	
+
 	@SuppressLint("HandlerLeak")
 	@Override
 	public void initVariables() {
-		alYahooContact = new ArrayList<YahooUser>();
 		mContactAdapter = new FullContactListAdapter(this.getActivity(), 1,
-				alYahooContact);
-		mLoadContact = new LoadFullContactListNetwork(mHandler);
+				new ArrayList<YahooUser>());
+		sessionListener = new YMEventHandler();
 		mQAction = new QuickAction(this.getActivity());
 		acShowOff = new ActionItem();
 		acInfo = new ActionItem();
 		acOnlyOn = new ActionItem();
 		acSearch = new ActionItem();
 		acAdd = new ActionItem();
-		amTranslateUp = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_move_up);
+		amTranslateUp = AnimationUtils.loadAnimation(this.getActivity(),
+				R.anim.translate_move_up);
 	}
 
 	@Override
@@ -93,14 +82,17 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		listContact = (ListView) this.getView().findViewById(
 				R.id.listView_contactList);
 		btnEnter = (Button) this.getView().findViewById(R.id.btn_search);
-		mLayout =  (RelativeLayout) this.getView().findViewById(R.id.layout_panel);
+		mLayout = (RelativeLayout) this.getView().findViewById(
+				R.id.layout_panel);
 	}
 
 	@Override
 	public void initActions() {
 		listContact.setAdapter(mContactAdapter);
+		listContact.setOnItemClickListener(this);
 		btnEnter.setOnClickListener(this);
-		amTranslateDown = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_move_down);
+		amTranslateDown = AnimationUtils.loadAnimation(this.getActivity(),
+				R.anim.translate_move_down);
 		acShowOff.setTitle("Hiện Offline");
 		acInfo.setTitle("Đổi status");
 		acOnlyOn.setTitle("Hiện Online");
@@ -112,14 +104,14 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		mQAction.addActionItem(acSearch);
 		mQAction.addActionItem(acAdd);
 		mQAction.setOnActionItemClickListener(new OnActionItemClickListener() {
-			
+
 			public void onItemClick(QuickAction source, int pos, int actionId) {
 				switch (pos) {
 				case 0:
-					//TODO: bat su kien cho nut hien offline
+					// TODO: bat su kien cho nut hien offline
 					break;
 				case 1:
-					//TODO: bat su kien cho nut hien online
+					// TODO: bat su kien cho nut hien online
 					break;
 				case 2:
 					mLayout.startAnimation(amTranslateDown);
@@ -133,28 +125,39 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 			}
 		});
 	}
-	
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-		startFragment(alYahooContact.get(position));
-		Log.e("ContactFragment", alYahooContact.get(position).getId());
+		startFragment(alYahooUser.get(position));
+		Log.e("ContactFragment", alYahooUser.get(position).getId());
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+		// Search and update avatar always invisible
 		mLayout.setVisibility(View.INVISIBLE);
-		Thread thread = new Thread(mLoadContact);
-		thread.start();
+
+		singletonSession.addSessionListener(sessionListener);
+
+		currentClass = this.getClass();
+
+		new RosterHandler(handler).start();
+		if (isNeedUpdateFromRoster) {
+			isNeedUpdateFromRoster = false;
+			updateFullContactList();
+		}
 	}
-	
+
 	public void onClick(View v) {
-		if(v == btnSettting){
+		if (v == btnSettting) {
 			mQAction.show(v);
 		}
-		if(v == btnEnter){
-			//TODO: bat su kien cho nut doi status hoac search
+		if (v == btnEnter) {
+			// Nut login dau. Day la fragment hien thi contact list
+			// login o fragment khc
+
+			// TODO: bat su kien cho nut doi status hoac search
 			mLayout.startAnimation(amTranslateUp);
 			mLayout.setVisibility(View.INVISIBLE);
 		}
@@ -164,6 +167,7 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 		((MessengerFragmentActivity) this.getActivity()).sendData(item);
 		((MessengerFragmentActivity) this.getActivity()).startFragment(2);
 	}
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -173,7 +177,64 @@ public class ContactFragment extends BaseMessengerFragment implements OnItemClic
 	@Override
 	public void onMessageReceived(SessionEvent event) {
 		super.onMessageReceived(event);
-	
+	}
+
+	@Override
+	public void updateFullContactList() {
+		super.updateFullContactList();
+		handler.post(new Runnable() {
+			public void run() {
+				Roster roster = singletonSession.getRoster();
+				synchronized (BaseMessengerFragment.UpdateUILock) {
+					if (mContactAdapter == null) {
+						try {
+							BaseMessengerFragment.UpdateUILock.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				//
+				new ManageYMUserHasAvatarNetwork(handler, roster).start();
+				loadDataTolist();
+				// adapter.setNotifyOnChange(true);
+				// ListFriend.adapter.setNotifyOnChange(true);
+
+			}
+
+		});
+	}
+
+	protected void loadDataTolist() {
+		synchronized (UpdateUILock) {
+			boolean isAdd = false;
+			if (!settings_show_offlines) { // Show only user online
+				for (int i = 0; i < alYahooUser.size(); i++) {
+					YahooUser yahooUser = alYahooUser.get(i);
+					if (yahooUser.getStatus().compareTo(Status.AVAILABLE) == 0) {
+						isAdd = true;
+					} else if (yahooUser.getStatus().compareTo(Status.CUSTOM) == 0) {
+						isAdd = true;
+					} else if (yahooUser.getStatus().compareTo(Status.BUSY) == 0) {
+						isAdd = true;
+					}
+					if (isAdd) {
+						mContactAdapter.add(yahooUser);
+						mContactAdapter.setNotifyOnChange(true);
+						isAdd = false;
+					}
+				}
+			} else {// Show only user offline
+				for (int i = 0; i < alYahooUser.size(); i++) {
+					YahooUser yahooUser = alYahooUser.get(i);
+					mContactAdapter.add(yahooUser);
+					mContactAdapter.setNotifyOnChange(true);
+					isAdd = false;
+				}
+			}
+			UpdateUILock.notifyAll();
+		}
+
 	}
 
 }
