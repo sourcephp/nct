@@ -23,11 +23,10 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
+		
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.fragment_activity_messenger);
-		initViewPager(3, 0xFFFFFFFF, 0xFF000000);
+		initViewPager(0, 0xFFFFFFFF, 0xFF000000);
 //		Intent intent = getIntent();
 //		Bundle bundle = intent.getExtras().getBundle("YahooUser");
 	}
@@ -38,7 +37,7 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 				getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 		mPager.setOnPageChangeListener(this);
-		mPager.setCurrentItem(0);
+		mPager.setCurrentItem(pageCount);
 		mPager.setPageMargin(1);
 	}
 
