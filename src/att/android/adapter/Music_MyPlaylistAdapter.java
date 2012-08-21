@@ -2,16 +2,13 @@ package att.android.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-
 import android.widget.CheckBox;
-
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import att.android.bean.Music_Song;
@@ -55,9 +52,7 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 					});
 
 			convertView.setTag(mHolder);
-
 			list.add(mHolder.cbCheck);
-
 		} else {
 			mHolder = (ViewHolder) convertView.getTag();
 		}
@@ -65,9 +60,7 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 		mHolder.songName.setText(mSong.getNameSong());
 		mHolder.singer.setText(mSong.getSinger());
 		mHolder.streamUrl = mSong.getStreamUrl();
-
 		mHolder.cbCheck.setChecked(mSong.isSelected());
-
 
 		return convertView;
 	}
@@ -77,15 +70,13 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 		private TextView songName;
 		private TextView singer;
 		private String streamUrl;
-
 		private CheckBox cbCheck;
-	}tu 
+	}
 
 	public void showCheckBox() {
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).setVisibility(View.VISIBLE);
 			Log.e("PlaylistAdapter", "i");
 		}
-
 	}
 }

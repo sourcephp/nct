@@ -24,17 +24,13 @@
         android:textColor="#ffffff"
         android:textSize="11dp" />
 
- <!--    <CheckBox
+    <CheckBox
         android:id="@+id/cb_checked"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
-<<<<<<< .mine
         android:layout_centerVertical="true"
         android:focusable="false"
         android:visibility="invisible" />
-=======
-        android:layout_centerVertical="true" /> -->
->>>>>>> .r227
 
 </RelativeLayout>
