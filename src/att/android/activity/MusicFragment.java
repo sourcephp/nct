@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,8 +54,10 @@ public class MusicFragment extends BaseFragment implements OnItemClickListener,
 			ArrayList<Music_Song> rs = (ArrayList<Music_Song>) msg.obj;
 			for (Music_Song itm : rs) {
 				mHotSongAdapter.add(itm);
+//				Log.i("TestMusic","Dang load data");
 			}
 			mHotSongAdapter.notifyDataSetChanged();
+//			Log.i("TestMusic","Da nhan het");
 			mListView.setOnItemClickListener(MusicFragment.this);
 		}
 	};
