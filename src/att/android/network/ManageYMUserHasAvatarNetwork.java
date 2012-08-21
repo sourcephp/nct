@@ -29,6 +29,7 @@ public class ManageYMUserHasAvatarNetwork extends Thread implements
 
 	public void run() {
 		int index = 0;
+		boolean isExist = false;
 		for (Iterator<YahooUser> iterator = roster.iterator(); iterator
 				.hasNext();) {
 			YahooUser newYahooUser = (YahooUser) iterator.next();
@@ -40,13 +41,21 @@ public class ManageYMUserHasAvatarNetwork extends Thread implements
 				for (Iterator<YahooUser> i = BaseMessengerFragment.alYahooUser
 						.iterator(); i.hasNext();) {
 					YahooUser myYahooUser = (YahooUser) i.next();
-					if (newYahooUser.getId().equalsIgnoreCase(myYahooUser.getId())) {
+					if (newYahooUser.getId().equalsIgnoreCase(
+							myYahooUser.getId())) {
 						myYahooUser.setDrawable(d);
 						i.remove();
 						BaseMessengerFragment.alYahooUser.add(myYahooUser);
-						urlGetAvatar = "http://img.msg.yahoo.com/avatar.php?yids=";
+						isExist = true;
+						break;
+					}
+
+					if (isExist) {
+						isExist = false;
+						break;
 					}
 				}
+				urlGetAvatar = "http://img.msg.yahoo.com/avatar.php?yids=";
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
