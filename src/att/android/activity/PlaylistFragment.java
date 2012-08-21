@@ -189,12 +189,15 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			}
 		}
 		if (v == btnDelAll) {
-			//showDialog();
+			// showDialog();
 			mPlaylist.clear();
 			file.delete();
 			mListView.setAdapter(playlistAdapter);
 			mLayoutDel.startAnimation(amLeftToRight);
 			mLayoutDel.setVisibility(View.INVISIBLE);
+			playlistAdapter.hideCheckBox(mPlaylist);
+			playlistAdapter.notifyDataSetChanged();
+			mListView.setAdapter(playlistAdapter);
 		}
 
 	}
