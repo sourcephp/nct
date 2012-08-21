@@ -34,6 +34,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import att.android.activity.MusicFragmentActivity.MyAlertDialogFragment;
 import att.android.adapter.Music_MyPlaylistAdapter;
 import att.android.bean.Music_Song;
 import att.android.model.OnFragmentDataRecevier;
@@ -41,7 +42,8 @@ import att.android.model.OnFragmentDataRecevier;
 import com.example.multiapp.R;
 
 public class PlaylistFragment extends BaseFragment implements OnClickListener,
-		OnItemClickListener, OnFragmentDataRecevier {
+		OnItemClickListener, OnFragmentDataRecevier,
+		DialogInterface.OnClickListener {
 
 	private ListView mListView;
 	private Music_MyPlaylistAdapter playlistAdapter;
@@ -125,7 +127,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		if (file.exists()) {
 			if (v == mBtnTrash) {
 				// if (file.exists()) {
-				playlistAdapter.showCheckBox();
+				playlistAdapter.showCheckBox(mPlaylist);
 				playlistAdapter.notifyDataSetChanged();
 				mLayoutDel.startAnimation(amRightToLeft);
 				mLayoutDel.setVisibility(View.VISIBLE);
@@ -138,6 +140,9 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			if (v == btnCancel) {
 				mLayoutDel.startAnimation(amLeftToRight);
 				mLayoutDel.setVisibility(View.INVISIBLE);
+				playlistAdapter.hideCheckBox(mPlaylist);
+				playlistAdapter.notifyDataSetChanged();
+				mListView.setAdapter(playlistAdapter);
 			}
 			if (v == btnDel) {
 				String str = "";
@@ -178,16 +183,18 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 				mListView.setAdapter(playlistAdapter);
 				mLayoutDel.startAnimation(amLeftToRight);
 				mLayoutDel.setVisibility(View.INVISIBLE);
+				playlistAdapter.hideCheckBox(mPlaylist);
+				playlistAdapter.notifyDataSetChanged();
+				mListView.setAdapter(playlistAdapter);
 			}
 		}
 		if (v == btnDelAll) {
-			showDialog();
+			//showDialog();
 			mPlaylist.clear();
 			file.delete();
 			mListView.setAdapter(playlistAdapter);
 			mLayoutDel.startAnimation(amLeftToRight);
 			mLayoutDel.setVisibility(View.INVISIBLE);
-
 		}
 
 	}
@@ -291,43 +298,8 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		newFragment.show(getFragmentManager(), "dialog");
 	}
 
-	public static class MyAlertDialogFragment extends DialogFragment {
-
-		public static MyAlertDialogFragment newInstance(int title, int i) {
-			MyAlertDialogFragment frag = new MyAlertDialogFragment();
-			Bundle args = new Bundle();
-			args.putInt("title", title);
-			Bundle args0 = new Bundle();
-			args0.putInt("int", i);
-			frag.setArguments(args);
-			frag.setArguments(args0);
-			return frag;
-		}
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			int title = getArguments().getInt("title");
-			final int i = getArguments().getInt("int");
-
-			return new AlertDialog.Builder(getActivity())
-					.setTitle(title)
-					.setPositiveButton(R.string.alert_dialog_ok,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
-									((MusicFragmentActivity) getActivity())
-											.doPositiveClick(i);
-								}
-							})
-					.setNegativeButton(R.string.alert_dialog_cancel,
-							new DialogInterface.OnClickListener() {
-
-								public void onClick(DialogInterface dialog,
-										int which) {
-
-								}
-							}).create();
-		}
-
+	public void onClick(DialogInterface dialog, int which) {
+		ok = 1;
 	}
+
 }
