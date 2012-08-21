@@ -27,6 +27,7 @@ import att.android.model.Logger;
 import att.android.model.OnYahooFragmentDataReceiver;
 
 import com.example.multiapp.R;
+import com.loopj.android.image.SmartImageView;
 
 public class ChatFragment extends BaseMessengerFragment implements OnClickListener, OnYahooFragmentDataReceiver {
 	private static final String TAG = "ChatFragment";
@@ -123,11 +124,8 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 		}
 		View layout = inflater.inflate(R.layout.chatbox_me, null);
 		TextView me = (TextView) layout.findViewById(R.id.txt_chatbox_me);
-		ImageView avt_me = (ImageView) layout.findViewById(R.id.real_avatar_me);
-		YahooUser userMe = new YahooUser(singletonSession.getLoginID().getId());
-		if (userMe.getDrawable() != null) {
-			avt_me.setBackgroundDrawable(userMe.getDrawable());
-		}
+		SmartImageView avt_me = (SmartImageView) layout.findViewById(R.id.real_avatar_me);
+		avt_me.setImageUrl("http://img.msg.yahoo.com/avatar.php?yids="+singletonSession.getLoginID().getId()+"&format=jpg");
 		me.setText(msg);
 		formchat.addView(layout);
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
@@ -145,9 +143,8 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 				.findViewById(R.id.txt_chatbox_myfriend);
 		ImageView avt_friends = (ImageView) layout
 				.findViewById(R.id.real_avatar_friend);
-		YahooUser user = new YahooUser(event.getFrom());
-		if (null != user.getDrawable()) {
-			avt_friends.setBackgroundDrawable(user.getDrawable());
+		if (null != YMuser.getDrawable()) {
+			avt_friends.setBackgroundDrawable(YMuser.getDrawable());
 		}
 		friends.setText(event.getMessage());
 		formchat.addView(layout);
