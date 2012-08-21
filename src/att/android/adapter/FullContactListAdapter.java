@@ -59,8 +59,9 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 		YahooUser item = this.getItem(position);
 			String customActionStatus = item.getCustomStatus();
 			String customStatusMessage = item.getCustomStatusMessage();
-			//TODO: set latest chat if users have incoming messages
+			boolean isLoadAvatar = true;
 			
+			//TODO: set latest chat if users have incoming messages
 			if(item.isOnChat()==true){
 				mHolder.sub_panel.setVisibility(View.VISIBLE);
 			} else{
@@ -70,22 +71,32 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 			if(item.getStatus().compareTo(Status.AVAILABLE)==0){
 				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_online);
 				mHolder.statusMessage.setText("");
+				isLoadAvatar = true;
 			}
 			else if(item.getStatus().compareTo(Status.BUSY)==0){
 				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_busy);
 				mHolder.statusMessage.setText("");
+				isLoadAvatar = true;
 			}
 			else if(item.getStatus().compareTo(Status.INVISIBLE)==0){
 				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_offline);
 				mHolder.statusMessage.setText("");
+				isLoadAvatar = false;
 			}
 			else if(item.getStatus().compareTo(Status.CUSTOM)==0 && "1".equalsIgnoreCase(customActionStatus)){
 				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_busy);
 				mHolder.statusMessage.setText(customStatusMessage);
+				isLoadAvatar = true;
 			}
 			else if(item.getStatus().compareTo(Status.CUSTOM)==0 && "0".equalsIgnoreCase(customActionStatus)){
 				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_online);
 				mHolder.statusMessage.setText(customStatusMessage);
+				isLoadAvatar = true;
+			} 
+			else if (item.getStatus().compareTo(Status.OFFLINE)==0){
+				mHolder.YMstatus_icon.setBackgroundResource(R.drawable.ic_yahoo_offline);
+				mHolder.statusMessage.setText("");
+				isLoadAvatar = false;
 			}
 			
 			lastName = item.getLastName();
@@ -100,18 +111,22 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 			} else {
 				mHolder.userID.setText(firstName + lastName);
 			}
-			
-			//TODO: Load Avatar
-			if (item.getDrawable() != null) {
-				mHolder.realAvatar.setBackgroundDrawable(item.getDrawable());
-			} else{
+			if (isLoadAvatar) {
+				if (item.getDrawable() != null) {
+					mHolder.realAvatar.setBackgroundDrawable(item.getDrawable());
+				} else {
+					mHolder.realAvatar.setBackgroundResource(R.drawable.friendlist_avatar);
+				}
+			} else {
 				mHolder.realAvatar.setBackgroundResource(R.drawable.friendlist_avatar);
 			}
+			
 			
 		
 		return convertView;
 	}
 	
+
 	@Override
 	public Filter getFilter() {
 		// TODO Auto-generated method stub

@@ -109,11 +109,27 @@ public class ContactFragment extends BaseMessengerFragment implements
 
 			public void onItemClick(QuickAction source, int pos, int actionId) {
 				switch (pos) {
-				case 0:
-					// TODO: bat su kien cho nut hien offline
+				case 0: //show offline
+					if(settings_show_offlines == false) {
+						settings_show_offlines = true;
+						mContactAdapter.clear();
+						isNeedUpdateFromRoster = false;
+						updateFullContactList();
+					}else if(settings_show_offlines == true){
+						mContactAdapter.clear();
+						isNeedUpdateFromRoster = false;
+						updateFullContactList();
+					}
 					break;
-				case 1:
-					// TODO: bat su kien cho nut hien online
+				case 1: //show online only
+					if(settings_show_offlines == true) {
+						settings_show_offlines = false;
+						mContactAdapter.clear();
+						loadDataTolist();
+					}else if(settings_show_offlines == false){
+						mContactAdapter.clear();
+						loadDataTolist();
+					}
 					break;
 				case 2:
 					mLayout.startAnimation(amTranslateDown);
