@@ -35,7 +35,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 	public static Object UpdateUILock = new Object();
 
 	// Flag to check condition to do something
-	public static boolean settings_show_offlines = true;
+	public static boolean settings_show_offlines = false;//change later
 	public static boolean isNeedUpdateAvatar = false;
 	public static boolean isNeedUpdateFromRoster = false;
 	public static boolean isCompletedRoster = false;
