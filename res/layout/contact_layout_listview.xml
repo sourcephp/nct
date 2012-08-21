@@ -27,10 +27,13 @@
 
         <TextView
             android:id="@+id/txtView_StatusMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtView_username"
             android:layout_toRightOf="@id/imgView_RealAvatar"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             android:paddingBottom="5dp"
             android:paddingLeft="5dp"
             android:text="Status"
