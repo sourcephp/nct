@@ -85,6 +85,7 @@ import org.openymsg.roster.Roster;
 
 import android.content.IntentFilter.AuthorityEntry;
 import android.graphics.drawable.Drawable;
+import att.android.fragment.BaseMessengerFragment;
 import att.android.model.Logger;
 
 /**
@@ -3891,10 +3892,9 @@ public class Session implements StatusConstants, FriendManager {
 	roster = null;
 	identities.clear();
 	loginException = null;
-	//TODO: update to controller later
-//	GeneralForm.isCompletedRoster = false;
-//	GeneralForm.isNeedUpdateFromRoster = false;
-//	GeneralForm.isCompletedLoadData = false;
+	BaseMessengerFragment.isCompletedRoster = false;
+	BaseMessengerFragment.isNeedUpdateFromRoster = false;
+	BaseMessengerFragment.isCompletedLoadData = false;
     }
 
     /**

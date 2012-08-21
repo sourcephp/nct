@@ -1,6 +1,8 @@
 package att.android.fragment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
@@ -147,6 +149,10 @@ public class ContactFragment extends BaseMessengerFragment implements
 			isNeedUpdateFromRoster = false;
 			updateFullContactList();
 		}
+
+		if (isNeedUpdateAvatar) {
+			updateAvatar();
+		}
 	}
 
 	public void onClick(View v) {
@@ -193,24 +199,33 @@ public class ContactFragment extends BaseMessengerFragment implements
 							e.printStackTrace();
 						}
 					}
+					getContactfrom(roster);
 				}
-				//
-				new ManageYMUserHasAvatarNetwork(handler, roster).start();
+				mContactAdapter.clear();
 				loadDataTolist();
-				// adapter.setNotifyOnChange(true);
-				// ListFriend.adapter.setNotifyOnChange(true);
-
+				new ManageYMUserHasAvatarNetwork(handler).start();
 			}
 
 		});
 	}
 
+	private void getContactfrom(Roster roster) {
+		alYahooUser.clear();
+		for (Iterator<YahooUser> i = roster.iterator(); i.hasNext();) {
+			YahooUser user = i.next();
+			if (alYahooUser.size() == 0) {
+				alYahooUser.add(user);
+			}
+
+		}
+	}
+
 	protected void loadDataTolist() {
 		synchronized (UpdateUILock) {
 			boolean isAdd = false;
-			if (!settings_show_offlines) { // Show only user online
-				for (int i = 0; i < alYahooUser.size(); i++) {
-					YahooUser yahooUser = alYahooUser.get(i);
+			if (!settings_show_offlines) {
+				for (int j = 0; j < alYahooUser.size(); j++) {
+					YahooUser yahooUser = alYahooUser.get(j);
 					if (yahooUser.getStatus().compareTo(Status.AVAILABLE) == 0) {
 						isAdd = true;
 					} else if (yahooUser.getStatus().compareTo(Status.CUSTOM) == 0) {
@@ -224,9 +239,9 @@ public class ContactFragment extends BaseMessengerFragment implements
 						isAdd = false;
 					}
 				}
-			} else {// Show only user offline
-				for (int i = 0; i < alYahooUser.size(); i++) {
-					YahooUser yahooUser = alYahooUser.get(i);
+			} else {
+				for (int j = 0; j < alYahooUser.size(); j++) {
+					YahooUser yahooUser = alYahooUser.get(j);
 					mContactAdapter.add(yahooUser);
 					mContactAdapter.setNotifyOnChange(true);
 					isAdd = false;
@@ -234,7 +249,21 @@ public class ContactFragment extends BaseMessengerFragment implements
 			}
 			UpdateUILock.notifyAll();
 		}
+	}
 
+	@Override
+	public void updateAvatar() {
+		super.updateAvatar();
+		isNeedUpdateAvatar = false;
+		handler.post(new Runnable() {
+			public void run() {
+				synchronized (UpdateUILock) {
+					mContactAdapter.clear();
+					mContactAdapter.setNotifyOnChange(true);
+					loadDataTolist();
+				}
+			}
+		});
 	}
 
 }
