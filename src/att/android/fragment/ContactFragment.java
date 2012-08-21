@@ -211,12 +211,12 @@ public class ContactFragment extends BaseMessengerFragment implements
 
 	private void getContactfrom(Roster roster) {
 		alYahooUser.clear();
-		for (Iterator<YahooUser> i = roster.iterator(); i.hasNext();) {
-			YahooUser user = i.next();
-			if (alYahooUser.size() == 0) {
+		if (alYahooUser.size() == 0) {
+			for (Iterator<YahooUser> i = roster.iterator(); i.hasNext();) {
+				YahooUser user = i.next();
 				alYahooUser.add(user);
-			}
 
+			}
 		}
 	}
 

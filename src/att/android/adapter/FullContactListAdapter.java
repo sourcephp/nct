@@ -23,7 +23,6 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 	private LayoutInflater mInflater;
 	private String lastName;
 	private String firstName;
-	IncomingMessage singletonCon = IncomingMessage.getInstance();
 
 	public FullContactListAdapter(Context context, int textViewResourceId,
 			ArrayList<YahooUser> yahooUsers) {
@@ -62,7 +61,7 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 			String customStatusMessage = item.getCustomStatusMessage();
 			//TODO: set latest chat if users have incoming messages
 			
-			if(item.getId()==singletonCon.getFrom() && singletonCon.isOnChat()==true){
+			if(item.isOnChat()==true){
 				mHolder.sub_panel.setVisibility(View.VISIBLE);
 			} else{
 				mHolder.sub_panel.setVisibility(View.GONE);
