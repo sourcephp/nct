@@ -1,7 +1,6 @@
 package att.android.activity;
 
 import java.io.BufferedReader;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,8 +11,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +19,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +34,8 @@ import att.android.activity.MusicFragmentActivity.MyAlertDialogFragment;
 import att.android.adapter.Music_MyPlaylistAdapter;
 import att.android.bean.Music_Song;
 import att.android.model.OnFragmentDataRecevier;
+import att.android.util.MyDialog;
+import att.android.util.MyDialog.OnMyDialogListener;
 
 import com.example.multiapp.R;
 
@@ -58,6 +56,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	private Button btnCancel;
 	private Animation amRightToLeft;
 	private Animation amLeftToRight;
+	private MyDialog mMyDialog;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			ArrayList<Music_Song> rs = (ArrayList<Music_Song>) msg.obj;
@@ -92,6 +91,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	@Override
 	public void initVariables() {
+		mMyDialog = new MyDialog(this.getActivity());
 		file = getActivity().getFileStreamPath(NOTES);
 		mPlaylist = new ArrayList<Music_Song>();
 		playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
@@ -121,6 +121,16 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		btnDel.setOnClickListener(this);
 		btnDelAll.setOnClickListener(this);
 		btnCancel.setOnClickListener(this);
+		mMyDialog.setOnMyDialogListener(new OnMyDialogListener() {
+			
+			public void onItemClick(boolean isOk) {
+				if(isOk){
+					//cai nay de set khi ng dung bam dong y
+				}else{
+					//cai nay de set khi ng dung bam huy bo
+				}
+			}
+		});
 	}
 
 	public void onClick(View v) {
@@ -138,6 +148,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 				// mListView.setAdapter(playlistAdapter);
 			}
 			if (v == btnCancel) {
+				
 				mLayoutDel.startAnimation(amLeftToRight);
 				mLayoutDel.setVisibility(View.INVISIBLE);
 				playlistAdapter.hideCheckBox(mPlaylist);
@@ -145,6 +156,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 				mListView.setAdapter(playlistAdapter);
 			}
 			if (v == btnDel) {
+				mMyDialog.show();
 				String str = "";
 				for (int i = 0; i < mPlaylist.size(); i++) {
 					if (!playlistAdapter.getItem(i).isSelected()) {
@@ -189,6 +201,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			}
 		}
 		if (v == btnDelAll) {
+			mMyDialog.show();
 			// showDialog();
 			mPlaylist.clear();
 			file.delete();
