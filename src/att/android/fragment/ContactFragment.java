@@ -123,9 +123,9 @@ public class ContactFragment extends BaseMessengerFragment implements
 		btnEnter.setOnClickListener(this);
 		amTranslateDown = AnimationUtils.loadAnimation(this.getActivity(),
 				R.anim.translate_move_down);
-		acShowOff.setTitle("Hiện Offline");
+		acShowOff.setTitle("Hiện Tất cả");
 		acInfo.setTitle("Đổi status");
-		acOnlyOn.setTitle("Hiện Online");
+		acOnlyOn.setTitle("Chỉ hiện online");
 		acSearch.setTitle("Tìm kiếm bạn bè");
 		acAdd.setTitle("Thêm bạn");
 		acLogout.setTitle("Logout");
@@ -143,20 +143,20 @@ public class ContactFragment extends BaseMessengerFragment implements
 					if(settings_show_offlines == false) {
 						settings_show_offlines = true;
 						mContactAdapter.clear();
-						loadDataTolist();
+						loadContactToList();
 					}else if(settings_show_offlines == true){
 						mContactAdapter.clear();
-						loadDataTolist();
+						loadContactToList();
 					}
 					break;
 				case 1: //show online only
 					if(settings_show_offlines == true) {
 						settings_show_offlines = false;
 						mContactAdapter.clear();
-						loadDataTolist();
+						loadContactToList();
 					}else if(settings_show_offlines == false){
 						mContactAdapter.clear();
-						loadDataTolist();
+						loadContactToList();
 					}
 					break;
 				case 2: //Change status
@@ -201,7 +201,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
 		startFragment(mContactAdapter.getItem(position));
-		Log.e("ContactFragment", alYahooUser.get(position).getId());
+		Log.e("ContactFragment", position+ ": "+ mContactAdapter.getItem(position).getId());
 	}
 
 	@Override
@@ -276,7 +276,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 					getContactfrom(roster);
 				}
 				mContactAdapter.clear();
-				loadDataTolist();
+				loadContactToList();
 				new ManageYMUserHasAvatarNetwork(handler).start();
 			}
 
@@ -294,7 +294,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 		}
 	}
 
-	protected void loadDataTolist() {
+	protected void loadContactToList() {
 		synchronized (UpdateUILock) {
 			boolean isAdd = false;
 			if (!settings_show_offlines) {
@@ -334,7 +334,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 				synchronized (UpdateUILock) {
 					mContactAdapter.clear();
 					mContactAdapter.setNotifyOnChange(true);
-					loadDataTolist();
+					loadContactToList();
 				}
 			}
 		});
