@@ -3,7 +3,6 @@ package att.android.adapter;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +16,14 @@ import com.example.multiapp.R;
 
 public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 	private LayoutInflater mInflater;
+	private boolean check = false;
 
 	public Music_MyPlaylistAdapter(Context context, int textViewResourceId,
 			List<Music_Song> objects) {
 		super(context, textViewResourceId, objects);
 		mInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		list = new ArrayList<CheckBox>();
 	}
-
-	private ArrayList<CheckBox> list;
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -50,9 +47,11 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 							mSong.setSelected(mHolder.cbCheck.isChecked());
 						}
 					});
+			if (check) {
+				mHolder.cbCheck.setVisibility(View.VISIBLE);
+			}
 
 			convertView.setTag(mHolder);
-			list.add(mHolder.cbCheck);
 		} else {
 			mHolder = (ViewHolder) convertView.getTag();
 		}
@@ -73,10 +72,17 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 		private CheckBox cbCheck;
 	}
 
-	public void showCheckBox() {
+	public void showCheckBox(ArrayList<Music_Song> list) {
+		check = true;
 		for (int i = 0; i < list.size(); i++) {
-			list.get(i).setVisibility(View.VISIBLE);
-			Log.e("PlaylistAdapter", "i");
+			getView(i, null, null);
+		}
+	}
+
+	public void hideCheckBox(ArrayList<Music_Song> list) {
+		check = false;
+		for (int i = 0; i < list.size(); i++) {
+			getView(i, null, null);
 		}
 	}
 }
