@@ -1,5 +1,6 @@
 package att.android.fragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
@@ -51,7 +52,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 	private RelativeLayout mLayout;
 	private Button btnEnter;
 	private EditText edtGeneral;
-	private ActionItem acShowOff, acInfo, acOnlyOn, acSearch, acAdd;
+	private ActionItem acShowOff, acInfo, acOnlyOn, acSearch, acAdd, acLogout;
 	
 	//define some function for only one button
 	protected static int button;
@@ -98,6 +99,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 		acOnlyOn = new ActionItem();
 		acSearch = new ActionItem();
 		acAdd = new ActionItem();
+		acLogout = new ActionItem();
 		amTranslateUp = AnimationUtils.loadAnimation(this.getActivity(),
 				R.anim.translate_move_up);
 	}
@@ -126,11 +128,13 @@ public class ContactFragment extends BaseMessengerFragment implements
 		acOnlyOn.setTitle("Hiện Online");
 		acSearch.setTitle("Tìm kiếm bạn bè");
 		acAdd.setTitle("Thêm bạn");
+		acLogout.setTitle("Logout");
 		mQAction.addActionItem(acShowOff);
 		mQAction.addActionItem(acOnlyOn);
 		mQAction.addActionItem(acInfo);
 		mQAction.addActionItem(acSearch);
 		mQAction.addActionItem(acAdd);
+		mQAction.addActionItem(acLogout);
 		mQAction.setOnActionItemClickListener(new OnActionItemClickListener() {
 
 			public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -175,9 +179,18 @@ public class ContactFragment extends BaseMessengerFragment implements
 					button = ADDFRIEND;
 //					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
 					break;
-				case 5: //logout
-					button = LOGOUT;
-//					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
+				case 5: //Logout
+					try {
+						singletonSession.logout();
+					} catch (IllegalStateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					mContactAdapter.clear();
+					Toast.makeText(getActivity(),"Thoat khoi Yahoo tu day!", Toast.LENGTH_LONG).show();
 					break;
 				}
 				
@@ -225,11 +238,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 				edtGeneral.removeTextChangedListener(watcher);
 				listContact.setTextFilterEnabled(false);
 			} else if (button == ADDFRIEND) {
-				// TODO: bat su kien
-				Toast.makeText(getActivity(), "Bat su kien di",	Toast.LENGTH_SHORT).show();
-			} else if (button == LOGOUT) {
-				// TODO: bat su kien
-				Toast.makeText(getActivity(), "Bat su kien di",	Toast.LENGTH_SHORT).show();
+				//TODO: add friend kho. Lam sau!
 			}
 		}
 	}
