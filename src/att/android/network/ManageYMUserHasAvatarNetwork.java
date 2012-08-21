@@ -15,30 +15,38 @@ import android.os.Handler;
 import att.android.fragment.BaseMessengerFragment;
 import att.android.model.YHandlerConstant;
 
-public class ManageYMUserHasAvatarNetwork extends Thread implements YHandlerConstant {
+public class ManageYMUserHasAvatarNetwork extends Thread implements
+		YHandlerConstant {
 	private String urlGetAvatar = "http://img.msg.yahoo.com/avatar.php?yids=";
 	private Handler handler;
 	private Roster roster;
+	Session singletonSession = Session.getInstance();
 
-	public ManageYMUserHasAvatarNetwork(Handler handler, Roster roster) {
+	public ManageYMUserHasAvatarNetwork(Handler handler) {
 		this.handler = handler;
-		this.roster = roster;
+		this.roster = singletonSession.getRoster();
 	}
 
 	public void run() {
 		int index = 0;
-		BaseMessengerFragment.alYahooUser.clear();
 		for (Iterator<YahooUser> iterator = roster.iterator(); iterator
 				.hasNext();) {
-			YahooUser yahooUser = (YahooUser) iterator.next();
-			urlGetAvatar = urlGetAvatar + yahooUser.getId() + "&format=jpg";
+			YahooUser newYahooUser = (YahooUser) iterator.next();
+			urlGetAvatar = urlGetAvatar + newYahooUser.getId() + "&format=jpg";
 			try {
 				InputStream is = (InputStream) fetch(urlGetAvatar);
 				Drawable d = Drawable.createFromStream(is, "src" + index);
 				index++;
-				yahooUser.setDrawable(d);
-				BaseMessengerFragment.alYahooUser.add(yahooUser);
-				urlGetAvatar = "http://img.msg.yahoo.com/avatar.php?yids=";
+				for (Iterator<YahooUser> i = BaseMessengerFragment.alYahooUser
+						.iterator(); i.hasNext();) {
+					YahooUser myYahooUser = (YahooUser) i.next();
+					if (newYahooUser.getId().equalsIgnoreCase(myYahooUser.getId())) {
+						myYahooUser.setDrawable(d);
+						i.remove();
+						BaseMessengerFragment.alYahooUser.add(myYahooUser);
+						urlGetAvatar = "http://img.msg.yahoo.com/avatar.php?yids=";
+					}
+				}
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
