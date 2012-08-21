@@ -1,20 +1,26 @@
 package att.android.activity;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +66,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			mListView.setOnItemClickListener(PlaylistFragment.this);
 		};
 	};
+	private int ok = -1;
 
 	public static Fragment newInstance(Context context) {
 		PlaylistFragment f = new PlaylistFragment();
@@ -72,7 +79,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			Bundle savedInstanceState) {
 		ViewGroup root = (ViewGroup) inflater.inflate(
 				R.layout.playlist_fragment, null);
-		Log.e("PlaylistFragment", "onCreateView");
 		return root;
 	}
 
@@ -88,19 +94,23 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		mPlaylist = new ArrayList<Music_Song>();
 		playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
 				mPlaylist);
-		amLeftToRight = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_left_to_right);
-		amRightToLeft = AnimationUtils.loadAnimation(this.getActivity(), R.anim.translate_right_to_left);
+		amLeftToRight = AnimationUtils.loadAnimation(this.getActivity(),
+				R.anim.translate_left_to_right);
+		amRightToLeft = AnimationUtils.loadAnimation(this.getActivity(),
+				R.anim.translate_right_to_left);
 	}
 
 	@Override
 	public void initViews() {
 		mListView = (ListView) this.getView().findViewById(R.id.listView1);
 		mBtnTrash = (Button) this.getView().findViewById(R.id.btn_trash);
-		mLayoutDel = (LinearLayout) this.getView().findViewById(R.id.layout_delete);
+		mLayoutDel = (LinearLayout) this.getView().findViewById(
+				R.id.layout_delete);
 		btnDelAll = (Button) this.getView().findViewById(R.id.btn_del_all);
 		btnDel = (Button) this.getView().findViewById(R.id.btn_del);
 		btnCancel = (Button) this.getView().findViewById(R.id.btn_cancel);
 	}
+
 	@Override
 	public void initActions() {
 		mBtnTrash.setOnClickListener(this);
@@ -112,33 +122,75 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	}
 
 	public void onClick(View v) {
-		if (v == mBtnTrash) {
-//			if (file.exists()) {
+		if (file.exists()) {
+			if (v == mBtnTrash) {
+				// if (file.exists()) {
+				playlistAdapter.showCheckBox();
+				playlistAdapter.notifyDataSetChanged();
 				mLayoutDel.startAnimation(amRightToLeft);
 				mLayoutDel.setVisibility(View.VISIBLE);
-//				mPlaylist.clear();
-//				file.delete();
-//				mListView.clearAnimation();
-//				mListView.setAdapter(playlistAdapter);
-				// Intent i = new Intent(this.getActivity(), DelActivity.class);
-				// startActivityForResult(i, requestCode);
+				mListView.setAdapter(playlistAdapter);
+				// mPlaylist.clear();
+				// file.delete();
+				// mListView.clearAnimation();
+				// mListView.setAdapter(playlistAdapter);
 			}
-			if(v == btnCancel){
+			if (v == btnCancel) {
 				mLayoutDel.startAnimation(amLeftToRight);
 				mLayoutDel.setVisibility(View.INVISIBLE);
 			}
-			if(v == btnDel){
+			if (v == btnDel) {
+				String str = "";
+				for (int i = 0; i < mPlaylist.size(); i++) {
+					if (!playlistAdapter.getItem(i).isSelected()) {
+						if (str.equals("")) {
+							str = mPlaylist.get(i).name + "╥"
+									+ mPlaylist.get(i).singer + "╥"
+									+ mPlaylist.get(i).songKey + "╥"
+									+ mPlaylist.get(i).streamURL;
+						} else {
+							str += mPlaylist.get(i).name + "╥"
+									+ mPlaylist.get(i).singer + "╥"
+									+ mPlaylist.get(i).songKey + "╥"
+									+ mPlaylist.get(i).streamURL;
+						}
+						str += "\n";
+					}
+				}
+
+				mPlaylist.clear();
+				if (!str.equals("")) {
+					try {
+
+						OutputStreamWriter out = new OutputStreamWriter(
+								getActivity().openFileOutput(NOTES, 0));
+						out.write(str);
+						out.close();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} else {
+					file.delete();
+				}
+				getList();
+				mListView.setAdapter(playlistAdapter);
 				mLayoutDel.startAnimation(amLeftToRight);
 				mLayoutDel.setVisibility(View.INVISIBLE);
 			}
-			if(v == btnDelAll){
-				mLayoutDel.startAnimation(amLeftToRight);
-				mLayoutDel.setVisibility(View.INVISIBLE);
-			}
+		}
+		if (v == btnDelAll) {
+			showDialog();
+			mPlaylist.clear();
+			file.delete();
+			mListView.setAdapter(playlistAdapter);
+			mLayoutDel.startAnimation(amLeftToRight);
+			mLayoutDel.setVisibility(View.INVISIBLE);
 
 		}
 
-	
+	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -148,7 +200,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
 		startFragment(mPlaylist, position, true);
-
 	}
 
 	private void getList() {
@@ -234,4 +285,49 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	}
 
+	private void showDialog() {
+		DialogFragment newFragment = MyAlertDialogFragment.newInstance(
+				R.string.alert_dialog_two_buttons_title, ok);
+		newFragment.show(getFragmentManager(), "dialog");
+	}
+
+	public static class MyAlertDialogFragment extends DialogFragment {
+
+		public static MyAlertDialogFragment newInstance(int title, int i) {
+			MyAlertDialogFragment frag = new MyAlertDialogFragment();
+			Bundle args = new Bundle();
+			args.putInt("title", title);
+			Bundle args0 = new Bundle();
+			args0.putInt("int", i);
+			frag.setArguments(args);
+			frag.setArguments(args0);
+			return frag;
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			int title = getArguments().getInt("title");
+			final int i = getArguments().getInt("int");
+
+			return new AlertDialog.Builder(getActivity())
+					.setTitle(title)
+					.setPositiveButton(R.string.alert_dialog_ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									((MusicFragmentActivity) getActivity())
+											.doPositiveClick(i);
+								}
+							})
+					.setNegativeButton(R.string.alert_dialog_cancel,
+							new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog,
+										int which) {
+
+								}
+							}).create();
+		}
+
+	}
 }

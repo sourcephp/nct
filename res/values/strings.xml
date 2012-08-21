@@ -4,5 +4,8 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Multiapp</string>
     <string name="status">Status</string>
+    <string name="alert_dialog_ok">YES</string>
+    <string name="alert_dialog_cancel">CANCEL</string>
+    <string name="alert_dialog_two_buttons_title">Delete All?</string>
 
 </resources>
