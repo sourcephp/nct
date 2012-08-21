@@ -2,6 +2,7 @@ package att.android.bean;
 
 import java.io.Serializable;
 
+import android.widget.CheckBox;
 import att.android.model.BaseModel;
 
 public class Music_Song extends BaseModel implements Serializable {
@@ -11,10 +12,10 @@ public class Music_Song extends BaseModel implements Serializable {
 	public String songID;
 	public String songKey;
 	public String streamURL = "";
-	public int check;
+	public boolean check;
 
 	public Music_Song() {
-		// TODO Auto-generated constructor stub
+		check = false;
 	}
 
 	public Music_Song(String songName, String singer) {
@@ -37,7 +38,16 @@ public class Music_Song extends BaseModel implements Serializable {
 	public String getSinger() {
 		return this.singer;
 	}
+
 	public String getStreamUrl() {
 		return streamURL;
+	}
+
+	public boolean isSelected() {
+		return check;
+	}
+
+	public void setSelected(boolean checked) {
+		check = checked;
 	}
 }

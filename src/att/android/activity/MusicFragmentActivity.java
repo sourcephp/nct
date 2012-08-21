@@ -21,7 +21,6 @@ public class MusicFragmentActivity extends FragmentActivity implements
 	private MusicViewPagerAdapter mPagerAdapter;
 	private ArrayList<Music_Song> data;
 	private OnFragmentDataRecevier listener;
-	private boolean sended;
 	private boolean haveData;
 	private int index;
 	private int position;
@@ -61,11 +60,9 @@ public class MusicFragmentActivity extends FragmentActivity implements
 	}
 
 	public void onPageSelected(int arg0) {
-		Log.e("MusicFragmentActivity", "Fragment " + arg0);
 		if (arg0 == 2) {
 			listener1.onDataParameterData(0);
 		}
-		Log.w("MusicFragmentActivity", "fragment" + arg0);
 		if (haveData) {
 			haveData = false;
 			if (test) {
@@ -93,6 +90,7 @@ public class MusicFragmentActivity extends FragmentActivity implements
 
 	private boolean test;
 	private boolean bool = false;
+	private int ok = -1;
 
 	public void sendData(int index) {
 		test = false;
@@ -106,5 +104,10 @@ public class MusicFragmentActivity extends FragmentActivity implements
 		this.position = position;
 		this.bool = bool;
 		haveData = true;
+	}
+
+	public void doPositiveClick(int ok) {
+		this.ok  = ok;
+		ok = 1;
 	}
 }
