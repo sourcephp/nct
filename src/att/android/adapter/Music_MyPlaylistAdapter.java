@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import att.android.bean.Music_Song;
 
@@ -37,8 +35,6 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 			mHolder.singer = (TextView) convertView
 					.findViewById(R.id.tv_singer);
 			convertView.setTag(mHolder);
-			mHolder.btnCheck = (CheckBox) convertView
-					.findViewById(R.id.btn_checked);
 		} else {
 			mHolder = (ViewHolder) convertView.getTag();
 		}
@@ -46,7 +42,6 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 		mHolder.songName.setText(mSong.getNameSong());
 		mHolder.singer.setText(mSong.getSinger());
 		mHolder.streamUrl = mSong.getStreamUrl();
-		mHolder.check = 1;
 		return convertView;
 	}
 
@@ -55,7 +50,5 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 		private TextView songName;
 		private TextView singer;
 		private String streamUrl;
-		private int check;
-		private CheckBox btnCheck;
 	}
 }
