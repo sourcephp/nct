@@ -13,6 +13,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import att.android.activity.MessengerFragmentActivity;
 import att.android.adapter.FullContactListAdapter;
 import att.android.network.ManageYMUserHasAvatarNetwork;
@@ -37,6 +41,7 @@ import com.quickaction.popup.QuickAction.OnActionItemClickListener;
 
 public class ContactFragment extends BaseMessengerFragment implements
 		OnItemClickListener, OnClickListener {
+	
 	private ListView listContact;
 	private FullContactListAdapter mContactAdapter;
 	private QuickAction mQAction;
@@ -45,7 +50,27 @@ public class ContactFragment extends BaseMessengerFragment implements
 	private Animation amTranslateUp;
 	private RelativeLayout mLayout;
 	private Button btnEnter;
+	private EditText edtGeneral;
 	private ActionItem acShowOff, acInfo, acOnlyOn, acSearch, acAdd;
+	
+	//define some function for only one button
+	protected static int button;
+	protected static final int CHANGESTATUS = 2;
+	protected static final int FINDFRIEND = 3;
+	protected static final int ADDFRIEND = 4;
+	protected static final int LOGOUT = 5;
+	
+	TextWatcher watcher = new TextWatcher() {
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			mContactAdapter.getFilter().filter(s);
+		}
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			// TODO Auto-generated method stub
+		}
+		public void afterTextChanged(Editable s) {
+			// TODO Auto-generated method stub
+		}
+	};
 
 	public static Fragment newInstance(Context context) {
 		ContactFragment f = new ContactFragment();
@@ -86,6 +111,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 		btnEnter = (Button) this.getView().findViewById(R.id.btn_search);
 		mLayout = (RelativeLayout) this.getView().findViewById(
 				R.id.layout_panel);
+		edtGeneral = (EditText) this.getView().findViewById(R.id.edtxt_General);
 	}
 
 	@Override
@@ -113,12 +139,10 @@ public class ContactFragment extends BaseMessengerFragment implements
 					if(settings_show_offlines == false) {
 						settings_show_offlines = true;
 						mContactAdapter.clear();
-						isNeedUpdateFromRoster = false;
-						updateFullContactList();
+						loadDataTolist();
 					}else if(settings_show_offlines == true){
 						mContactAdapter.clear();
-						isNeedUpdateFromRoster = false;
-						updateFullContactList();
+						loadDataTolist();
 					}
 					break;
 				case 1: //show online only
@@ -131,15 +155,32 @@ public class ContactFragment extends BaseMessengerFragment implements
 						loadDataTolist();
 					}
 					break;
-				case 2:
+				case 2: //Change status
 					mLayout.startAnimation(amTranslateDown);
 					mLayout.setVisibility(View.VISIBLE);
+					button = CHANGESTATUS;
+//					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
 					break;
-				case 3:
+				case 3: //Find friend
 					mLayout.startAnimation(amTranslateDown);
 					mLayout.setVisibility(View.VISIBLE);
+					button = FINDFRIEND;
+					listContact.setTextFilterEnabled(true);
+					edtGeneral.addTextChangedListener(watcher);
+					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
+					break;
+				case 4: //add friend
+					mLayout.startAnimation(amTranslateDown);
+					mLayout.setVisibility(View.VISIBLE);
+					button = ADDFRIEND;
+//					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
+					break;
+				case 5: //logout
+					button = LOGOUT;
+//					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
 					break;
 				}
+				
 			}
 		});
 	}
@@ -176,12 +217,20 @@ public class ContactFragment extends BaseMessengerFragment implements
 			mQAction.show(v);
 		}
 		if (v == btnEnter) {
-			// Nut login dau. Day la fragment hien thi contact list
-			// login o fragment khc
-
-			// TODO: bat su kien cho nut doi status hoac search
 			mLayout.startAnimation(amTranslateUp);
 			mLayout.setVisibility(View.INVISIBLE);
+			if (button == CHANGESTATUS) {
+				// TODO: bat su kien
+			} else if (button == FINDFRIEND) {
+				edtGeneral.removeTextChangedListener(watcher);
+				listContact.setTextFilterEnabled(false);
+			} else if (button == ADDFRIEND) {
+				// TODO: bat su kien
+				Toast.makeText(getActivity(), "Bat su kien di",	Toast.LENGTH_SHORT).show();
+			} else if (button == LOGOUT) {
+				// TODO: bat su kien
+				Toast.makeText(getActivity(), "Bat su kien di",	Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 

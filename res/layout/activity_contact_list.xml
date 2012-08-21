@@ -36,7 +36,7 @@
             android:background="@drawable/btn_enter" />
         
         <EditText
-            android:id="@+id/edtxt_stt_search"
+            android:id="@+id/edtxt_General"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_centerVertical="true"
