@@ -18,7 +18,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/btn_recycle" />
-
     <ListView
         android:id="@+id/listView1"
         android:layout_width="fill_parent"
@@ -28,6 +27,7 @@
         android:choiceMode="multipleChoice"
         android:drawSelectorOnTop="false" >
     </ListView>
+
 
     <LinearLayout
         android:id="@+id/layout_delete"
@@ -41,6 +41,7 @@
             android:id="@+id/btn_del_all"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/btn_del_all" />
 
@@ -48,6 +49,7 @@
             android:id="@+id/btn_del"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/btn_del" />
 
@@ -55,6 +57,7 @@
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/btn_cancel" />
     </LinearLayout>
