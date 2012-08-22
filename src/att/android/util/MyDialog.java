@@ -15,6 +15,7 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
 		super(context);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.my_dialog);
+		getWindow().setBackgroundDrawableResource(R.drawable.dialog_del);
 		btnOk = (Button) this.findViewById(R.id.btn_ok_dialog);
 		btnOk.setOnClickListener(this);
 		btnCancel = (Button) this.findViewById(R.id.btn_cancel_dialog);
