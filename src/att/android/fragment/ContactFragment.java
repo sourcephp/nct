@@ -3,7 +3,6 @@ package att.android.fragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
@@ -32,7 +31,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import att.android.activity.MessengerFragmentActivity;
 import att.android.adapter.FullContactListAdapter;
-import att.android.network.ManageYMUserHasAvatarNetwork;
 import att.android.network.RosterHandler;
 
 import com.example.multiapp.R;
@@ -190,7 +188,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 						e.printStackTrace();
 					}
 					mContactAdapter.clear();
-					Toast.makeText(getActivity(),"Thoat khoi Yahoo tu day!", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(),"Bạn vừa thoát tài khoản Yahoo!", Toast.LENGTH_LONG).show();
 					break;
 				}
 				
@@ -220,9 +218,6 @@ public class ContactFragment extends BaseMessengerFragment implements
 			updateFullContactList();
 		}
 
-		if (isNeedUpdateAvatar) {
-			updateAvatar();
-		}
 	}
 
 	public void onClick(View v) {
@@ -237,6 +232,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 			} else if (button == FINDFRIEND) {
 				edtGeneral.removeTextChangedListener(watcher);
 				listContact.setTextFilterEnabled(false);
+				Toast.makeText(getActivity(),"Tìm kiếm kết thúc!", Toast.LENGTH_LONG).show();
 			} else if (button == ADDFRIEND) {
 				//TODO: add friend kho. Lam sau!
 			}
@@ -277,7 +273,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 				}
 				mContactAdapter.clear();
 				loadContactToList();
-				new ManageYMUserHasAvatarNetwork(handler).start();
+//				new ManageYMUserHasAvatarNetwork(handler).start();
 			}
 
 		});
@@ -325,19 +321,5 @@ public class ContactFragment extends BaseMessengerFragment implements
 		}
 	}
 
-	@Override
-	public void updateAvatar() {
-		super.updateAvatar();
-		isNeedUpdateAvatar = false;
-		handler.post(new Runnable() {
-			public void run() {
-				synchronized (UpdateUILock) {
-					mContactAdapter.clear();
-					mContactAdapter.setNotifyOnChange(true);
-					loadContactToList();
-				}
-			}
-		});
-	}
 
 }

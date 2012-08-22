@@ -36,7 +36,6 @@ public abstract class BaseMessengerFragment extends Fragment implements
 
 	// Flag to check condition to do something
 	public static boolean settings_show_offlines = false;//change later
-	public static boolean isNeedUpdateAvatar = false;
 	public static boolean isNeedUpdateFromRoster = false;
 	public static boolean isCompletedRoster = false;
 	public static boolean isCompletedLoadData = false;
@@ -78,10 +77,6 @@ public abstract class BaseMessengerFragment extends Fragment implements
 
 	}
 
-	/** Override to handle avatar update to UI anytime */
-	public void updateAvatar() {
-
-	}
 
 	public Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -99,13 +94,6 @@ public abstract class BaseMessengerFragment extends Fragment implements
 					updateFullContactList();
 				} else {
 					isNeedUpdateFromRoster = true;
-				}
-				break;
-			case UPDATE_AVATAR:
-				if (currentClass.equals(ContactFragment.class)) {
-					updateAvatar();
-				} else {
-					isNeedUpdateAvatar = true;
 				}
 				break;
 			case FRIEND_UPDATE_RECEVICE:

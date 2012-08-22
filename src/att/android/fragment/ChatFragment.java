@@ -42,6 +42,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 	private LinearLayout formchat;
 	private String YMuserID;
 	private YahooUser YMuser;
+	private String urlGetAvatar = "http://img.msg.yahoo.com/avatar.php?yids=";
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
@@ -125,7 +126,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 		View layout = inflater.inflate(R.layout.chatbox_me, null);
 		TextView me = (TextView) layout.findViewById(R.id.txt_chatbox_me);
 		SmartImageView avt_me = (SmartImageView) layout.findViewById(R.id.real_avatar_me);
-		avt_me.setImageUrl("http://img.msg.yahoo.com/avatar.php?yids="+singletonSession.getLoginID().getId()+"&format=jpg");
+		avt_me.setImageUrl(urlGetAvatar+singletonSession.getLoginID().getId()+"&format=jpg");
 		me.setText(msg);
 		formchat.addView(layout);
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
@@ -141,11 +142,9 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 		View layout = inflater.inflate(R.layout.chatbox_myfriend, null);
 		TextView friends = (TextView) layout
 				.findViewById(R.id.txt_chatbox_myfriend);
-		ImageView avt_friends = (ImageView) layout
+		SmartImageView avt_friends = (SmartImageView) layout
 				.findViewById(R.id.real_avatar_friend);
-		if (null != YMuser.getDrawable()) {
-			avt_friends.setBackgroundDrawable(YMuser.getDrawable());
-		}
+		avt_friends.setImageUrl(urlGetAvatar+YMuser.getId()+"&format=jpg");
 		friends.setText(event.getMessage());
 		formchat.addView(layout);
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <ImageView
+        <com.loopj.android.image.SmartImageView
             android:id="@+id/imgView_RealAvatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -57,8 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/view_separate"
         android:layout_marginLeft="70dp"
-        android:src="@drawable/currentlist_table_arrow" >
-    </ImageView>
+        android:src="@drawable/currentlist_table_arrow" />
 
     <View
         android:id="@+id/view_separate"
