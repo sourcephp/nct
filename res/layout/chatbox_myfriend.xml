@@ -48,13 +48,12 @@
         android:layout_marginTop="6dip" >
     </ImageView>
 
-    <ImageView
+    <com.loopj.android.image.SmartImageView
         android:id="@+id/real_avatar_friend"
         android:layout_width="48dip"
         android:layout_height="48dip"
         android:layout_marginLeft="6dip"
         android:layout_marginTop="6dip"
-        android:background="@drawable/avatar_yadroid" >
-    </ImageView>
+        android:background="@drawable/avatar_yadroid" />
 
 </RelativeLayout>

@@ -18,11 +18,13 @@ import android.widget.TextView;
 import att.android.bean.IncomingMessage;
 
 import com.example.multiapp.R;
+import com.loopj.android.image.SmartImageView;
 
 public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements Filterable{
 	private LayoutInflater mInflater;
 	private String lastName;
 	private String firstName;
+	private String urlGetAvatar = "http://img.msg.yahoo.com/avatar.php?yids=";
 
 	public FullContactListAdapter(Context context, int textViewResourceId,
 			ArrayList<YahooUser> yahooUsers) {
@@ -39,7 +41,7 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 					null);
 			mHolder = new viewHolder();
 			mHolder.sub_panel = (RelativeLayout) convertView.findViewById(R.id.sub_panel);
-			mHolder.realAvatar = (ImageView) convertView
+			mHolder.realAvatar = (SmartImageView) convertView
 					.findViewById(R.id.imgView_RealAvatar);
 			mHolder.userID = (TextView) convertView
 					.findViewById(R.id.txtView_username);
@@ -47,7 +49,7 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 					.findViewById(R.id.txtView_StatusMessage);
 			mHolder.YMstatus_icon = (ImageView) convertView
 					.findViewById(R.id.imgView_ActionStatus);
-			mHolder.imgView_Arrow = (ImageView) convertView
+			mHolder.imgView_Arrow =  (ImageView) convertView
 					.findViewById(R.id.imgView_arrow);
 			mHolder.view_separate = convertView.findViewById(R.id.view_separate);
 			mHolder.incomingMsg = (TextView) convertView.findViewById(R.id.notification);
@@ -112,11 +114,7 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 				mHolder.userID.setText(firstName + lastName);
 			}
 			if (isLoadAvatar) {
-				if (item.getDrawable() != null) {
-					mHolder.realAvatar.setBackgroundDrawable(item.getDrawable());
-				} else {
-					mHolder.realAvatar.setBackgroundResource(R.drawable.friendlist_avatar);
-				}
+					mHolder.realAvatar.setImageUrl(urlGetAvatar + item.getId() + "&format=jpg");
 			} else {
 				mHolder.realAvatar.setBackgroundResource(R.drawable.friendlist_avatar);
 			}
@@ -134,7 +132,8 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 	}
 
 	private class viewHolder {
-		private ImageView realAvatar, YMstatus_icon, imgView_Arrow;
+		private SmartImageView realAvatar;
+		private ImageView YMstatus_icon,imgView_Arrow;
 		private View view_separate;
 		private TextView userID, statusMessage, incomingMsg;
 		private RelativeLayout sub_panel;
