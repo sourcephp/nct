@@ -41,13 +41,14 @@ import att.android.network.Music_LyricNetwork;
 import att.android.network.URLProvider;
 import att.android.receiver.PhoneReceiver;
 import att.android.receiver.PhoneReceiver.OnIncommingCall;
+import att.android.receiver.PhoneReceiver.OnRejectingCall;
 import att.android.util.ParseJSONMusic;
 
 import com.example.multiapp.R;
 
 public class LyricFragment extends BaseFragment implements
 		OnFragmentDataRecevier, OnClickListener, OnSeekBarChangeListener,
-		OnIncommingCall {
+		PhoneReceiver.OnIncommingCall, PhoneReceiver.OnRejectingCall {
 
 	private String streamUrl;
 	private String mLyric = "";
@@ -70,7 +71,7 @@ public class LyricFragment extends BaseFragment implements
 	private String urlLyric;
 	private boolean isPause;
 	private JSONObject json;
-	private PhoneReceiver broadcast;
+	private PhoneReceiver broadcast1, broadcast2;
 	private String mSongKey;
 	private final static String NOTES = "notes.txt";
 
@@ -127,10 +128,10 @@ public class LyricFragment extends BaseFragment implements
 	}
 
 	public void turnOnBroadcast() {
-		broadcast = new PhoneReceiver(this);
-		IntentFilter filter = new IntentFilter(
+		broadcast1 = new PhoneReceiver(this,this);
+		IntentFilter filter1 = new IntentFilter(
 				TelephonyManager.ACTION_PHONE_STATE_CHANGED);
-		getActivity().registerReceiver(broadcast, filter);
+		getActivity().registerReceiver(broadcast1, filter1);
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class LyricFragment extends BaseFragment implements
 	@Override
 	public void onStop() {
 		super.onStop();
-		getActivity().unregisterReceiver(broadcast);
+		
 	}
 
 	public void onClick(View v) {
@@ -327,7 +328,7 @@ public class LyricFragment extends BaseFragment implements
 			}
 			mSeekBar.setProgress(currentTime);
 			if (mLyric.equals("")) {
-				txtLyric.setText("HiÃ¡Â»â€¡n chÃ†Â°a cÃƒÂ³ lÃ¡Â»ï¿½i cho bÃƒÂ i hÃƒÂ¡t nÃƒÂ y");
+				txtLyric.setText("Hiện chưa có lời cho bài hát này");
 			} else {
 				txtLyric.setText(mLyric);
 			}
@@ -360,6 +361,7 @@ public class LyricFragment extends BaseFragment implements
 			mplay.stop();
 		}
 		mPlayMusic.cancel(true);
+		getActivity().unregisterReceiver(broadcast1);
 	}
 
 	public void onProgressChanged(SeekBar seekBar, int progress,
@@ -381,6 +383,13 @@ public class LyricFragment extends BaseFragment implements
 		if (mplay.isPlaying()) {
 			mplay.pause();
 			isPause = true;
+		}
+	}
+
+	public void onRejectingCall() {
+		if (isPause) {
+			mplay.start();
+			isPause = false;
 		}
 	}
 

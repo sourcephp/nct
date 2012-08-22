@@ -3,6 +3,7 @@ package att.android.adapter;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
+import android.test.mock.MockApplication;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,14 +40,7 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 					.findViewById(R.id.tv_singer);
 			mHolder.cbCheck = (CheckBox) convertView
 					.findViewById(R.id.cb_checked);
-			mHolder.cbCheck
-					.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-						public void onCheckedChanged(CompoundButton buttonView,
-								boolean isChecked) {
-							mSong.setSelected(mHolder.cbCheck.isChecked());
-						}
-					});
 			if (check) {
 				mHolder.cbCheck.setVisibility(View.VISIBLE);
 			}
@@ -54,7 +48,20 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 			convertView.setTag(mHolder);
 		} else {
 			mHolder = (ViewHolder) convertView.getTag();
+			mHolder.cbCheck.setOnCheckedChangeListener(null);
 		}
+		int state = mSong.isHidden() ? View.GONE : View.VISIBLE;
+		mHolder.cbCheck.setVisibility(state);
+		mHolder.cbCheck.setChecked(mSong.isSelected());
+		mHolder.cbCheck
+		.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				mSong.setSelected(mHolder.cbCheck.isChecked());
+			}
+		});
+		
 		mHolder.songKey = mSong.songKey;
 		mHolder.songName.setText(mSong.getNameSong());
 		mHolder.singer.setText(mSong.getSinger());
@@ -73,16 +80,19 @@ public class Music_MyPlaylistAdapter extends ArrayAdapter<Music_Song> {
 	}
 
 	public void showCheckBox(ArrayList<Music_Song> list) {
-		check = true;
-		for (int i = 0; i < list.size(); i++) {
-			getView(i, null, null);
+		for (int i = 0, n= this.getCount();i<n; i++) {
+			this.getItem(i).setSelected(false);
+			this.getItem(i).setHidden(false);
 		}
+		this.notifyDataSetChanged();
+		
 	}
 
 	public void hideCheckBox(ArrayList<Music_Song> list) {
-		check = false;
-		for (int i = 0; i < list.size(); i++) {
-			getView(i, null, null);
+		for (int i = 0, n= this.getCount();i<n; i++) {
+			this.getItem(i).setSelected(false);
+			this.getItem(i).setHidden(true);
 		}
+		this.notifyDataSetChanged();
 	}
 }
