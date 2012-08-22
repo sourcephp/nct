@@ -40,8 +40,7 @@ import att.android.util.MyDialog.OnMyDialogListener;
 import com.example.multiapp.R;
 
 public class PlaylistFragment extends BaseFragment implements OnClickListener,
-		OnItemClickListener, OnFragmentDataRecevier,
-		DialogInterface.OnClickListener {
+		OnItemClickListener, OnFragmentDataRecevier {
 
 	private ListView mListView;
 	private Music_MyPlaylistAdapter playlistAdapter;
@@ -67,7 +66,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 			mListView.setOnItemClickListener(PlaylistFragment.this);
 		};
 	};
-	private int ok = -1;
+	private boolean delAll;
 
 	public static Fragment newInstance(Context context) {
 		PlaylistFragment f = new PlaylistFragment();
@@ -122,12 +121,14 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 		btnDelAll.setOnClickListener(this);
 		btnCancel.setOnClickListener(this);
 		mMyDialog.setOnMyDialogListener(new OnMyDialogListener() {
-			
+
 			public void onItemClick(boolean isOk) {
-				if(isOk){
-					//cai nay de set khi ng dung bam dong y
-				}else{
-					//cai nay de set khi ng dung bam huy bo
+				if (isOk) {
+					if (delAll) {
+						work2();
+					} else {
+						work1();
+					}
 				}
 			}
 		});
@@ -136,83 +137,85 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	public void onClick(View v) {
 		if (file.exists()) {
 			if (v == mBtnTrash) {
-				// if (file.exists()) {
 				playlistAdapter.showCheckBox(mPlaylist);
 				playlistAdapter.notifyDataSetChanged();
 				mLayoutDel.startAnimation(amRightToLeft);
 				mLayoutDel.setVisibility(View.VISIBLE);
 				mListView.setAdapter(playlistAdapter);
-				// mPlaylist.clear();
-				// file.delete();
-				// mListView.clearAnimation();
-				// mListView.setAdapter(playlistAdapter);
-			}
-			if (v == btnCancel) {
-				
-				mLayoutDel.startAnimation(amLeftToRight);
-				mLayoutDel.setVisibility(View.INVISIBLE);
-				playlistAdapter.hideCheckBox(mPlaylist);
-				playlistAdapter.notifyDataSetChanged();
-				mListView.setAdapter(playlistAdapter);
-			}
-			if (v == btnDel) {
-				mMyDialog.show();
-				String str = "";
-				for (int i = 0; i < mPlaylist.size(); i++) {
-					if (!playlistAdapter.getItem(i).isSelected()) {
-						if (str.equals("")) {
-							str = mPlaylist.get(i).name + "╥"
-									+ mPlaylist.get(i).singer + "╥"
-									+ mPlaylist.get(i).songKey + "╥"
-									+ mPlaylist.get(i).streamURL;
-						} else {
-							str += mPlaylist.get(i).name + "╥"
-									+ mPlaylist.get(i).singer + "╥"
-									+ mPlaylist.get(i).songKey + "╥"
-									+ mPlaylist.get(i).streamURL;
-						}
-						str += "\n";
-					}
-				}
-
-				mPlaylist.clear();
-				if (!str.equals("")) {
-					try {
-
-						OutputStreamWriter out = new OutputStreamWriter(
-								getActivity().openFileOutput(NOTES, 0));
-						out.write(str);
-						out.close();
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} else {
-					file.delete();
-				}
-				getList();
-				mListView.setAdapter(playlistAdapter);
-				mLayoutDel.startAnimation(amLeftToRight);
-				mLayoutDel.setVisibility(View.INVISIBLE);
-				playlistAdapter.hideCheckBox(mPlaylist);
-				playlistAdapter.notifyDataSetChanged();
-				mListView.setAdapter(playlistAdapter);
 			}
 		}
-		if (v == btnDelAll) {
-			mMyDialog.show();
-			// showDialog();
-			mPlaylist.clear();
-			file.delete();
-			mListView.setAdapter(playlistAdapter);
+		if (v == btnCancel) {
+
 			mLayoutDel.startAnimation(amLeftToRight);
 			mLayoutDel.setVisibility(View.INVISIBLE);
 			playlistAdapter.hideCheckBox(mPlaylist);
 			playlistAdapter.notifyDataSetChanged();
 			mListView.setAdapter(playlistAdapter);
 		}
+		if (v == btnDel) {
+			mMyDialog.show();
+			delAll = false;
+		}
 
+		if (v == btnDelAll) {
+			mMyDialog.show();
+			delAll = true;
+		}
+
+	}
+
+	private void work1() {
+		String str = "";
+		for (int i = 0; i < mPlaylist.size(); i++) {
+			if (!playlistAdapter.getItem(i).isSelected()) {
+				if (str.equals("")) {
+					str = mPlaylist.get(i).name + "╥" + mPlaylist.get(i).singer
+							+ "╥" + mPlaylist.get(i).songKey + "╥"
+							+ mPlaylist.get(i).streamURL;
+				} else {
+					str += mPlaylist.get(i).name + "╥"
+							+ mPlaylist.get(i).singer + "╥"
+							+ mPlaylist.get(i).songKey + "╥"
+							+ mPlaylist.get(i).streamURL;
+				}
+				str += "\n";
+			}
+		}
+
+		mPlaylist.clear();
+		if (!str.equals("")) {
+			try {
+
+				OutputStreamWriter out = new OutputStreamWriter(getActivity()
+						.openFileOutput(NOTES, 0));
+				out.write(str);
+				out.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			file.delete();
+		}
+		getList();
+		mListView.setAdapter(playlistAdapter);
+		mLayoutDel.startAnimation(amLeftToRight);
+		mLayoutDel.setVisibility(View.INVISIBLE);
+		playlistAdapter.hideCheckBox(mPlaylist);
+		playlistAdapter.notifyDataSetChanged();
+		mListView.setAdapter(playlistAdapter);
+	}
+
+	private void work2() {
+		mPlaylist.clear();
+		file.delete();
+		mListView.setAdapter(playlistAdapter);
+		mLayoutDel.startAnimation(amLeftToRight);
+		mLayoutDel.setVisibility(View.INVISIBLE);
+		playlistAdapter.hideCheckBox(mPlaylist);
+		playlistAdapter.notifyDataSetChanged();
+		mListView.setAdapter(playlistAdapter);
 	}
 
 	@Override
@@ -306,16 +309,6 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 	public void onDataParameterData(ArrayList<Music_Song> listSong,
 			int position, boolean bool) {
 
-	}
-
-	private void showDialog() {
-		DialogFragment newFragment = MyAlertDialogFragment.newInstance(
-				R.string.alert_dialog_two_buttons_title, ok);
-		newFragment.show(getFragmentManager(), "dialog");
-	}
-
-	public void onClick(DialogInterface dialog, int which) {
-		ok = 1;
 	}
 
 }

@@ -10,11 +10,14 @@ import android.util.Log;
 
 public class PhoneReceiver extends BroadcastReceiver {
 
-	private OnIncommingCall listener;
+	private OnIncommingCall listenerStartCall;
+	private OnRejectingCall listenerEndCall;
 
-	public PhoneReceiver(OnIncommingCall listener) {
-		this.listener = listener;
+	public PhoneReceiver(OnIncommingCall listenerIncomming,OnRejectingCall listenerReject) {
+		this.listenerStartCall = listenerIncomming;
+		this.listenerEndCall = listenerReject;
 	}
+
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -23,18 +26,22 @@ public class PhoneReceiver extends BroadcastReceiver {
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			// Phone is ringing
-			listener.onIncommingCall();
+			listenerStartCall.onIncommingCall();
 
 		} else if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
 			// Call received
 
 		} else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
 			// Call Dropped or rejected
-
+			listenerEndCall.onRejectingCall();
 		}
 	}
 
 	public interface OnIncommingCall {
 		public void onIncommingCall();
+	}
+
+	public interface OnRejectingCall {
+		public void onRejectingCall();
 	}
 }

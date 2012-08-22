@@ -13,11 +13,20 @@ public class Music_Song extends BaseModel implements Serializable {
 	public String songKey;
 	public String streamURL = "";
 	public boolean check;
-
+	private boolean hidden;
+	
 	public Music_Song() {
 		check = false;
+		hidden = true;
 	}
-
+	
+	public boolean isHidden() {
+		return hidden;
+	}
+	
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
 	public Music_Song(String songName, String singer) {
 		this.name = songName;
 		this.singer = singer;
