@@ -30,7 +30,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 	public static Class currentClass;
 
 	public YMEventHandler sessionListener;
-	public Session singletonSession = Session.getInstance();
+	public static Session singletonSession = new Session();
 
 	// some locks below to synchronize data flow in somewhere
 	public static Object LoadCompleteRosterLock = new Object();
