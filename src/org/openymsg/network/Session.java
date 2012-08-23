@@ -99,7 +99,7 @@ import att.android.model.Logger;
  */
 public class Session implements StatusConstants, FriendManager {
 	/**@author slim */
-	public static Session session = null;
+//	public static Session session = null;
     /** Primary Yahoo ID: the real account id. */
     private YahooIdentity primaryID;
 
@@ -192,9 +192,12 @@ public class Session implements StatusConstants, FriendManager {
      * @throws MalformedURLException
      * @throws NumberFormatException
      */
-    protected Session() throws NumberFormatException {
+    public Session() throws NumberFormatException {
 	this(null);
     }
+//    protected Session() throws NumberFormatException {
+//    	this(null);
+//        }
     
     
 
@@ -239,12 +242,12 @@ public class Session implements StatusConstants, FriendManager {
      * @author slim
      * @return: session
      */
-    public synchronized static Session getInstance() {
-        if(session == null) {
-        	session = new Session();
-        }
-        return session;
-     }
+//    public synchronized static Session getInstance() {
+//        if(session == null) {
+//        	session = new Session();
+//        }
+//        return session;
+//     }
 
     /**
      * Adds a session listener to the collection of listeners to which events
