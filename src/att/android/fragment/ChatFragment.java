@@ -225,10 +225,10 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 		    icon_status.setBackgroundResource(R.drawable.ic_yahoo_busy);
 		}
 		
+		formchat.removeAllViews();
 		if(conversation !=null){
 			//TODO: Nhan conversation tu ContactFragment load len UI
 			Logger.e(TAG, "Load Conversation");
-			formchat.removeAllViews();
 			loadDataFromConversation(conversation);
 		} else{
 			Logger.e(TAG, "Create Conversation");
