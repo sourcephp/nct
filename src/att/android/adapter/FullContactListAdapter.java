@@ -15,7 +15,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import att.android.bean.IncomingMessage;
 
 import com.example.multiapp.R;
 import com.loopj.android.image.SmartImageView;

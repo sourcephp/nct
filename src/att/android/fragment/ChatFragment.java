@@ -1,8 +1,9 @@
 package att.android.fragment;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
-import org.openymsg.network.Session;
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
 import org.openymsg.network.event.SessionEvent;
@@ -11,11 +12,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import att.android.activity.MessengerFragmentActivity;
+import att.android.bean.Conversation;
+import att.android.bean.Saying;
 import att.android.model.Logger;
 import att.android.model.OnYahooFragmentDataReceiver;
 
@@ -37,12 +40,11 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 	private EditText edt_message;
 	private ScrollView scrollView;
 	private TextView friends_name;
-	private Status actionSttFriends;
 	private LayoutInflater inflater;
 	private LinearLayout formchat;
-	private String YMuserID;
 	private YahooUser YMuser;
 	private String urlGetAvatar = "http://img.msg.yahoo.com/avatar.php?yids=";
+	private Conversation conversation;
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
@@ -103,7 +105,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 		if (v == btn_send) {
 			String msg = edt_message.getText().toString();
 			edt_message.setText("");
-			sendMessage(msg);
+			onSendMessage(msg, 0);
 		}
 		if (v == btn_back) {
 			((MessengerFragmentActivity) this.getActivity()).startFragment(1);
@@ -111,51 +113,127 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 
 	}
 
-	private void sendMessage(String msg) {
+	private void onSendMessage(String msg, int type) {
 		
-		YMuserID = YMuser.getId();
-		Log.i(TAG, YMuserID);
-		
-		try {
-			singletonSession.sendMessage(YMuserID, msg);
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String YMuserID_friend = YMuser.getId();
+		String YMUserID_me = singletonSession.getLoginID().getId();
 		View layout = inflater.inflate(R.layout.chatbox_me, null);
 		TextView me = (TextView) layout.findViewById(R.id.txt_chatbox_me);
 		SmartImageView avt_me = (SmartImageView) layout.findViewById(R.id.real_avatar_me);
-		avt_me.setImageUrl(urlGetAvatar+singletonSession.getLoginID().getId()+"&format=jpg");
+		avt_me.setImageUrl(urlGetAvatar+YMUserID_me+"&format=jpg");
+		
+		if (type!=1) {
+			try {
+				singletonSession.sendMessage(YMuserID_friend, msg);
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (type != 1) {
+			InputMethodManager imm = (InputMethodManager) getActivity()
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(btn_send.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		}
+		
+		if (type != 1) {
+		    conversation.updateConversation(YMUserID_me, msg, false);
+		}
+		
 		me.setText(msg);
 		formchat.addView(layout);
 		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 		scrollView.focusSearch(ScrollView.FOCUS_DOWN);
+		
 	}
 	
-	@Override
-	public void onMessageReceived(SessionEvent event) {
-		super.onMessageReceived(event);
-		
-		Logger.e(TAG, event.getFrom()+": "+event.getMessage());
-		
-		View layout = inflater.inflate(R.layout.chatbox_myfriend, null);
-		TextView friends = (TextView) layout
-				.findViewById(R.id.txt_chatbox_myfriend);
-		SmartImageView avt_friends = (SmartImageView) layout
-				.findViewById(R.id.real_avatar_friend);
-		avt_friends.setImageUrl(urlGetAvatar+YMuser.getId()+"&format=jpg");
-		friends.setText(event.getMessage());
-		formchat.addView(layout);
-		scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-		scrollView.focusSearch(ScrollView.FOCUS_DOWN);
-		int distance = scrollView.getBottom();
-		scrollView.scrollBy(0, distance);
+	public void displayMessagesReceived(SessionEvent event, final int type) {
+		Logger.e(TAG+"(outside if)", event.getFrom()+": "+event.getMessage());
+		if (event.getFrom().equalsIgnoreCase(conversation.getconversationID())) {
+			
+			Logger.e(TAG+"(inside if)", event.getFrom()+": "+event.getMessage());
+			View layout = inflater.inflate(R.layout.chatbox_myfriend, null);
+			TextView friends = (TextView) layout
+					.findViewById(R.id.txt_chatbox_myfriend);
+			SmartImageView avt_friends = (SmartImageView) layout
+					.findViewById(R.id.real_avatar_friend);
+			avt_friends.setImageUrl(urlGetAvatar+YMuser.getId()+"&format=jpg");
+			
+			if (type != 1) {
+				conversation.updateConversation(event.getFrom(), event.getMessage(),
+					true);
+			    } 
+			
+			friends.setText(event.getMessage());
+			formchat.addView(layout);
+			scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+			scrollView.focusSearch(ScrollView.FOCUS_DOWN);
+			int distance = scrollView.getBottom();
+			scrollView.scrollBy(0, distance);
+		}else{
+			if (!addMessageToNewConversation(event)) {
+				Conversation conversation = new Conversation(event.getFrom(), event
+					.getTo(), event.getMessage(), 2);
+				conversation.setRead(false);
+				conversations.add(conversation);
+				Logger.e(TAG+"(inside else)", event.getFrom()+": "+event.getMessage());
+			    }
+		}
+	}
+	
+	private boolean addMessageToNewConversation(SessionEvent event) {
+		for (Iterator<Conversation> iterator = conversations.iterator(); iterator.hasNext();) {
+			Conversation conversation = (Conversation) iterator.next();
+			String masterRoom = conversation.getconversationID();
+			if (masterRoom.equalsIgnoreCase(event.getFrom())) {
+				conversation.updateConversation(event.getFrom(), event.getMessage(),
+						true);
+				conversation.setRead(false);
+				return true;
+			}
+		}
+		return false;
 	}
 
-	public void onDataParameterData(YahooUser yahooUsers) {
+	@SuppressWarnings("unchecked")
+	public void loadDataFromConversation(Conversation conversation) {
+		List<Saying> chat = conversation.getConversation();
+		for (int i = 0; i < chat.size(); i++) {
+			Saying aSaying = chat.get(i);
+			boolean key = aSaying.isReceived();
+			if (key) {
+				SessionEvent event = new SessionEvent(new Object(), singletonSession.getLoginID().getId(),
+						conversation.getconversationID(), aSaying.getText_chat());
+				displayMessagesReceived(event, 1);
+			} else {
+				onSendMessage(aSaying.getText_chat(), 1);
+			}
+		}
+	}
+
+	public void onDataParameterData(YahooUser yahooUsers, Conversation conversation_received) {
 		YMuser = yahooUsers;
+		conversation = conversation_received;
 		friends_name.setText(YMuser.getId());
+		if (YMuser.getStatus().compareTo(Status.AVAILABLE) == 0) {
+		    icon_status.setBackgroundResource(R.drawable.ic_yahoo_online);
+		} else if (YMuser.getStatus().compareTo(Status.OFFLINE) == 0) {
+		    icon_status.setBackgroundResource(R.drawable.ic_yahoo_offline);
+		} else if (YMuser.getStatus().compareTo(Status.BUSY) == 0) {
+		    icon_status.setBackgroundResource(R.drawable.ic_yahoo_busy);
+		}
+		
+		if(conversation !=null){
+			//TODO: Nhan conversation tu ContactFragment load len UI
+			Logger.e(TAG, "Load Conversation");
+			formchat.removeAllViews();
+			loadDataFromConversation(conversation);
+		} else{
+			Logger.e(TAG, "Create Conversation");
+			conversation = new Conversation(YMuser.getId());
+		}
 	}
 	
 }

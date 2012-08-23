@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import att.android.adapter.MessViewPagerAdapter;
+import att.android.bean.Conversation;
 import att.android.model.OnYahooFragmentDataReceiver;
 
 import com.example.multiapp.R;
@@ -18,6 +19,7 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 	private OnYahooFragmentDataReceiver listener;
 	private boolean haveData;
 	private YahooUser data;
+	private Conversation conversation_temp;
 
 	
 
@@ -57,7 +59,7 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 		Log.e("MessengerFragmentActivity", "fragment" + arg0);
 		if (haveData) {
 			haveData = false;
-			listener.onDataParameterData(data);
+			listener.onDataParameterData(data, conversation_temp);
 			Log.e("MessengerFragmentActivity", data.getId());
 		}
 	}
@@ -66,8 +68,9 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 		this.listener = listener;
 	}
 
-	public void sendData(YahooUser data) {
+	public void sendData(YahooUser data, Conversation conversation_temp) {
 		this.data = data;
+		this.conversation_temp = conversation_temp;
 		haveData = true;
 	}
 }
