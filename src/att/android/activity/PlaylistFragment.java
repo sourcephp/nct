@@ -12,12 +12,10 @@ import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +28,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import att.android.activity.MusicFragmentActivity.MyAlertDialogFragment;
 import att.android.adapter.Music_MyPlaylistAdapter;
 import att.android.bean.Music_Song;
 import att.android.model.OnFragmentDataRecevier;
@@ -90,7 +87,7 @@ public class PlaylistFragment extends BaseFragment implements OnClickListener,
 
 	@Override
 	public void initVariables() {
-		mMyDialog = new MyDialog(this.getActivity());
+		mMyDialog = new MyDialog(this.getActivity(), R.drawable.trash);
 		file = getActivity().getFileStreamPath(NOTES);
 		mPlaylist = new ArrayList<Music_Song>();
 		playlistAdapter = new Music_MyPlaylistAdapter(getActivity(), 1,
