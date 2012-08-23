@@ -42,7 +42,7 @@ public class MainActivity extends TabActivity {
        notRadio.setOnMyDialogListener(new OnMyDialogListener() {
 		
 		public void onItemClick(boolean isOk) {
-			if(!isOk){
+			if(isOk){
 				MainActivity.this.finish();
 			}
 		}
