@@ -31,6 +31,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import att.android.activity.MessengerFragmentActivity;
 import att.android.adapter.FullContactListAdapter;
+import att.android.bean.Conversation;
+import att.android.model.Logger;
 import att.android.network.RosterHandler;
 
 import com.example.multiapp.R;
@@ -41,8 +43,9 @@ import com.quickaction.popup.QuickAction.OnActionItemClickListener;
 public class ContactFragment extends BaseMessengerFragment implements
 		OnItemClickListener, OnClickListener {
 	
+	private static final String TAG = "ContactFragment";
 	private ListView listContact;
-	private FullContactListAdapter mContactAdapter;
+	public static FullContactListAdapter mContactAdapter;
 	private QuickAction mQAction;
 	private Button btnSettting;
 	private Animation amTranslateDown;
@@ -198,8 +201,19 @@ public class ContactFragment extends BaseMessengerFragment implements
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-		startFragment(mContactAdapter.getItem(position));
-		Log.e("ContactFragment", position+ ": "+ mContactAdapter.getItem(position).getId());
+		YahooUser YMUserItem = mContactAdapter.getItem(position);
+		Conversation conversation_sent = null;
+		for (Iterator<Conversation> iterator = conversations.iterator(); iterator
+				.hasNext();) {
+			Conversation iconversation = (Conversation) iterator.next();
+			String conversationID = iconversation.getconversationID();
+			if (YMUserItem.getId().equalsIgnoreCase(conversationID)) {
+				conversation_sent = iconversation;
+			}
+		}
+		startFragment(YMUserItem, conversation_sent);
+		Log.e("ContactFragment",
+				position + ": " + mContactAdapter.getItem(position).getId());
 	}
 
 	@Override
@@ -239,8 +253,8 @@ public class ContactFragment extends BaseMessengerFragment implements
 		}
 	}
 
-	public void startFragment(YahooUser item) {
-		((MessengerFragmentActivity) this.getActivity()).sendData(item);
+	public void startFragment(YahooUser item, Conversation conversation_sent) {
+		((MessengerFragmentActivity) this.getActivity()).sendData(item, conversation_sent);
 		((MessengerFragmentActivity) this.getActivity()).startFragment(2);
 	}
 
@@ -248,11 +262,6 @@ public class ContactFragment extends BaseMessengerFragment implements
 	public void onPause() {
 		super.onPause();
 		mContactAdapter.clear();
-	}
-
-	@Override
-	public void onMessageReceived(SessionEvent event) {
-		super.onMessageReceived(event);
 	}
 
 	@Override
@@ -273,7 +282,6 @@ public class ContactFragment extends BaseMessengerFragment implements
 				}
 				mContactAdapter.clear();
 				loadContactToList();
-//				new ManageYMUserHasAvatarNetwork(handler).start();
 			}
 
 		});

@@ -11,13 +11,13 @@ public interface YHandlerConstant {
     final int SET_STATUS 					= 7;// Sets the status of the Yahoo user.
     final int SET_STATUS_CUSTOM 				= 8;//Sets the status of the Yahoo user using custom status.
     final int LIST 						= 9;
-    final int RECEVICE_BUZZ					= 10;
-    final int MESSAGE_RECEVICE					= 11;
-    final int FRIEND_UPDATE_RECEVICE				= 12;
-    final int NOTIFI_CHANGE_LIST_ROOM					= 13;
+    final int BUZZ_RECEIVED					= 10;
+    final int MESSAGE_RECEIVED				= 11;
+    final int FRIEND_UPDATE_RECEIVED				= 12;
+    final int NOTIFY_CHANGE_CONVERSATION_LIST					= 13;
     
-    final int ACTION_ADD_ROOM					= 14;
-    final int ACTION_REMOVE_ROOM				= 15;
+    final int ACTION_ADD_CONVERSATION					= 14;
+    final int ACTION_REMOVE_CONVERSATION				= 15;
     
     final int UPDATE_LIST_CURRENT				= 16;
     static final String STR_SETTING = "SETTINGS REFERENCES";

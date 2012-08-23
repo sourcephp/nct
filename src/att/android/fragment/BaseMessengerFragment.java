@@ -1,6 +1,10 @@
 package att.android.fragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.openymsg.network.Session;
 import org.openymsg.network.YahooUser;
@@ -15,7 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.widget.Toast;
+import att.android.bean.Conversation;
 import att.android.model.Logger;
 import att.android.model.YHandlerConstant;
 
@@ -41,6 +45,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 	public static boolean isCompletedLoadData = false;
 
 	public static ArrayList<YahooUser> alYahooUser = new ArrayList<YahooUser>();
+	public static Set<Conversation> conversations = Collections.synchronizedSet(new HashSet<Conversation>());
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -67,11 +72,6 @@ public abstract class BaseMessengerFragment extends Fragment implements
 
 	public abstract void initActions();
 
-	/** Override to handle incoming messages */
-	public void onMessageReceived(SessionEvent event) {
-
-	}
-
 	/** Override if you need to load ContactList from Roster */
 	public void updateFullContactList() {
 
@@ -81,11 +81,11 @@ public abstract class BaseMessengerFragment extends Fragment implements
 	public Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case MESSAGE_RECEVICE:
+			case MESSAGE_RECEIVED:
 				SessionEvent eventMESSAGE_RECEVICE = (SessionEvent) msg.obj;
-				onMessageReceived(eventMESSAGE_RECEVICE);
+				onReceiveMessage(eventMESSAGE_RECEVICE);
 				break;
-			case RECEVICE_BUZZ:
+			case BUZZ_RECEIVED:
 				// TODO: Xu ly Buzz
 				break;
 			case UPDATE_YAHOO_USER_FROM_ROSTER:
@@ -96,13 +96,67 @@ public abstract class BaseMessengerFragment extends Fragment implements
 					isNeedUpdateFromRoster = true;
 				}
 				break;
-			case FRIEND_UPDATE_RECEVICE:
+			case FRIEND_UPDATE_RECEIVED:
 				// TODO: xu ly khi friend thay doi can cap nhat thay doi len UI
 				break;
 			}
-		};
-
+		}
 	};
+	
+	/**When users have incoming message, add the message to the conversation*/
+	protected void onReceiveMessage(final SessionEvent event) {
+		Thread thread = new Thread() {
+			String currentConversationID;
+			boolean isExist = false;
+
+			public void run() {
+				String message = event.getMessage();
+				String userFrom = event.getFrom();
+				String userTo = event.getTo();
+				Logger.e(TAG, userFrom + ": " + message + "->" + userTo);
+				if (!isCompletedLoadData) {
+					Logger.e(TAG, "Login loading data....");
+					synchronized (LoadDataLock) {
+						try {
+							LoadDataLock.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					Logger.e(TAG, "Login data loaded");
+				}
+
+				if (conversations.size() == 0) {
+					addConversation(userFrom, userTo, message, 2);
+				} else {
+					currentConversationID = userFrom;
+					for (Iterator<Conversation> iterator = conversations
+							.iterator(); iterator.hasNext();) {
+						Conversation iconversation = (Conversation) iterator.next();
+						String conversationID = iconversation.getconversationID();
+						if (currentConversationID.equalsIgnoreCase(conversationID)) {
+							iconversation.updateConversation(conversationID, message, true);
+							iconversation.setRead(false);
+							isExist = true;
+							break;
+						}
+					}
+					if (!isExist) {
+						addConversation(userFrom, userTo, message, 2);
+					} else {
+//						checkVibrator(userFrom);
+					}
+				}
+			}
+		};
+		thread.start();
+	}
+
+	protected Conversation addConversation(String userFrom, String userTo, String message, int type) {
+		Conversation conversation = new Conversation(userFrom, userTo, message, type);
+		conversations.add(conversation);
+		return conversation;
+	}
 
 	@SuppressLint("HandlerLeak")
 	public class YMEventHandler extends SessionAdapter {
@@ -112,12 +166,10 @@ public abstract class BaseMessengerFragment extends Fragment implements
 			super.messageReceived(event);
 			Message message = new Message();
 			message.obj = event;
-			message.what = MESSAGE_RECEVICE;
+			message.what = MESSAGE_RECEIVED;
 			handler.sendMessage(message);
-			Logger.e(
-					TAG + "(YMEventHandler)",
-					"messageReceived " + event.getFrom() + ": "
-							+ event.getMessage());
+			Logger.e(TAG + "(YMEventHandler)","messageReceived " + event.getFrom() + ": "+ event.getMessage());
+			
 		}
 
 		@Override
@@ -133,5 +185,6 @@ public abstract class BaseMessengerFragment extends Fragment implements
 		}
 
 	}
+
 
 }
