@@ -10,6 +10,8 @@ import org.openymsg.network.Status;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -86,7 +88,7 @@ public class LoginFragment extends BaseMessengerFragment implements
 		if (v == btnLogin) {
 			new Thread(new LoginFragment()).start();
 			//
-			((MessengerFragmentActivity) this.getActivity()).startFragment(1);
+//			((MessengerFragmentActivity) this.getActivity()).startFragment(1);
 		}
 
 	}
@@ -95,28 +97,56 @@ public class LoginFragment extends BaseMessengerFragment implements
 
 		String strUserName = edtxtUserName.getText().toString().trim();
 		String strPass = edtxtPass.getText().toString().trim();
+		Handler handler = new Handler(Looper.getMainLooper());
 
 		// boolean bSave = chBoxSave.hasSelection();
 		// boolean bHide = chBoxHide.hasSelection();
 
 		if ("".equals(strUserName) || "".equals(strPass)) {
-			Toast.makeText(getActivity(), "Ten tai khoan va password khong duoc de trong!", Toast.LENGTH_LONG).show();
+			handler.post(new Runnable() {
+			    public void run()
+			    {
+			    	Toast.makeText(getActivity(), "Ten tai khoan va password khong duoc de trong!", Toast.LENGTH_LONG).show();
+			    }
+			});
+			
 		} else {
 			Log.i(TAG, "Login start");
 			try {
 				singletonSession.login(strUserName, strPass);
 				singletonSession.setStatus(Status.AVAILABLE);
 			} catch (AccountLockedException e) {
-				Log.d(TAG, "Account has locked!");
+				handler.post(new Runnable() {
+				    public void run()
+				    {
+				    	Toast.makeText(getActivity(), "Tai khoan da bi khoa!", Toast.LENGTH_LONG).show();
+				    }
+				});
+				
 				e.printStackTrace();
 			} catch (IllegalStateException e) {
-				Log.d(TAG, "login false");
+				handler.post(new Runnable() {
+				    public void run()
+				    {
+				    	Toast.makeText(getActivity(), "Thong tin dang nhap ko dung!", Toast.LENGTH_LONG).show();
+				    }
+				});
 				e.printStackTrace();
 			} catch (LoginRefusedException e) {
-				Log.d(TAG, "login false");
+				handler.post(new Runnable() {
+				    public void run()
+				    {
+				    	Toast.makeText(getActivity(), "Thong tin dang nhap ko dung!", Toast.LENGTH_LONG).show();
+				    }
+				});
 				e.printStackTrace();
 			} catch (FailedLoginException e) {
-				Log.d(TAG, "Login false");
+				handler.post(new Runnable() {
+				    public void run()
+				    {
+				    	Toast.makeText(getActivity(), "Thong tin dang nhap ko dung!", Toast.LENGTH_LONG).show();
+				    }
+				});
 				e.printStackTrace();
 			} catch (IOException e) {
 				Log.d(TAG, "IO error");
