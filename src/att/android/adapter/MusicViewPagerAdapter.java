@@ -4,9 +4,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import att.android.activity.LyricFragment;
-import att.android.activity.MusicFragment;
-import att.android.activity.PlaylistFragment;
+import att.android.fragment.LyricFragment;
+import att.android.fragment.MusicFragment;
+import att.android.fragment.PlaylistFragment;
 
 public class MusicViewPagerAdapter extends FragmentPagerAdapter {
 	private Context mContext;

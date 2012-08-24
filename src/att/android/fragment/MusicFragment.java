@@ -1,8 +1,6 @@
-package att.android.activity;
+package att.android.fragment;
 
 import java.util.ArrayList;
-
-import org.openymsg.network.YahooUser;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,11 +17,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import att.android.activity.MusicFragmentActivity;
 import att.android.adapter.Music_HotSongAdapter;
 import att.android.adapter.Music_SearchSongAdapter;
 import att.android.bean.Music_Song;
 import att.android.model.OnFragmentDataRecevier;
-import att.android.model.StartFragment;
 import att.android.network.Music_SearchSongNetwork;
 import att.android.network.Music_SongListNetwork;
 

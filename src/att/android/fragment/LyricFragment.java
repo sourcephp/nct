@@ -1,9 +1,8 @@
-package att.android.activity;
-
-import java.io.BufferedReader;
+package att.android.fragment;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openymsg.network.YahooUser;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,8 +25,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -41,14 +37,12 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import att.android.activity.MusicFragmentActivity;
 import att.android.bean.Music_Song;
 import att.android.model.OnFragmentDataRecevier;
 import att.android.network.JSONProvider;
-import att.android.network.Music_LyricNetwork;
 import att.android.network.URLProvider;
 import att.android.receiver.PhoneReceiver;
-import att.android.receiver.PhoneReceiver.OnIncommingCall;
-import att.android.receiver.PhoneReceiver.OnRejectingCall;
 import att.android.util.MyPopUp;
 import att.android.util.MyPopUp.OnMyPopupListener;
 import att.android.util.ParseJSONMusic;
@@ -414,7 +408,7 @@ public class LyricFragment extends BaseFragment implements
 		if (null != mplay) {
 			mplay.stop();
 		}
-		mPlayMusic.cancel(true);
+		//mPlayMusic.cancel(true);
 		getActivity().unregisterReceiver(broadcast1);
 	}
 
