@@ -151,7 +151,7 @@ public class MusicFragmentActivity extends FragmentActivity implements
 	}
 	@Override
 	public void onBackPressed() {
-		MyDialog mDialog = new MyDialog(this, R.drawable.trash);
+		MyDialog mDialog = new MyDialog(this, R.drawable.thumb_exit);
 		mDialog.setOnMyDialogListener(new OnMyDialogListener() {
 			
 			public void onItemClick(boolean isOk) {
