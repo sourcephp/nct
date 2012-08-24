@@ -1,7 +1,6 @@
 package att.android.fragment;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,11 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -24,9 +23,13 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -136,11 +139,19 @@ public class LyricFragment extends BaseFragment implements
 
 			public void onItemClick(String action) {
 				if (action.equals("save")) {
-					try {
+					if (!downloading) {
+						try {
 
-						downloadAudioIncrement(mSongList.get(instanceIndex));
-					} catch (IOException e) {
-						e.printStackTrace();
+							downloadAudioIncrement(mSongList.get(instanceIndex));
+							Toast.makeText(getActivity(), "Start downloading",
+									Toast.LENGTH_SHORT).show();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} else {
+						Toast.makeText(getActivity(),
+								"Wait for previous downloading...",
+								Toast.LENGTH_SHORT).show();
 					}
 				}
 				if (action.equals("add")) {
@@ -182,6 +193,8 @@ public class LyricFragment extends BaseFragment implements
 			}
 		});
 	}
+
+	private boolean downloading = false;
 
 	public void turnOnBroadcast() {
 		broadcast1 = new PhoneReceiver(this, this);
@@ -382,7 +395,7 @@ public class LyricFragment extends BaseFragment implements
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (null != mplay) {
+		if (mplay.isPlaying()) {
 			mplay.stop();
 			mPlayMusic.cancel(true);
 		}
@@ -435,46 +448,89 @@ public class LyricFragment extends BaseFragment implements
 						Log.e(getClass().getName(),
 								"Unable to create InputStream for mediaUrl:"
 										+ song.streamURL);
-					}
-					downloadingMediaFile = new File(
-							getActivity().getCacheDir(), song.name + ".mp3");
-					if (downloadingMediaFile.exists()) {
-						downloadingMediaFile.delete();
-					}
-
-					FileOutputStream out = new FileOutputStream(
-							downloadingMediaFile);
-					byte buf[] = new byte[16384];
-					int totalBytesRead = 0;
-					do {
-						int numread = stream.read(buf);
-						if (numread <= 0)
-							break;
-						out.write(buf, 0, numread);
-						totalBytesRead += numread;
-						totalKbRead = totalBytesRead / 1000;
-					} while (true);
-					stream.close();
-					Boolean isSDPresent = android.os.Environment
-							.getExternalStorageState().equals(
-									android.os.Environment.MEDIA_MOUNTED);
-
-					if (isSDPresent) {
-						// yes SD-card is present
-						File f = new File(
-								Environment.getExternalStorageDirectory()
-										+ mSongName + ".mp3");
-						copyFile(downloadingMediaFile, f);
 					} else {
-						File f = new File(mSongName + ".mp3");
-						moveFile(downloadingMediaFile, f);
-					}
+						downloadingMediaFile = new File(getActivity()
+								.getCacheDir(), song.name + ".mp3");
+						if (downloadingMediaFile.exists()) {
+							downloadingMediaFile.delete();
+						}
+						downloading = true;
 
-					Toast.makeText(getActivity(), "Downloaded ",
-							Toast.LENGTH_LONG).show();
-					downloadingMediaFile.delete();
-					Log.e("loaded", "Audio full loaded: " + totalKbRead
-							+ " Kb read");
+						FileOutputStream out = new FileOutputStream(
+								downloadingMediaFile);
+						byte buf[] = new byte[16384];
+						int totalBytesRead = 0;
+						do {
+							int numread = stream.read(buf);
+							if (numread <= 0)
+								break;
+							out.write(buf, 0, numread);
+							totalBytesRead += numread;
+							totalKbRead = totalBytesRead / 1000;
+						} while (true);
+						stream.close();
+						if (hasSDCard()) {
+							File path = Environment
+									.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+							File f = new File(path, mSongName + ".mp3");
+
+							try {
+								path.mkdirs();
+								BufferedInputStream is = new BufferedInputStream(
+										new FileInputStream(
+												downloadingMediaFile));
+								OutputStream os = new FileOutputStream(f);
+								byte[] data = new byte[is.available()];
+								is.read(data);
+								os.write(data);
+								is.close();
+								os.close();
+
+								MediaScannerConnection
+										.scanFile(
+												getActivity(),
+												new String[] { f.toString() },
+												null,
+												new MediaScannerConnection.OnScanCompletedListener() {
+													public void onScanCompleted(
+															String path, Uri uri) {
+														Log.i("ExternalStorage",
+																"Scanned "
+																		+ path
+																		+ ":");
+														Log.i("ExternalStorage",
+																"-> uri=" + uri);
+													}
+												});
+								getActivity().runOnUiThread(new Runnable() {
+									public void run() {
+										Toast.makeText(
+												getActivity(),
+												"download " + mSongName
+														+ " completely",
+												Toast.LENGTH_SHORT).show();
+									}
+								});
+
+								downloadingMediaFile.delete();
+								Log.e("loaded", "Audio full loaded: "
+										+ totalKbRead + " Kb read");
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						} else {
+							getActivity().runOnUiThread(new Runnable() {
+								public void run() {
+									Toast.makeText(getActivity(),
+											"SD card isn't mounted",
+											Toast.LENGTH_SHORT).show();
+								}
+							});
+
+						}
+
+					}
+					downloading = false;
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -484,60 +540,18 @@ public class LyricFragment extends BaseFragment implements
 			}
 		};
 		new Thread(r).start();
+		// handler.post(r);
+
+	}
+
+	public static boolean hasSDCard() {
+
+		File root = Environment.getExternalStorageDirectory();
+
+		return (root.exists() && root.canWrite());
 
 	}
 
 	private int totalKbRead;
-
-	void copyFile(File src, File dst) throws IOException {
-		FileChannel inChannel = new FileInputStream(src).getChannel();
-		FileChannel outChannel = new FileOutputStream(dst).getChannel();
-		try {
-			inChannel.transferTo(0, inChannel.size(), outChannel);
-		} finally {
-			if (inChannel != null)
-				inChannel.close();
-			if (outChannel != null)
-				outChannel.close();
-		}
-	}
-
-	public void moveFile(File oldLocation, File newLocation) throws IOException {
-
-		if (oldLocation.exists()) {
-			BufferedInputStream reader = new BufferedInputStream(
-					new FileInputStream(oldLocation));
-			BufferedOutputStream writer = new BufferedOutputStream(
-					new FileOutputStream(newLocation, false));
-			try {
-				byte[] buff = new byte[8192];
-				int numChars;
-				while ((numChars = reader.read(buff, 0, buff.length)) != -1) {
-					writer.write(buff, 0, numChars);
-				}
-			} catch (IOException ex) {
-				throw new IOException("IOException when transferring "
-						+ oldLocation.getPath() + " to "
-						+ newLocation.getPath());
-			} finally {
-				try {
-					if (reader != null) {
-						writer.close();
-						reader.close();
-					}
-				} catch (IOException ex) {
-					Log.e(getClass().getName(),
-							"Error closing files when transferring "
-									+ oldLocation.getPath() + " to "
-									+ newLocation.getPath());
-				}
-			}
-		} else {
-			throw new IOException(
-					"Old location does not exist when transferring "
-							+ oldLocation.getPath() + " to "
-							+ newLocation.getPath());
-		}
-	}
 
 }
