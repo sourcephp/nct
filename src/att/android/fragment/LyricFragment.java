@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -383,8 +384,8 @@ public class LyricFragment extends BaseFragment implements
 		super.onDestroy();
 		if (null != mplay) {
 			mplay.stop();
+			mPlayMusic.cancel(true);
 		}
-		// mPlayMusic.cancel(true);
 		getActivity().unregisterReceiver(broadcast1);
 	}
 
@@ -463,7 +464,7 @@ public class LyricFragment extends BaseFragment implements
 						File f = new File(
 								Environment.getExternalStorageDirectory()
 										+ mSongName + ".mp3");
-						moveFile(downloadingMediaFile, f);
+						copyFile(downloadingMediaFile, f);
 					} else {
 						File f = new File(mSongName + ".mp3");
 						moveFile(downloadingMediaFile, f);
@@ -487,6 +488,19 @@ public class LyricFragment extends BaseFragment implements
 	}
 
 	private int totalKbRead;
+
+	void copyFile(File src, File dst) throws IOException {
+		FileChannel inChannel = new FileInputStream(src).getChannel();
+		FileChannel outChannel = new FileOutputStream(dst).getChannel();
+		try {
+			inChannel.transferTo(0, inChannel.size(), outChannel);
+		} finally {
+			if (inChannel != null)
+				inChannel.close();
+			if (outChannel != null)
+				outChannel.close();
+		}
+	}
 
 	public void moveFile(File oldLocation, File newLocation) throws IOException {
 
