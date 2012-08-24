@@ -76,6 +76,10 @@ public abstract class BaseMessengerFragment extends Fragment implements
 	public void updateFullContactList() {
 
 	}
+	
+//	public void displayMessagesReceived(SessionEvent event, int type){
+//		Logger.e(TAG, "Jump to displayMessagesReceived");
+//	}
 
 
 	public Handler handler = new Handler() {
@@ -83,7 +87,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 			switch (msg.what) {
 			case MESSAGE_RECEIVED:
 				SessionEvent eventMESSAGE_RECEVICE = (SessionEvent) msg.obj;
-				onReceiveMessage(eventMESSAGE_RECEVICE);
+				onReceiveMessage(eventMESSAGE_RECEVICE, 0);
 				break;
 			case BUZZ_RECEIVED:
 				// TODO: Xu ly Buzz
@@ -104,7 +108,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 	};
 	
 	/**When users have incoming message, add the message to the conversation*/
-	protected void onReceiveMessage(final SessionEvent event) {
+	protected void onReceiveMessage(final SessionEvent event, int type) {
 		Thread thread = new Thread() {
 			String currentConversationID;
 			boolean isExist = false;
@@ -168,7 +172,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 			message.obj = event;
 			message.what = MESSAGE_RECEIVED;
 			handler.sendMessage(message);
-			Logger.e(TAG + "(YMEventHandler)","messageReceived " + event.getFrom() + ": "+ event.getMessage());
+//			Logger.e(TAG + "(YMEventHandler)","messageReceived " + event.getFrom() + ": "+ event.getMessage());
 			
 		}
 
