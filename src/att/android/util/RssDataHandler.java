@@ -7,10 +7,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import android.util.Log;
 import att.android.bean.News;
-import att.android.network.ImageNetwork;
-
 
 public class RssDataHandler extends DefaultHandler {
 
@@ -31,7 +28,6 @@ public class RssDataHandler extends DefaultHandler {
 	private ArrayList<String> arlStrInfo = new ArrayList<String>();
 	private String strTemp;
 	private int startSrcIma, endSrcIma;
-	private ImageNetwork mImaNet = new ImageNetwork();
 
 	/**
 	 * Returns the data object
@@ -79,7 +75,7 @@ public class RssDataHandler extends DefaultHandler {
 		if (localName.equals("item")) {
 			news = new News();
 			parsingItem = true;
-		} 
+		}
 	}
 
 	/**
@@ -107,11 +103,10 @@ public class RssDataHandler extends DefaultHandler {
 			startSrcIma = strInfo.indexOf("src=");
 			if (startSrcIma != -1) {
 				endSrcIma = strInfo.indexOf("\"", startSrcIma + 6);
-				news.setStrUrlImage(strInfo.substring(
-						startSrcIma + 5, endSrcIma));
-				Log.e("link image ---", news.getStrUrlImage());
+				news.setStrUrlImage(strInfo.substring(startSrcIma + 5,
+						endSrcIma));
 			}
-			
+
 			strInfoLength = strInfo.length();
 			for (int indexPlace = 0; indexPlace < strInfoLength;) {
 				startStrInfo = strInfo.indexOf(">", indexPlace);
@@ -128,8 +123,8 @@ public class RssDataHandler extends DefaultHandler {
 				strTemp = strTemp.concat(arlStrInfo.get(indexPlace));
 			}
 			arlStrInfo.clear();
-			
-			news.setmDes(""+StringEscapeUtils.unescapeHtml4(strTemp));
+
+			news.setmDes("" + StringEscapeUtils.unescapeHtml4(strTemp));
 		} else if (localName.equals("link") && parsingItem) {
 			news.setmUrl(builder.toString().trim());
 		}
@@ -151,5 +146,5 @@ public class RssDataHandler extends DefaultHandler {
 		super.characters(ch, start, length);
 		builder.append(ch, start, length);
 	}
-	
+
 }

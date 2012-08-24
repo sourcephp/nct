@@ -2,8 +2,6 @@ package att.android.activity;
 
 import java.util.ArrayList;
 
-import com.example.multiapp.R;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -14,6 +12,10 @@ import android.support.v4.view.ViewPager;
 import att.android.adapter.MusicViewPagerAdapter;
 import att.android.bean.Music_Song;
 import att.android.model.OnFragmentDataRecevier;
+import att.android.util.MyDialog;
+import att.android.util.MyDialog.OnMyDialogListener;
+
+import com.example.multiapp.R;
 
 public class MusicFragmentActivity extends FragmentActivity implements
 		ViewPager.OnPageChangeListener {
@@ -26,12 +28,10 @@ public class MusicFragmentActivity extends FragmentActivity implements
 	private int position;
 	private OnFragmentDataRecevier listener2;
 	private OnFragmentDataRecevier listener1;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.fragment_activity_music);
 		initViewPager(0);
 	}
@@ -148,5 +148,19 @@ public class MusicFragmentActivity extends FragmentActivity implements
 							}).create();
 		}
 
+	}
+	@Override
+	public void onBackPressed() {
+		MyDialog mDialog = new MyDialog(this, R.drawable.trash);
+		mDialog.setOnMyDialogListener(new OnMyDialogListener() {
+			
+			public void onItemClick(boolean isOk) {
+				if(isOk){
+					MusicFragmentActivity.this.finish();
+				}
+				
+			}
+		});
+		mDialog.show();
 	}
 }
