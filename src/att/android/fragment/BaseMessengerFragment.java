@@ -226,11 +226,13 @@ public abstract class BaseMessengerFragment extends Fragment implements
 		@Override
 		public void messageReceived(SessionEvent event) {
 			super.messageReceived(event);
+			
 			Message message = new Message();
 			message.obj = event;
 			message.what = MESSAGE_RECEIVED;
 			handler.sendMessage(message);
-			Logger.e("YMEventHandler",event.getFrom() + ": "+ event.getMessage());
+//			Logger.e("YMEventHandler",event.getFrom() + ": "+ event.getMessage());
+			
 			
 		}
 
