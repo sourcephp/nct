@@ -60,7 +60,7 @@ public class FullContactListAdapter extends ArrayAdapter<YahooUser> implements F
 		YahooUser item = this.getItem(position);
 			String customActionStatus = item.getCustomStatus();
 			String customStatusMessage = item.getCustomStatusMessage();
-			boolean isLoadAvatar = true;
+			boolean isLoadAvatar = false;
 			
 			//TODO: set latest chat if users have incoming messages
 			if(item.isOnChat()==true){

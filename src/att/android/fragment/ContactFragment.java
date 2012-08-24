@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
+import org.openymsg.network.event.SessionEvent;
 import org.openymsg.roster.Roster;
 
 import android.annotation.SuppressLint;
@@ -330,6 +331,14 @@ public class ContactFragment extends BaseMessengerFragment implements
 			}
 			UpdateUILock.notifyAll();
 		}
+	}
+	
+	@Override
+	public void onReceiveMessage(SessionEvent event, int type) {
+		super.onReceiveMessage(event, type);
+//		Looper.prepare();
+		Toast.makeText(getActivity(), event.getFrom() + ": " + event.getMessage(), Toast.LENGTH_LONG).show();
+//		Looper.loop();
 	}
 
 
