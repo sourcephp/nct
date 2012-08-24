@@ -2,11 +2,18 @@ package att.android.activity;
 
 import java.io.BufferedReader;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -71,7 +78,7 @@ public class LyricFragment extends BaseFragment implements
 	private String urlLyric;
 	private boolean isPause;
 	private JSONObject json;
-	private PhoneReceiver broadcast1, broadcast2;
+	private PhoneReceiver broadcast1;
 	private String mSongKey;
 	private final static String NOTES = "notes.txt";
 
@@ -128,7 +135,7 @@ public class LyricFragment extends BaseFragment implements
 	}
 
 	public void turnOnBroadcast() {
-		broadcast1 = new PhoneReceiver(this,this);
+		broadcast1 = new PhoneReceiver(this, this);
 		IntentFilter filter1 = new IntentFilter(
 				TelephonyManager.ACTION_PHONE_STATE_CHANGED);
 		getActivity().registerReceiver(broadcast1, filter1);
@@ -143,7 +150,7 @@ public class LyricFragment extends BaseFragment implements
 	@Override
 	public void onStop() {
 		super.onStop();
-		
+
 	}
 
 	public void onClick(View v) {
@@ -180,7 +187,11 @@ public class LyricFragment extends BaseFragment implements
 				instanceIndex++;
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
-
+				try {
+					downloadAudioIncrement(mSongList.get(instanceIndex));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			if (v == mBtnPre && instanceIndex >= 1 && mSongList.size() > 0) {
 				instanceIndex--;
@@ -188,7 +199,11 @@ public class LyricFragment extends BaseFragment implements
 				mBtnPre.setEnabled(false);
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
-
+				try {
+					downloadAudioIncrement(mSongList.get(instanceIndex));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		if (v == mBtnAddSong) {
@@ -224,6 +239,14 @@ public class LyricFragment extends BaseFragment implements
 				Log.w("Exc", "Exception: " + t.toString());
 			}
 			Toast.makeText(getActivity(), "Added ", Toast.LENGTH_LONG).show();
+
+			File bufferedFile = new File(getActivity().getCacheDir(),
+					mSongList.get(instanceIndex).name + ".dat");
+			try {
+				moveFile(downloadingMediaFile, bufferedFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -324,6 +347,11 @@ public class LyricFragment extends BaseFragment implements
 					instanceIndex++;
 					doManyTimes(mSongList.get(instanceIndex));
 					changeRunMusic();
+					try {
+						downloadAudioIncrement(mSongList.get(instanceIndex));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			mSeekBar.setProgress(currentTime);
@@ -344,6 +372,11 @@ public class LyricFragment extends BaseFragment implements
 		instanceIndex = index;
 		doManyTimes(mSongList.get(index));
 		changeRunMusic();
+		try {
+			downloadAudioIncrement(mSongList.get(index));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void onDataParameterData(ArrayList<Music_Song> listSong,
@@ -352,6 +385,11 @@ public class LyricFragment extends BaseFragment implements
 		mSongList = listSong;
 		doManyTimes(mSongList.get(position));
 		changeRunMusic();
+		try {
+			downloadAudioIncrement(mSongList.get(position));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -390,6 +428,99 @@ public class LyricFragment extends BaseFragment implements
 		if (isPause) {
 			mplay.start();
 			isPause = false;
+		}
+	}
+
+	private File downloadingMediaFile;
+
+	public void downloadAudioIncrement(final Music_Song song)
+			throws IOException {
+
+		Runnable r = new Runnable() {
+
+			public void run() {
+				URLConnection cn;
+				try {
+					cn = new URL(song.streamURL).openConnection();
+					cn.connect();
+					InputStream stream = cn.getInputStream();
+					if (stream == null) {
+						Log.e(getClass().getName(),
+								"Unable to create InputStream for mediaUrl:"
+										+ song.streamURL);
+					}
+					downloadingMediaFile = new File(
+							getActivity().getCacheDir(), song.name + ".mp3");
+					if (downloadingMediaFile.exists()) {
+						downloadingMediaFile.delete();
+					}
+
+					FileOutputStream out = new FileOutputStream(
+							downloadingMediaFile);
+					byte buf[] = new byte[16384];
+					int totalBytesRead = 0, incrementalBytesRead = 0;
+					do {
+						int numread = stream.read(buf);
+						if (numread <= 0)
+							break;
+						out.write(buf, 0, numread);
+						totalBytesRead += numread;
+						incrementalBytesRead += numread;
+						totalKbRead = totalBytesRead / 1000;
+					} while (true);
+					stream.close();
+					downloadingMediaFile.delete();
+					Log.e("loaded", "Audio full loaded: " + totalKbRead
+							+ " Kb read");
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+		};
+		new Thread(r).start();
+
+	}
+
+	private int totalKbRead;
+
+	public void moveFile(File oldLocation, File newLocation) throws IOException {
+
+		if (oldLocation.exists()) {
+			BufferedInputStream reader = new BufferedInputStream(
+					new FileInputStream(oldLocation));
+			BufferedOutputStream writer = new BufferedOutputStream(
+					new FileOutputStream(newLocation, false));
+			try {
+				byte[] buff = new byte[8192];
+				int numChars;
+				while ((numChars = reader.read(buff, 0, buff.length)) != -1) {
+					writer.write(buff, 0, numChars);
+				}
+			} catch (IOException ex) {
+				throw new IOException("IOException when transferring "
+						+ oldLocation.getPath() + " to "
+						+ newLocation.getPath());
+			} finally {
+				try {
+					if (reader != null) {
+						writer.close();
+						reader.close();
+					}
+				} catch (IOException ex) {
+					Log.e(getClass().getName(),
+							"Error closing files when transferring "
+									+ oldLocation.getPath() + " to "
+									+ newLocation.getPath());
+				}
+			}
+		} else {
+			throw new IOException(
+					"Old location does not exist when transferring "
+							+ oldLocation.getPath() + " to "
+							+ newLocation.getPath());
 		}
 	}
 
