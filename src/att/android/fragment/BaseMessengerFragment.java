@@ -43,6 +43,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 	public static boolean isNeedUpdateFromRoster = false;
 	public static boolean isCompletedRoster = false;
 	public static boolean isCompletedLoadData = false;
+	public static boolean isFirstMessage = false;
 
 	public static ArrayList<YahooUser> alYahooUser = new ArrayList<YahooUser>();
 	public static Set<Conversation> conversations = Collections.synchronizedSet(new HashSet<Conversation>());
@@ -117,22 +118,13 @@ public abstract class BaseMessengerFragment extends Fragment implements
 				String message = event.getMessage();
 				String userFrom = event.getFrom();
 				String userTo = event.getTo();
-				Logger.e(TAG, userFrom + ": " + message + "->" + userTo);
-				if (!isCompletedLoadData) {
-					Logger.e(TAG, "Login loading data....");
-					synchronized (LoadDataLock) {
-						try {
-							LoadDataLock.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					Logger.e(TAG, "Login data loaded");
-				}
-
+				Logger.e(TAG, userFrom + ": " + message);
+				
 				if (conversations.size() == 0) {
+					isFirstMessage = true;
 					addConversation(userFrom, userTo, message, 2);
 				} else {
+					isFirstMessage = false;
 					currentConversationID = userFrom;
 					for (Iterator<Conversation> iterator = conversations
 							.iterator(); iterator.hasNext();) {

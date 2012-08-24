@@ -151,10 +151,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 	}
 	
 	public void onReceiveMessage(SessionEvent event, int type) {
-//		Logger.e(TAG+"(outside if)", event.getFrom()+": "+event.getMessage());
-		if (event.getFrom().equalsIgnoreCase(conversation.getconversationID())) {
-			
-//			Logger.e(TAG+"(inside if)", event.getFrom()+": "+event.getMessage());
+		if(!isFirstMessage){
 			View layout = inflater.inflate(R.layout.chatbox_myfriend, null);
 			TextView friends = (TextView) layout
 					.findViewById(R.id.txt_chatbox_myfriend);
@@ -162,40 +159,14 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 					.findViewById(R.id.real_avatar_friend);
 			avt_friends.setImageUrl(urlGetAvatar+YMuser.getId()+"&format=jpg");
 			
-//			if (type != 1) {
-//				conversation.updateConversation(event.getFrom(), event.getMessage(),
-//					true);
-//			    } 
-			
 			friends.setText(event.getMessage());
 			formchat.addView(layout);
 			scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 			scrollView.focusSearch(ScrollView.FOCUS_DOWN);
 			int distance = scrollView.getBottom();
 			scrollView.scrollBy(0, distance);
-		}else{
-			if (!addMessageToNewConversation(event)) {
-				Conversation conversation = new Conversation(event.getFrom(), event
-					.getTo(), event.getMessage(), 2);
-				conversation.setRead(false);
-				conversations.add(conversation);
-//				Logger.e(TAG+"(inside else)", event.getFrom()+": "+event.getMessage());
-			    }
+			isFirstMessage = false;
 		}
-	}
-	
-	private boolean addMessageToNewConversation(SessionEvent event) {
-		for (Iterator<Conversation> iterator = conversations.iterator(); iterator.hasNext();) {
-			Conversation conversation = (Conversation) iterator.next();
-			String masterRoom = conversation.getconversationID();
-			if (masterRoom.equalsIgnoreCase(event.getFrom())) {
-				conversation.updateConversation(event.getFrom(), event.getMessage(),
-						true);
-				conversation.setRead(false);
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@SuppressWarnings("unchecked")
