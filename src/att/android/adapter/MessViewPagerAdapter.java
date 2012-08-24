@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import att.android.activity.MusicFragment;
-import att.android.activity.RssActivity;
 import att.android.fragment.ChatFragment;
 import att.android.fragment.ContactFragment;
 import att.android.fragment.LoginFragment;
