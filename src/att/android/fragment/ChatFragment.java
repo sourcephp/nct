@@ -101,6 +101,12 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 		super.onResume();
 		singletonSession.addSessionListener(sessionListener);
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		singletonSession.removeSessionListener(sessionListener);
+	}
 
 	public void onClick(View v) {
 		if (v == btn_send) {

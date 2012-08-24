@@ -269,6 +269,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 	public void onPause() {
 		super.onPause();
 		mContactAdapter.clear();
+		singletonSession.removeSessionListener(sessionListener);
 	}
 
 	@Override
