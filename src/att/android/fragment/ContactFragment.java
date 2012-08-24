@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
-import org.openymsg.network.event.SessionEvent;
 import org.openymsg.roster.Roster;
 
 import android.annotation.SuppressLint;
@@ -32,7 +31,6 @@ import android.widget.Toast;
 import att.android.activity.MessengerFragmentActivity;
 import att.android.adapter.FullContactListAdapter;
 import att.android.bean.Conversation;
-import att.android.model.Logger;
 import att.android.network.RosterHandler;
 
 import com.example.multiapp.R;
@@ -54,6 +52,8 @@ public class ContactFragment extends BaseMessengerFragment implements
 	private Button btnEnter;
 	private EditText edtGeneral;
 	private ActionItem acShowOff, acInfo, acOnlyOn, acSearch, acAdd, acLogout;
+	
+	protected static boolean isFriendUpdate = false;
 	
 	//define some function for only one button
 	protected static int button;
@@ -231,6 +231,13 @@ public class ContactFragment extends BaseMessengerFragment implements
 			isNeedUpdateFromRoster = false;
 			updateFullContactList();
 		}
+		
+		if (ContactFragment.isFriendUpdate) {
+			ContactFragment.isFriendUpdate = false;
+			mContactAdapter.clear();
+			mContactAdapter.setNotifyOnChange(true);
+			loadContactToList();
+		}
 
 	}
 
@@ -298,7 +305,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 		}
 	}
 
-	protected void loadContactToList() {
+	public void loadContactToList() {
 		synchronized (UpdateUILock) {
 			boolean isAdd = false;
 			if (!settings_show_offlines) {

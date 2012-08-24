@@ -7,9 +7,11 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.openymsg.network.Session;
+import org.openymsg.network.Status;
 import org.openymsg.network.YahooUser;
 import org.openymsg.network.event.SessionAdapter;
 import org.openymsg.network.event.SessionEvent;
+import org.openymsg.network.event.SessionFriendEvent;
 import org.openymsg.network.event.SessionListEvent;
 
 import android.annotation.SuppressLint;
@@ -78,10 +80,10 @@ public abstract class BaseMessengerFragment extends Fragment implements
 
 	}
 	
-//	public void displayMessagesReceived(SessionEvent event, int type){
-//		Logger.e(TAG, "Jump to displayMessagesReceived");
-//	}
-
+	public void loadContactToList() {
+		
+	}
+	
 
 	public Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -102,14 +104,21 @@ public abstract class BaseMessengerFragment extends Fragment implements
 				}
 				break;
 			case FRIEND_UPDATE_RECEIVED:
-				// TODO: xu ly khi friend thay doi can cap nhat thay doi len UI
+//				Logger.e(TAG, "thay doi trang thai");
+				SessionFriendEvent event = (SessionFriendEvent) msg.obj;
+//				ContactFragment.mContactAdapter.clear();
+//				updateFullContactList();
+				if (!currentClass.equals(ContactFragment.class)) {
+				    ContactFragment.isFriendUpdate = true;
+				}
+				onReceiveFriendUpdate(event);
 				break;
 			}
 		}
 	};
 	
 	/**When users have incoming message, add the message to the conversation*/
-	protected void onReceiveMessage(final SessionEvent event, int type) {
+	public void onReceiveMessage(final SessionEvent event, int type) {
 		Thread thread = new Thread() {
 			String currentConversationID;
 			boolean isExist = false;
@@ -148,7 +157,63 @@ public abstract class BaseMessengerFragment extends Fragment implements
 		thread.start();
 	}
 
-	protected Conversation addConversation(String userFrom, String userTo, String message, int type) {
+	public void onReceiveFriendUpdate(SessionFriendEvent event) {
+
+		if (currentClass.equals(ContactFragment.class) == true) {
+			// Kiem tra xem user cap nhat co ton tai trong adapter khong
+			int index = 0;
+			int length = ContactFragment.mContactAdapter.getCount();
+			for (int i = 0; i < length; i++) {
+				YahooUser user = ContactFragment.mContactAdapter.getItem(i);
+				String id = user.getId();
+				if (event.getUser().getId().equalsIgnoreCase(id)) {
+					index = i;
+					break;
+
+				}
+			}
+			// Neu ton tai trong adapter thi kiem tra dieu kien on/off
+			synchronized (UpdateUILock) {
+				if (index != 0) {
+					YahooUser user = (YahooUser) ContactFragment.mContactAdapter
+							.getItem(index);
+					Status userUpdate = event.getUser().getStatus();
+					// Neu ton tai va dang de dieu kien la on
+					if (!settings_show_offlines) {
+						// Kiem tra tiep xem user nay on hay off
+						if (userUpdate.compareTo(Status.AVAILABLE) == 0
+								|| userUpdate.compareTo(Status.BUSY) == 0
+								|| userUpdate.compareTo(Status.CUSTOM) == 0) {
+							user.update(userUpdate);
+							user.setCustom(event.getUser()
+									.getCustomStatusMessage(), event.getUser()
+									.getCustomStatus());
+							ContactFragment.mContactAdapter
+									.notifyDataSetChanged();
+						} else {
+							ContactFragment.mContactAdapter.remove(user);
+							ContactFragment.mContactAdapter
+									.setNotifyOnChange(true);
+						}
+					} else {
+						user.update(userUpdate);
+						user.setCustom(
+								event.getUser().getCustomStatusMessage(), event
+										.getUser().getCustomStatus());
+						ContactFragment.mContactAdapter.notifyDataSetChanged();
+					}
+				} else {
+					ContactFragment.mContactAdapter.clear();
+					ContactFragment.mContactAdapter.setNotifyOnChange(true);
+					loadContactToList();
+				}
+			}
+		}
+	}
+
+	
+
+	public Conversation addConversation(String userFrom, String userTo, String message, int type) {
 		Conversation conversation = new Conversation(userFrom, userTo, message, type);
 		conversations.add(conversation);
 		return conversation;
@@ -178,6 +243,15 @@ public abstract class BaseMessengerFragment extends Fragment implements
 					LoadDataLock.notifyAll();
 				}
 			}
+		}
+		
+		@Override
+		public void friendsUpdateReceived(SessionFriendEvent event) {
+			super.friendsUpdateReceived(event);
+			Message message = new Message();
+		    message.obj = event;
+		    message.what = FRIEND_UPDATE_RECEIVED;
+		    handler.sendMessage(message);
 		}
 
 	}
