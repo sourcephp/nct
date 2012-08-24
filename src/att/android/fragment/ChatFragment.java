@@ -45,6 +45,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 	private YahooUser YMuser;
 	private String urlGetAvatar = "http://img.msg.yahoo.com/avatar.php?yids=";
 	private Conversation conversation;
+	private Conversation conversation_temp;
 
 	public static Fragment newInstance(Context context) {
 		ChatFragment f = new ChatFragment();
@@ -149,11 +150,11 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 		
 	}
 	
-	public void displayMessagesReceived(SessionEvent event, final int type) {
-		Logger.e(TAG+"(outside if)", event.getFrom()+": "+event.getMessage());
+	public void onReceiveMessage(SessionEvent event, int type) {
+//		Logger.e(TAG+"(outside if)", event.getFrom()+": "+event.getMessage());
 		if (event.getFrom().equalsIgnoreCase(conversation.getconversationID())) {
 			
-			Logger.e(TAG+"(inside if)", event.getFrom()+": "+event.getMessage());
+//			Logger.e(TAG+"(inside if)", event.getFrom()+": "+event.getMessage());
 			View layout = inflater.inflate(R.layout.chatbox_myfriend, null);
 			TextView friends = (TextView) layout
 					.findViewById(R.id.txt_chatbox_myfriend);
@@ -161,10 +162,10 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 					.findViewById(R.id.real_avatar_friend);
 			avt_friends.setImageUrl(urlGetAvatar+YMuser.getId()+"&format=jpg");
 			
-			if (type != 1) {
-				conversation.updateConversation(event.getFrom(), event.getMessage(),
-					true);
-			    } 
+//			if (type != 1) {
+//				conversation.updateConversation(event.getFrom(), event.getMessage(),
+//					true);
+//			    } 
 			
 			friends.setText(event.getMessage());
 			formchat.addView(layout);
@@ -178,7 +179,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 					.getTo(), event.getMessage(), 2);
 				conversation.setRead(false);
 				conversations.add(conversation);
-				Logger.e(TAG+"(inside else)", event.getFrom()+": "+event.getMessage());
+//				Logger.e(TAG+"(inside else)", event.getFrom()+": "+event.getMessage());
 			    }
 		}
 	}
@@ -206,7 +207,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 			if (key) {
 				SessionEvent event = new SessionEvent(new Object(), singletonSession.getLoginID().getId(),
 						conversation.getconversationID(), aSaying.getText_chat());
-				displayMessagesReceived(event, 1);
+				onReceiveMessage(event, 1);
 			} else {
 				onSendMessage(aSaying.getText_chat(), 1);
 			}
@@ -230,10 +231,14 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 			//TODO: Nhan conversation tu ContactFragment load len UI
 			Logger.e(TAG, "Load Conversation");
 			loadDataFromConversation(conversation);
-		} else{
+		} else {
 			Logger.e(TAG, "Create Conversation");
 			conversation = new Conversation(YMuser.getId());
+			conversations.add(conversation);
 		}
+			
+	
+		
 	}
 	
 }
