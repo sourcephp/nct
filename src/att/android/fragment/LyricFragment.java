@@ -25,6 +25,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -131,13 +132,51 @@ public class LyricFragment extends BaseFragment implements
 		songName.setText(mSongName);
 		songName.setSelected(true);
 		mPopup.setOnMyPopupListener(new OnMyPopupListener() {
-			
+
 			public void onItemClick(String action) {
-				if(action.equals("save")){
-					//hanh dong khi bam nut save
+				if (action.equals("save")) {
+					try {
+
+						downloadAudioIncrement(mSongList.get(instanceIndex));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
-				if(action.equals("add")){
-					//hanh dong khi bam nut add
+				if (action.equals("add")) {
+					try {
+						File file = getActivity().getFileStreamPath(NOTES);
+						StringBuilder buf = new StringBuilder("");
+						if (file.exists()) {
+							InputStream in = getActivity().openFileInput(NOTES);
+
+							if (in != null) {
+								InputStreamReader tmp = new InputStreamReader(
+										in);
+								BufferedReader reader = new BufferedReader(tmp);
+								String str1;
+
+								while ((str1 = reader.readLine()) != null) {
+									buf.append(str1 + "\n");
+								}
+
+								in.close();
+							}
+						}
+
+						OutputStreamWriter out = new OutputStreamWriter(
+								getActivity().openFileOutput(NOTES, 0));
+						String str2 = buf + mSongList.get(instanceIndex).name
+								+ "╥" + mSongList.get(instanceIndex).singer
+								+ "╥" + mSongList.get(instanceIndex).songKey
+								+ "╥" + mSongList.get(instanceIndex).streamURL;
+
+						out.write(str2);
+						out.close();
+					} catch (Throwable t) {
+						Log.w("Exc", "Exception: " + t.toString());
+					}
+					Toast.makeText(getActivity(), "Added ", Toast.LENGTH_LONG)
+							.show();
 				}
 			}
 		});
@@ -196,11 +235,6 @@ public class LyricFragment extends BaseFragment implements
 				instanceIndex++;
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
-				try {
-					downloadAudioIncrement(mSongList.get(instanceIndex));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
 			if (v == mBtnPre && instanceIndex >= 1 && mSongList.size() > 0) {
 				instanceIndex--;
@@ -208,55 +242,11 @@ public class LyricFragment extends BaseFragment implements
 				mBtnPre.setEnabled(false);
 				doManyTimes(mSongList.get(instanceIndex));
 				changeRunMusic();
-				try {
-					downloadAudioIncrement(mSongList.get(instanceIndex));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 		if (v == mBtnAddSong) {
 			mPopup.show();
-			try {
-				File file = getActivity().getFileStreamPath(NOTES);
-				StringBuilder buf = new StringBuilder("");
-				if (file.exists()) {
-					InputStream in = getActivity().openFileInput(NOTES);
 
-					if (in != null) {
-						InputStreamReader tmp = new InputStreamReader(in);
-						BufferedReader reader = new BufferedReader(tmp);
-						String str1;
-
-						while ((str1 = reader.readLine()) != null) {
-							buf.append(str1 + "\n");
-						}
-
-						in.close();
-					}
-				}
-
-				OutputStreamWriter out = new OutputStreamWriter(getActivity()
-						.openFileOutput(NOTES, 0));
-				String str2 = buf + mSongList.get(instanceIndex).name + "╥"
-						+ mSongList.get(instanceIndex).singer + "╥"
-						+ mSongList.get(instanceIndex).songKey + "╥"
-						+ mSongList.get(instanceIndex).streamURL;
-
-				out.write(str2);
-				out.close();
-			} catch (Throwable t) {
-				Log.w("Exc", "Exception: " + t.toString());
-			}
-			Toast.makeText(getActivity(), "Added ", Toast.LENGTH_LONG).show();
-
-			File bufferedFile = new File(getActivity().getCacheDir(),
-					mSongList.get(instanceIndex).name + ".dat");
-			try {
-				moveFile(downloadingMediaFile, bufferedFile);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 
 	}
@@ -357,11 +347,6 @@ public class LyricFragment extends BaseFragment implements
 					instanceIndex++;
 					doManyTimes(mSongList.get(instanceIndex));
 					changeRunMusic();
-					try {
-						downloadAudioIncrement(mSongList.get(instanceIndex));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 				}
 			}
 			mSeekBar.setProgress(currentTime);
@@ -382,11 +367,6 @@ public class LyricFragment extends BaseFragment implements
 		instanceIndex = index;
 		doManyTimes(mSongList.get(index));
 		changeRunMusic();
-		try {
-			downloadAudioIncrement(mSongList.get(index));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void onDataParameterData(ArrayList<Music_Song> listSong,
@@ -395,11 +375,7 @@ public class LyricFragment extends BaseFragment implements
 		mSongList = listSong;
 		doManyTimes(mSongList.get(position));
 		changeRunMusic();
-		try {
-			downloadAudioIncrement(mSongList.get(position));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		mBtnAddSong.setEnabled(true);
 	}
 
 	@Override
@@ -408,7 +384,7 @@ public class LyricFragment extends BaseFragment implements
 		if (null != mplay) {
 			mplay.stop();
 		}
-		//mPlayMusic.cancel(true);
+		// mPlayMusic.cancel(true);
 		getActivity().unregisterReceiver(broadcast1);
 	}
 
@@ -468,17 +444,33 @@ public class LyricFragment extends BaseFragment implements
 					FileOutputStream out = new FileOutputStream(
 							downloadingMediaFile);
 					byte buf[] = new byte[16384];
-					int totalBytesRead = 0, incrementalBytesRead = 0;
+					int totalBytesRead = 0;
 					do {
 						int numread = stream.read(buf);
 						if (numread <= 0)
 							break;
 						out.write(buf, 0, numread);
 						totalBytesRead += numread;
-						incrementalBytesRead += numread;
 						totalKbRead = totalBytesRead / 1000;
 					} while (true);
 					stream.close();
+					Boolean isSDPresent = android.os.Environment
+							.getExternalStorageState().equals(
+									android.os.Environment.MEDIA_MOUNTED);
+
+					if (isSDPresent) {
+						// yes SD-card is present
+						File f = new File(
+								Environment.getExternalStorageDirectory()
+										+ mSongName + ".mp3");
+						moveFile(downloadingMediaFile, f);
+					} else {
+						File f = new File(mSongName + ".mp3");
+						moveFile(downloadingMediaFile, f);
+					}
+
+					Toast.makeText(getActivity(), "Downloaded ",
+							Toast.LENGTH_LONG).show();
 					downloadingMediaFile.delete();
 					Log.e("loaded", "Audio full loaded: " + totalKbRead
 							+ " Kb read");
