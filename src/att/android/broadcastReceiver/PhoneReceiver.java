@@ -1,4 +1,4 @@
-package att.android.receiver;
+package att.android.broadcastReceiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
