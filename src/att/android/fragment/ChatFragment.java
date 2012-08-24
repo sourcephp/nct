@@ -151,6 +151,9 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 	}
 	
 	public void onReceiveMessage(SessionEvent event, int type) {
+		if (conversations.size() == 0) {
+			isFirstMessage = true;
+		}
 		if(!isFirstMessage){
 			View layout = inflater.inflate(R.layout.chatbox_myfriend, null);
 			TextView friends = (TextView) layout
