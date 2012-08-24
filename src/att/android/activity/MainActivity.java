@@ -1,15 +1,12 @@
 package att.android.activity;
 
 
-import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -18,7 +15,7 @@ import att.android.util.MyDialog.OnMyDialogListener;
 
 import com.example.multiapp.R;
 
-public class MainActivity extends TabActivity {
+public class MainActivity extends TabActivity{
 	
 	private MyDialog notRadio;
     @Override
@@ -65,28 +62,5 @@ public class MainActivity extends TabActivity {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
-    @Override
-    public void onBackPressed() {
-    	super.onBackPressed();
-    	Log.e("an nut back", "a aj   k  j j  kk   k kk ");
-    	showExitDialog();
-    }
-public void showExitDialog(){
-	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-			this);
-		alertDialogBuilder
-			.setMessage("Click yes to exit!")
-			.setCancelable(false)
-			.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-					MainActivity.this.finish();
-				}
-			  })
-			.setNegativeButton("No",new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-					dialog.cancel();
-				}
-			});
-			alertDialogBuilder.show();
-}
+
 }

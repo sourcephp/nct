@@ -1,12 +1,18 @@
 package att.android.activity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -18,6 +24,8 @@ import android.widget.ListView;
 import att.android.adapter.RssAdapter;
 import att.android.bean.News;
 import att.android.network.ReadRssNetwork;
+import att.android.util.MyDialog;
+import att.android.util.MyDialog.OnMyDialogListener;
 
 import com.example.multiapp.R;
 import com.quickaction.popup.ActionItem;
@@ -62,6 +70,7 @@ public class RssActivity extends Activity implements OnItemClickListener,
 	}
 
 	public void initVariables(Context context) {
+		
 		mNews = new ArrayList<News>();
 		mNewsAdapter = new RssAdapter(this, R.id.titleNews, mNews);
 		strUrl = "http://gamethu.vnexpress.net/rss/gt/diem-tin.rss";
@@ -133,7 +142,6 @@ public class RssActivity extends Activity implements OnItemClickListener,
 							strUrl = "http://feeds.thongtincongnghe.com/ttcn?format=xml";
 							break;
 						}
-						Log.i("popup-----", pos + "-------" + actionId);
 						btnWebName
 								.setText(source.getActionItem(pos).getTitle());
 						mNewsAdapter.clear();
@@ -178,5 +186,20 @@ private void getDataNetwork(String url){
 	ReadRssNetwork mConnectNetwork = new ReadRssNetwork(mHandler, url);
 	Thread thread = new Thread(mConnectNetwork);
 	thread.start();
+}
+@Override
+public void onBackPressed() {
+	MyDialog mDialog = new MyDialog(this, R.drawable.trash);
+	mDialog.setOnMyDialogListener(new OnMyDialogListener() {
+		
+		public void onItemClick(boolean isOk) {
+			if(isOk){
+				RssActivity.this.finish();
+			}
+			
+		}
+	});
+	mDialog.show();
+//	super.onBackPressed();
 }
 }

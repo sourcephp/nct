@@ -48,7 +48,6 @@ public class RssAdapter extends ArrayAdapter<News> {
 		mHolder.newsDate.setText(news.getmDate());
 		mHolder.newsDest.setText(news.getmDes());
 		mHolder.newsTittle.setText(news.getmTitle());
-		mHolder.strUrl = news.getmUrl();
 		return convertView;
 
 	}
@@ -56,6 +55,5 @@ public class RssAdapter extends ArrayAdapter<News> {
 	private class ViewHolder {
 		private SmartImageView imgNews;
 		private TextView newsTittle, newsDest, newsDate;
-		private String strUrl;
 	}
 }

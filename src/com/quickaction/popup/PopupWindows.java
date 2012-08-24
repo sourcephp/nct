@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 
 import android.widget.PopupWindow;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 
