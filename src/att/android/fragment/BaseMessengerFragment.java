@@ -200,6 +200,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 						user.setCustom(
 								event.getUser().getCustomStatusMessage(), event
 										.getUser().getCustomStatus());
+						ContactFragment.mContactAdapter.clear();
 						ContactFragment.mContactAdapter.notifyDataSetChanged();
 					}
 				} else {
@@ -229,7 +230,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 			message.obj = event;
 			message.what = MESSAGE_RECEIVED;
 			handler.sendMessage(message);
-//			Logger.e(TAG + "(YMEventHandler)","messageReceived " + event.getFrom() + ": "+ event.getMessage());
+			Logger.e("YMEventHandler",event.getFrom() + ": "+ event.getMessage());
 			
 		}
 
