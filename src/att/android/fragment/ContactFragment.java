@@ -59,7 +59,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 	protected static int button;
 	protected static final int CHANGESTATUS = 2;
 	protected static final int FINDFRIEND = 3;
-	protected static final int ADDFRIEND = 4;
+//	protected static final int ADDFRIEND = 4;
 	protected static final int LOGOUT = 5;
 	
 	TextWatcher watcher = new TextWatcher() {
@@ -96,10 +96,10 @@ public class ContactFragment extends BaseMessengerFragment implements
 		sessionListener = new YMEventHandler();
 		mQAction = new QuickAction(this.getActivity());
 		acShowOff = new ActionItem();
-		acInfo = new ActionItem();
+//		acInfo = new ActionItem();
 		acOnlyOn = new ActionItem();
 		acSearch = new ActionItem();
-		acAdd = new ActionItem();
+//		acAdd = new ActionItem();
 		acLogout = new ActionItem();
 		amTranslateUp = AnimationUtils.loadAnimation(this.getActivity(),
 				R.anim.translate_move_up);
@@ -125,16 +125,16 @@ public class ContactFragment extends BaseMessengerFragment implements
 		amTranslateDown = AnimationUtils.loadAnimation(this.getActivity(),
 				R.anim.translate_move_down);
 		acShowOff.setTitle("Hiện Tất cả");
-		acInfo.setTitle("Đổi status");
+//		acInfo.setTitle("Đổi status");
 		acOnlyOn.setTitle("Chỉ hiện online");
 		acSearch.setTitle("Tìm kiếm bạn bè");
-		acAdd.setTitle("Thêm bạn");
+//		acAdd.setTitle("Thêm bạn");
 		acLogout.setTitle("Logout");
 		mQAction.addActionItem(acShowOff);
 		mQAction.addActionItem(acOnlyOn);
-		mQAction.addActionItem(acInfo);
+//		mQAction.addActionItem(acInfo);
 		mQAction.addActionItem(acSearch);
-		mQAction.addActionItem(acAdd);
+//		mQAction.addActionItem(acAdd);
 		mQAction.addActionItem(acLogout);
 		mQAction.setOnActionItemClickListener(new OnActionItemClickListener() {
 
@@ -144,18 +144,12 @@ public class ContactFragment extends BaseMessengerFragment implements
 					if(settings_show_offlines == false) {
 						settings_show_offlines = true;
 						mContactAdapter.clear();
-						loadContactToList();
-					}else if(settings_show_offlines == true){
-						mContactAdapter.clear();
-						loadContactToList();
+						updateFullContactList();
 					}
 					break;
 				case 1: //show online only
 					if(settings_show_offlines == true) {
 						settings_show_offlines = false;
-						mContactAdapter.clear();
-						loadContactToList();
-					}else if(settings_show_offlines == false){
 						mContactAdapter.clear();
 						loadContactToList();
 					}
@@ -174,13 +168,13 @@ public class ContactFragment extends BaseMessengerFragment implements
 					edtGeneral.addTextChangedListener(watcher);
 					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
 					break;
-				case 4: //add friend
-					mLayout.startAnimation(amTranslateDown);
-					mLayout.setVisibility(View.VISIBLE);
-					button = ADDFRIEND;
+//				case 4: //add friend
+//					mLayout.startAnimation(amTranslateDown);
+//					mLayout.setVisibility(View.VISIBLE);
+//					button = ADDFRIEND;
 //					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
-					break;
-				case 5: //Logout
+//					break;
+				case 4: //Logout
 					try {
 						singletonSession.logout();
 					} catch (IllegalStateException e) {
@@ -254,9 +248,10 @@ public class ContactFragment extends BaseMessengerFragment implements
 				edtGeneral.removeTextChangedListener(watcher);
 				listContact.setTextFilterEnabled(false);
 				Toast.makeText(getActivity(),"Tìm kiếm kết thúc!", Toast.LENGTH_LONG).show();
-			} else if (button == ADDFRIEND) {
-				//TODO: add friend kho. Lam sau!
-			}
+			} 
+//			else if (button == ADDFRIEND) {
+//				//TODO: add friend kho. Lam sau!
+//			}
 		}
 	}
 
