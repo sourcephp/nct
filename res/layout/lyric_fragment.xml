@@ -64,7 +64,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
-        android:background="@drawable/btn_add" />
+        android:background="@drawable/btn_options" />
 
     <SeekBar
         android:id="@+id/seekBar1"

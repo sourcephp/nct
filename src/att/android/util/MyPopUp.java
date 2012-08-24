@@ -20,7 +20,7 @@ public class MyPopUp extends Dialog implements android.view.View.OnClickListener
 
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.my_popup);
-//			getWindow().setBackgroundDrawableResource(R.drawable.dialog);
+			getWindow().setBackgroundDrawableResource(R.drawable.popup);
 //			imgThumb = (ImageView) this.findViewById(R.id.img_thumb);
 //			imgThumb.setBackgroundResource(thumb);
 			btnSave = (Button) this.findViewById(R.id.btn_save);

@@ -189,7 +189,7 @@ private void getDataNetwork(String url){
 }
 @Override
 public void onBackPressed() {
-	MyDialog mDialog = new MyDialog(this, R.drawable.trash);
+	MyDialog mDialog = new MyDialog(this, R.drawable.thumb_exit);
 	mDialog.setOnMyDialogListener(new OnMyDialogListener() {
 		
 		public void onItemClick(boolean isOk) {
