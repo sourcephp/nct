@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 import att.android.activity.MessengerFragmentActivity;
 import att.android.model.Logger;
 
@@ -99,6 +100,7 @@ public class LoginFragment extends BaseMessengerFragment implements
 		// boolean bHide = chBoxHide.hasSelection();
 
 		if ("".equals(strUserName) || "".equals(strPass)) {
+			Toast.makeText(getActivity(), "Ten tai khoan va password khong duoc de trong!", Toast.LENGTH_LONG).show();
 		} else {
 			Log.i(TAG, "Login start");
 			try {
