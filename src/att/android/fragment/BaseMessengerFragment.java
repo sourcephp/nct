@@ -48,6 +48,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 	public static boolean isCompletedRoster = false;
 	public static boolean isCompletedLoadData = false;
 	public static boolean isFirstMessage = false;
+	public static boolean isSleeping = false;
 
 	public static ArrayList<YahooUser> alYahooUser = new ArrayList<YahooUser>();
 	public static Set<Conversation> conversations = Collections.synchronizedSet(new HashSet<Conversation>());
@@ -227,11 +228,12 @@ public abstract class BaseMessengerFragment extends Fragment implements
 		@Override
 		public void messageReceived(SessionEvent event) {
 			super.messageReceived(event);
-			
+			if(!isSleeping){
 			Message message = new Message();
 			message.obj = event;
 			message.what = MESSAGE_RECEIVED;
 			handler.sendMessage(message);
+			}
 //			Looper.prepare();
 //			Toast.makeText(getActivity(), event.getFrom() + ": " + event.getMessage(), Toast.LENGTH_LONG).show();
 //			Looper.loop();
@@ -261,6 +263,12 @@ public abstract class BaseMessengerFragment extends Fragment implements
 		    handler.sendMessage(message);
 		}
 
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		isSleeping = true;
 	}
 
 
