@@ -49,6 +49,8 @@ import att.android.network.URLProvider;
 import att.android.receiver.PhoneReceiver;
 import att.android.receiver.PhoneReceiver.OnIncommingCall;
 import att.android.receiver.PhoneReceiver.OnRejectingCall;
+import att.android.util.MyPopUp;
+import att.android.util.MyPopUp.OnMyPopupListener;
 import att.android.util.ParseJSONMusic;
 
 import com.example.multiapp.R;
@@ -81,6 +83,7 @@ public class LyricFragment extends BaseFragment implements
 	private PhoneReceiver broadcast1;
 	private String mSongKey;
 	private final static String NOTES = "notes.txt";
+	private MyPopUp mPopup;
 
 	public static Fragment newInstance(Context context) {
 		LyricFragment f = new LyricFragment();
@@ -103,6 +106,7 @@ public class LyricFragment extends BaseFragment implements
 
 	@Override
 	public void initVariables() {
+		mPopup = new MyPopUp(getActivity());
 		mplay = new MediaPlayer();
 		currentTime = 0;
 		isRepeat = false;
@@ -132,6 +136,17 @@ public class LyricFragment extends BaseFragment implements
 		mBtnPlay.setOnClickListener(this);
 		songName.setText(mSongName);
 		songName.setSelected(true);
+		mPopup.setOnMyPopupListener(new OnMyPopupListener() {
+			
+			public void onItemClick(String action) {
+				if(action.equals("save")){
+					//hanh dong khi bam nut save
+				}
+				if(action.equals("add")){
+					//hanh dong khi bam nut add
+				}
+			}
+		});
 	}
 
 	public void turnOnBroadcast() {
@@ -207,6 +222,7 @@ public class LyricFragment extends BaseFragment implements
 			}
 		}
 		if (v == mBtnAddSong) {
+			mPopup.show();
 			try {
 				File file = getActivity().getFileStreamPath(NOTES);
 				StringBuilder buf = new StringBuilder("");

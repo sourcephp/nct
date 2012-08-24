@@ -53,7 +53,7 @@ public class MainActivity extends TabActivity {
     	ConnectivityManager connec = (ConnectivityManager)
     		    getSystemService(Context.CONNECTIVITY_SERVICE);
     	if ( connec.getNetworkInfo(0).getState() == State.DISCONNECTED
-    		    ||  connec.getNetworkInfo(1).getState() == State.DISCONNECTED  )
+    		    ||  connec.getNetworkInfo(1).getState() == State.DISCONNECTED )
     		  {
     		notRadio.show();
     		  }
