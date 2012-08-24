@@ -18,9 +18,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.widget.Toast;
 import att.android.bean.Conversation;
 import att.android.model.Logger;
 import att.android.model.YHandlerConstant;
@@ -128,7 +130,6 @@ public abstract class BaseMessengerFragment extends Fragment implements
 				String userFrom = event.getFrom();
 				String userTo = event.getTo();
 				Logger.e(TAG, userFrom + ": " + message);
-				
 				if (conversations.size() == 0) {
 					isFirstMessage = true;
 					addConversation(userFrom, userTo, message, 2);
@@ -231,7 +232,10 @@ public abstract class BaseMessengerFragment extends Fragment implements
 			message.obj = event;
 			message.what = MESSAGE_RECEIVED;
 			handler.sendMessage(message);
-//			Logger.e("YMEventHandler",event.getFrom() + ": "+ event.getMessage());
+//			Looper.prepare();
+//			Toast.makeText(getActivity(), event.getFrom() + ": " + event.getMessage(), Toast.LENGTH_LONG).show();
+//			Looper.loop();
+//			Logger.e("YMEventHandler", + ": "+ event.getMessage());
 			
 			
 		}
