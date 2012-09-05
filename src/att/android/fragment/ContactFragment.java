@@ -120,16 +120,20 @@ public class ContactFragment extends BaseMessengerFragment implements
 
 	@Override
 	public void initActions() {
+		btnSettting.setEnabled(false);
 		listContact.setAdapter(mContactAdapter);
+//		if(mContactAdapter.getCount() != 0){
+//		btnSettting.setEnabled(true);
+//		}
 		listContact.setOnItemClickListener(this);
 		btnEnter.setOnClickListener(this);
 		amTranslateDown = AnimationUtils.loadAnimation(this.getActivity(),
 				R.anim.translate_move_down);
-		acShowOff.setTitle("Hiện Tất cả");
-//		acInfo.setTitle("Đổi status");
-		acOnlyOn.setTitle("Chỉ hiện online");
-		acSearch.setTitle("Tìm kiếm bạn bè");
-//		acAdd.setTitle("Thêm bạn");
+		acShowOff.setTitle("Hiện offline");
+//		acInfo.setTitle("Ä�á»•i status");
+		acOnlyOn.setTitle("Hiện online");
+		acSearch.setTitle("Tìm kiếm bạn");
+//		acAdd.setTitle("ThÃªm báº¡n");
 		acLogout.setTitle("Logout");
 		mQAction.addActionItem(acShowOff);
 		mQAction.addActionItem(acOnlyOn);
@@ -158,24 +162,23 @@ public class ContactFragment extends BaseMessengerFragment implements
 				case 2: //Change status
 					mLayout.startAnimation(amTranslateDown);
 					mLayout.setVisibility(View.VISIBLE);
-					button = CHANGESTATUS;
-//					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
-					break;
-				case 3: //Find friend
-					mLayout.startAnimation(amTranslateDown);
-					mLayout.setVisibility(View.VISIBLE);
 					button = FINDFRIEND;
 					listContact.setTextFilterEnabled(true);
 					edtGeneral.addTextChangedListener(watcher);
 					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
+//					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
 					break;
+//				case 3: //Find friend
+//					
+//					break;
 //				case 4: //add friend
 //					mLayout.startAnimation(amTranslateDown);
 //					mLayout.setVisibility(View.VISIBLE);
 //					button = ADDFRIEND;
 //					if (edtGeneral.getText().toString().equals("")==false) edtGeneral.setText("");
 //					break;
-				case 4: //Logout
+				case 3: //Logout
+					
 					try {
 						singletonSession.logout();
 					} catch (IllegalStateException e) {
@@ -186,7 +189,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 						e.printStackTrace();
 					}
 					mContactAdapter.clear();
-					Toast.makeText(getActivity(),"Bạn vừa thoát tài khoản Yahoo!", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(),"Bạn vừa thoát Yahoo!", Toast.LENGTH_LONG).show();
 					break;
 				}
 				
@@ -248,7 +251,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 			} else if (button == FINDFRIEND) {
 				edtGeneral.removeTextChangedListener(watcher);
 				listContact.setTextFilterEnabled(false);
-				Toast.makeText(getActivity(),"Tìm kiếm kết thúc!", Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(),"Tìm kiếm kết thúc", Toast.LENGTH_LONG).show();
 			} 
 //			else if (button == ADDFRIEND) {
 //				//TODO: add friend kho. Lam sau!
@@ -270,6 +273,8 @@ public class ContactFragment extends BaseMessengerFragment implements
 
 	@Override
 	public void updateFullContactList() {
+		if(!btnSettting.isEnabled())
+		btnSettting.setEnabled(true);
 		super.updateFullContactList();
 		handler.post(new Runnable() {
 			public void run() {
@@ -302,7 +307,7 @@ public class ContactFragment extends BaseMessengerFragment implements
 		}
 	}
 
-	public void loadContactToList() {
+	public static void loadContactToList() {
 		synchronized (UpdateUILock) {
 			boolean isAdd = false;
 			if (!settings_show_offlines) {
@@ -340,6 +345,16 @@ public class ContactFragment extends BaseMessengerFragment implements
 		Toast.makeText(getActivity(), event.getFrom() + ": " + event.getMessage(), Toast.LENGTH_LONG).show();
 //		Looper.loop();
 	}
+//	@Override
+//	public void onDestroyView() {
+//		super.onDestroyView();
+//		mContactAdapter.clear();
+//	}
+//	@Override
+//	public void onDestroy() {
+//		super.onDestroy();
+//		mContactAdapter.clear();
+//	}
 
 
 }
