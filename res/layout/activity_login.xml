@@ -45,7 +45,7 @@
         android:layout_marginTop="20dp"
         android:button="@drawable/custom_checkbox"
         android:checked="false"
-        android:text="Lưu tên và passwork"
+        android:text="Lưu tên và password"
         android:textColor="#ffffff" />
 
     <CheckBox

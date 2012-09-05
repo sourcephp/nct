@@ -9,6 +9,8 @@ import android.util.Log;
 import att.android.adapter.MessViewPagerAdapter;
 import att.android.bean.Conversation;
 import att.android.model.OnYahooFragmentDataReceiver;
+import att.android.util.MyDialog;
+import att.android.util.MyDialog.OnMyDialogListener;
 
 import com.example.multiapp.R;
 
@@ -72,5 +74,19 @@ public class MessengerFragmentActivity extends FragmentActivity implements ViewP
 		this.data = data;
 		this.conversation_temp = conversation_temp;
 		haveData = true;
+	}
+	@Override
+	public void onBackPressed() {
+		MyDialog mDialog = new MyDialog(this, R.drawable.thumb_exit);
+		mDialog.setOnMyDialogListener(new OnMyDialogListener() {
+			
+			public void onItemClick(boolean isOk) {
+				if(isOk){
+					MessengerFragmentActivity.this.finish();
+				}
+				
+			}
+		});
+		mDialog.show();
 	}
 }

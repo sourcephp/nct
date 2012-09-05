@@ -28,8 +28,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -44,10 +42,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import att.android.activity.MusicFragmentActivity;
 import att.android.bean.Music_Song;
+import att.android.broadcastReceiver.PhoneReceiver;
 import att.android.model.OnFragmentDataRecevier;
 import att.android.network.JSONProvider;
 import att.android.network.URLProvider;
-import att.android.receiver.PhoneReceiver;
 import att.android.util.MyPopUp;
 import att.android.util.MyPopUp.OnMyPopupListener;
 import att.android.util.ParseJSONMusic;
@@ -71,7 +69,7 @@ public class LyricFragment extends BaseFragment implements
 	private int currentTime;
 	private View mBtnPre;
 	private View mBtnNext;
-	private String mSongName = "Hiện chưa có bài hát nào được chọn";
+	private String mSongName = "hiện chưa có lời bài hát";
 	private int instanceIndex = -1;
 	private RunMusic mPlayMusic;
 	private int count = 1;
@@ -178,9 +176,9 @@ public class LyricFragment extends BaseFragment implements
 						OutputStreamWriter out = new OutputStreamWriter(
 								getActivity().openFileOutput(NOTES, 0));
 						String str2 = buf + mSongList.get(instanceIndex).name
-								+ "╥" + mSongList.get(instanceIndex).singer
-								+ "╥" + mSongList.get(instanceIndex).songKey
-								+ "╥" + mSongList.get(instanceIndex).streamURL;
+								+ "â•¥" + mSongList.get(instanceIndex).singer
+								+ "â•¥" + mSongList.get(instanceIndex).songKey
+								+ "â•¥" + mSongList.get(instanceIndex).streamURL;
 
 						out.write(str2);
 						out.close();
@@ -365,7 +363,7 @@ public class LyricFragment extends BaseFragment implements
 			}
 			mSeekBar.setProgress(currentTime);
 			if (mLyric.equals("")) {
-				txtLyric.setText("Hiện chưa có lời cho bài hát này");
+				txtLyric.setText("Hiá»‡n chÆ°a cÃ³ lá»�i cho bÃ i hÃ¡t nÃ y");
 			} else {
 				txtLyric.setText(mLyric);
 			}

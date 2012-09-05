@@ -154,7 +154,6 @@
             android:shadowDx="0.0"
             android:shadowDy="1.0"
             android:shadowRadius="2.0"
-            android:text="Send"
             android:textColor="#FFFFFF"
             android:textStyle="bold" >
         </Button>

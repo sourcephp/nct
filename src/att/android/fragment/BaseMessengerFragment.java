@@ -83,7 +83,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 
 	}
 	
-	public void loadContactToList() {
+	public static void loadContactToList() {
 		
 	}
 	
@@ -132,8 +132,8 @@ public abstract class BaseMessengerFragment extends Fragment implements
 				String userTo = event.getTo();
 				Logger.e(TAG, userFrom + ": " + message);
 				if (conversations.size() == 0) {
-					isFirstMessage = true;
 					addConversation(userFrom, userTo, message, 2);
+					isFirstMessage = true;
 				} else {
 					isFirstMessage = false;
 					currentConversationID = userFrom;
@@ -208,7 +208,7 @@ public abstract class BaseMessengerFragment extends Fragment implements
 				} else {
 					ContactFragment.mContactAdapter.clear();
 					ContactFragment.mContactAdapter.setNotifyOnChange(true);
-					loadContactToList();
+					ContactFragment.loadContactToList();
 				}
 			}
 		}
@@ -228,12 +228,12 @@ public abstract class BaseMessengerFragment extends Fragment implements
 		@Override
 		public void messageReceived(SessionEvent event) {
 			super.messageReceived(event);
-			if(!isSleeping){
+//			if(!isSleeping){
 			Message message = new Message();
 			message.obj = event;
 			message.what = MESSAGE_RECEIVED;
 			handler.sendMessage(message);
-			}
+//			}
 //			Looper.prepare();
 //			Toast.makeText(getActivity(), event.getFrom() + ": " + event.getMessage(), Toast.LENGTH_LONG).show();
 //			Looper.loop();
@@ -265,11 +265,6 @@ public abstract class BaseMessengerFragment extends Fragment implements
 
 	}
 	
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		isSleeping = true;
-	}
 
 
 }

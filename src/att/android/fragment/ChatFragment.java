@@ -160,7 +160,8 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 		if (conversations.size() == 0) {
 			isFirstMessage = true;
 		}
-		if(!isFirstMessage){
+		else if(!isFirstMessage){
+			if(event.getFrom().equals(conversation.getconversationID())){
 			View layout = inflater.inflate(R.layout.chatbox_myfriend, null);
 			TextView friends = (TextView) layout
 					.findViewById(R.id.txt_chatbox_myfriend);
@@ -175,6 +176,7 @@ public class ChatFragment extends BaseMessengerFragment implements OnClickListen
 			int distance = scrollView.getBottom();
 			scrollView.scrollBy(0, distance);
 			isFirstMessage = false;
+			}
 		}
 	}
 
